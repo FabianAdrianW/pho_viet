@@ -72,10 +72,11 @@
     <style>
         /* Skala całej strony: 90% */
         html { font-size: 90%; scroll-padding-top: 6rem; }
+        /* overflow-x: clip zamiast hidden — 'hidden' na body psuje position: sticky w Safari na iOS */
+        html, body { overflow-x: clip; }
         body {
             background-color: #FAF7F2;
             color: #1C1917;
-            overflow-x: hidden;
         }
 
         /* W pełni kryjące panele dropdown w Navbarze */
@@ -134,9 +135,10 @@
         }
 
         /* Mobile: kafelki galerii nakładają się na siebie podczas przewijania */
-        @media (max-width: 639.98px) and (prefers-reduced-motion: no-preference) {
+        @media (max-width: 639.98px) {
             .stack-wrap { padding-bottom: 1.5rem; }
             .stack-card {
+                position: -webkit-sticky;
                 position: sticky;
                 top: calc(5.75rem + var(--i) * 0.85rem);
                 transform-origin: 50% 0;
@@ -1361,7 +1363,7 @@
         function initStackCards() {
             const cards = [...document.querySelectorAll('.stack-card')];
             if (!cards.length) return;
-            const mq = window.matchMedia('(max-width: 639.98px) and (prefers-reduced-motion: no-preference)');
+            const mq = window.matchMedia('(max-width: 639.98px)');
             let ticking = false;
             const update = () => {
                 ticking = false;
@@ -1371,7 +1373,7 @@
                     const top = card.getBoundingClientRect().top;
                     const h = card.offsetHeight;
                     const p = Math.min(Math.max((top + h - next.getBoundingClientRect().top) / h, 0), 1);
-                    card.style.transform = `scale(${1 - 0.08 * p})`;
+                    card.style.transform = `scale(${1 - 0.1 * p})`;
                     card.style.filter = `brightness(${1 - 0.5 * p})`;
                 });
             };
