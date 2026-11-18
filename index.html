@@ -134,19 +134,12 @@
             transform: none;
         }
 
-        /* Mobile: kafelki galerii nakładają się na siebie podczas przewijania */
+        /* Mobile: kafelki nakładają się na siebie podczas przewijania (JS: initStackCards, bez position: sticky) */
         @media (max-width: 639.98px) {
-            .stack-wrap { padding-bottom: 1.5rem; }
-            .stack-card {
-                position: -webkit-sticky;
-                position: sticky;
-                top: calc(5.75rem + var(--i) * 0.85rem);
-                transform-origin: 50% 0;
-                will-change: transform, filter;
-                box-shadow: 0 -12px 30px -14px rgba(0, 0, 0, .55);
-            }
+            .stack-card { transform-origin: 50% 0; will-change: transform, filter; box-shadow: 0 -12px 30px -14px rgba(0, 0, 0, .55); }
         }
 
+        @media (max-width: 1023.98px) { .hero-wok-img { filter: saturate(1.2) contrast(1.06) brightness(1.08); } }
         .scroll-parallax-img {
             will-change: transform;
             transition: transform 0.12s linear;
@@ -364,22 +357,27 @@
     <main id="page-home">
 
         <!-- ================= HERO SECTION (OGNISTY WOK W PEŁNYM ŻARZE I PASJI) ================= -->
-        <section id="top" class="relative min-h-[88vh] flex items-center pt-28 pb-20 px-4 sm:px-8 bg-[#0C0A09] text-cream overflow-hidden">
-            <!-- Panoramiczne tło z ognistym wokiem i płomieniami (dokładnie to zdjęcie o które prosiłeś) -->
+        <section id="top" class="relative min-h-[100svh] lg:min-h-[88vh] flex items-end lg:items-center pt-[46svh] lg:pt-28 pb-14 lg:pb-20 px-4 sm:px-8 bg-[#0C0A09] text-cream overflow-hidden">
+            <!-- Tło: na telefonie zdjęcie woka zajmuje górną część ekranu bez przyciemnienia, na desktopie jest wtopione z prawej -->
             <div class="absolute inset-0 z-0 bg-[#0C0A09]">
                 <img 
                     id="hero-parallax-img"
                     src="img/hero-wok.webp"
                     alt="Wok w płomieniach z makaronem i warzywami — Pho Viet Oława"
-                    class="absolute inset-y-0 right-0 h-full w-full lg:w-[78%] object-cover object-[70%_center] scroll-parallax-img"
+                    width="1376" height="768"
+                    class="hero-wok-img absolute top-0 right-0 w-full h-[62svh] lg:inset-y-0 lg:h-full lg:w-[78%] object-cover object-[64%_center] scroll-parallax-img"
                     fetchpriority="high"
                 >
-                <!-- Wtopienie zdjęcia: miękkie krawędzie lewa/góra/dół + delikatny żar przy płomieniach -->
-                <div class="ember-aura absolute right-[22%] top-[30%] w-[26rem] h-[26rem] rounded-full bg-orange-600/15 blur-3xl pointer-events-none mix-blend-screen"></div>
-                <div class="absolute inset-0 bg-gradient-to-r from-[#0C0A09] via-[#0C0A09]/80 lg:via-[#0C0A09]/40 to-transparent"></div>
-                <div class="absolute inset-y-0 left-0 w-full lg:w-[40%] bg-gradient-to-r from-[#0C0A09] to-transparent"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-transparent to-[#0C0A09]/60"></div>
-                <div class="absolute inset-0 shadow-[inset_0_0_140px_40px_#0C0A09] pointer-events-none"></div>
+                <!-- Żar: poświata przy płomieniach -->
+                <div class="ember-aura absolute left-[24%] top-[11svh] w-[17rem] h-[17rem] lg:left-auto lg:right-[22%] lg:top-[30%] lg:w-[26rem] lg:h-[26rem] rounded-full bg-orange-500/25 lg:bg-orange-600/15 blur-3xl pointer-events-none mix-blend-screen"></div>
+                <!-- Telefon: tylko dolne wtopienie w tło, żeby tekst był czytelny, a płomienie zostały jasne -->
+                <div class="absolute inset-x-0 top-[26svh] h-[38svh] bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/85 to-transparent lg:hidden"></div>
+                <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0C0A09]/80 to-transparent lg:hidden"></div>
+                <!-- Desktop: miękkie krawędzie lewa/góra/dół -->
+                <div class="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#0C0A09] via-[#0C0A09]/40 to-transparent"></div>
+                <div class="hidden lg:block absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-[#0C0A09] to-transparent"></div>
+                <div class="hidden lg:block absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-transparent to-[#0C0A09]/60"></div>
+                <div class="hidden lg:block absolute inset-0 shadow-[inset_0_0_140px_40px_#0C0A09] pointer-events-none"></div>
             </div>
 
             <div class="max-w-7xl mx-auto w-full relative z-10">
@@ -466,8 +464,8 @@
                         <h3 class="font-serif text-2xl sm:text-3xl font-bold text-ink">Polecane przez szefa kuchni</h3>
                         <span class="text-[0.6875rem] text-stone-500">Zdjęcia mają charakter poglądowy</span>
                     </div>
-                    <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory scroll-px-4 sm:scroll-px-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
-                    <article class="group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4] shrink-0 w-[78%] sm:w-auto snap-start">
+                    <div class="stack-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 pb-4 sm:pb-0">
+                    <article class="stack-card group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4]">
                         <img src="img/foto-pho-bo.webp" alt="Zupa Pho Bo" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[62%_center] group-hover:scale-105 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/30 to-transparent"></div>
                         <span class="absolute top-4 left-4 px-2.5 py-1 rounded-lg bg-[#0C0A09]/80 backdrop-blur-sm text-gold text-xs font-bold">Nr 01 • Klasyk Hanoi</span>
@@ -477,7 +475,7 @@
                             <span class="mt-3 inline-block font-serif text-2xl font-bold text-gold">20 / 29 zł</span>
                         </div>
                     </article>
-                    <article class="group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4] shrink-0 w-[78%] sm:w-auto snap-start">
+                    <article class="stack-card group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4]">
                         <img src="img/foto-pad-thai.webp" alt="Pad Thai" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[62%_center] group-hover:scale-105 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/30 to-transparent"></div>
                         <span class="absolute top-4 left-4 px-2.5 py-1 rounded-lg bg-[#0C0A09]/80 backdrop-blur-sm text-gold text-xs font-bold">Nr 42 • Bestseller</span>
@@ -487,7 +485,7 @@
                             <span class="mt-3 inline-block font-serif text-2xl font-bold text-gold">31–39 zł</span>
                         </div>
                     </article>
-                    <article class="group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4] shrink-0 w-[78%] sm:w-auto snap-start">
+                    <article class="stack-card group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4]">
                         <img src="img/foto-kaczka.webp" alt="Chrupiąca kaczka po tajsku" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[62%_center] group-hover:scale-105 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/30 to-transparent"></div>
                         <span class="absolute top-4 left-4 px-2.5 py-1 rounded-lg bg-[#0C0A09]/80 backdrop-blur-sm text-gold text-xs font-bold">Nr 25 • Specjał szefa</span>
@@ -497,7 +495,7 @@
                             <span class="mt-3 inline-block font-serif text-2xl font-bold text-gold">42 zł</span>
                         </div>
                     </article>
-                    <article class="group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4] shrink-0 w-[78%] sm:w-auto snap-start">
+                    <article class="stack-card group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4]">
                         <img src="img/foto-luk-lak.webp" alt="Wołowina Luk-Lak" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[62%_center] group-hover:scale-105 transition-transform duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/30 to-transparent"></div>
                         <span class="absolute top-4 left-4 px-2.5 py-1 rounded-lg bg-[#0C0A09]/80 backdrop-blur-sm text-gold text-xs font-bold">Nr 34 • Specjał Wietnamu</span>
@@ -653,8 +651,8 @@
                     </a>
                 </div>
 
-                <div class="stack-wrap grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 scroll-reveal">
-                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]" style="--i:0">
+                <div class="stack-group grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 pb-4 sm:pb-0">
+                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
                         <img src="img/foto-tom-yum.webp" alt="Tajska zupa Tom Yum z krewetkami" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -662,7 +660,7 @@
                             <h3 class="font-serif text-xl font-bold">Tom Yum z krewetkami</h3>
                         </div>
                     </div>
-                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]" style="--i:1">
+                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
                         <img src="img/foto-sajgonki.webp" alt="Chrupiące sajgonki wietnamskie z sosem nuoc cham" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -670,7 +668,7 @@
                             <h3 class="font-serif text-xl font-bold">Sajgonki Wietnamskie</h3>
                         </div>
                     </div>
-                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]" style="--i:2">
+                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
                         <img src="img/foto-curry.webp" alt="Kurczak w czerwonym curry z ryżem jaśminowym" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -678,7 +676,7 @@
                             <h3 class="font-serif text-xl font-bold">Kurczak w czerwonym curry</h3>
                         </div>
                     </div>
-                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]" style="--i:3">
+                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
                         <img src="img/foto-wege.webp" alt="Wegański Pad Thai z tofu" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -686,6 +684,60 @@
                             <h3 class="font-serif text-xl font-bold">Wegański Pad Thai</h3>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= OPINIE GOŚCI (GOOGLE) ================= -->
+        <section id="opinie" class="py-20 sm:py-28 px-4 sm:px-8 bg-[#161311] text-cream">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+                <div class="lg:col-span-4 lg:sticky lg:top-28 scroll-reveal">
+                    <span class="text-xs uppercase tracking-[0.22em] text-gold font-bold block mb-3">Opinie gości</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white leading-tight">Co piszą goście w Google</h2>
+                    <div class="mt-8 flex items-end gap-4">
+                        <span class="font-serif text-7xl font-bold text-gold leading-none">4,7</span>
+                        <div class="pb-1.5">
+                            <div class="flex gap-0.5 text-gold" aria-label="Średnia ocena 4,7 na 5"><svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></div>
+                            <p class="text-sm text-stone-300 mt-1.5">na podstawie 443 opinii</p>
+                        </div>
+                    </div>
+                    <a href="https://www.google.com/maps/place/Pho+Viet+-+O%C5%82awa/@50.9364995,17.3030806,17z" target="_blank" rel="noopener" class="mt-8 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-spice hover:bg-spiceDark text-white text-sm font-bold transition">
+                        Zobacz wszystkie opinie w Mapach Google
+                        <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11 3h6v6h-2V6.4l-6.3 6.3-1.4-1.4L13.6 5H11V3zM4 6h4v2H5v7h7v-3h2v5H3V6h1z"/></svg>
+                    </a>
+                    <p class="mt-4 text-[0.6875rem] text-stone-500 leading-relaxed">Fragmenty opinii z Map Google, ocena według stanu z 18.11.2026.</p>
+                </div>
+                <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 scroll-reveal">
+                    <figure class="rounded-2xl bg-white/[0.05] border border-white/10 p-6 flex flex-col gap-4">
+                        <div class="flex gap-0.5 text-gold" aria-label="5 na 5 gwiazdek"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></div>
+                        <blockquote class="font-serif text-lg leading-snug text-cream">„Jeden z lepszych kurczaków w cieście kokosowym, jakie jadłam. Porcja ogromna, ciasto puszyste w środku, chrupiące na zewnątrz i nie nasączone tłuszczem.”</blockquote>
+                        <figcaption class="mt-auto text-xs text-stone-400"><span class="font-semibold text-stone-200">Kamila K.</span> · Google, 7 mies. temu</figcaption>
+                    </figure>
+                    <figure class="rounded-2xl bg-white/[0.05] border border-white/10 p-6 flex flex-col gap-4">
+                        <div class="flex gap-0.5 text-gold" aria-label="5 na 5 gwiazdek"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></div>
+                        <blockquote class="font-serif text-lg leading-snug text-cream">„Przyjazne miejsce, jedzenie bardzo dobre, porcje duże. Polecam kaczkę po tajsku.”</blockquote>
+                        <figcaption class="mt-auto text-xs text-stone-400"><span class="font-semibold text-stone-200">Mariola J.</span> · Google</figcaption>
+                    </figure>
+                    <figure class="rounded-2xl bg-white/[0.05] border border-white/10 p-6 flex flex-col gap-4">
+                        <div class="flex gap-0.5 text-gold" aria-label="5 na 5 gwiazdek"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></div>
+                        <blockquote class="font-serif text-lg leading-snug text-cream">„Bardzo smaczne, świeże jedzonko. Miła obsługa, bardzo polecam. Lokal klimatyzowany w dzień, gdzie jest 38 stopni.”</blockquote>
+                        <figcaption class="mt-auto text-xs text-stone-400"><span class="font-semibold text-stone-200">Daria K.</span> · Google, 3 mies. temu</figcaption>
+                    </figure>
+                    <figure class="rounded-2xl bg-white/[0.05] border border-white/10 p-6 flex flex-col gap-4">
+                        <div class="flex gap-0.5 text-gold" aria-label="5 na 5 gwiazdek"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></div>
+                        <blockquote class="font-serif text-lg leading-snug text-cream">„Dawno nie jadłem tak dobrego jedzenia w tak przyjemnym miejscu. Porcje duże, świeże, super doprawione.”</blockquote>
+                        <figcaption class="mt-auto text-xs text-stone-400"><span class="font-semibold text-stone-200">zwitek witek</span> · Google, 6 mies. temu</figcaption>
+                    </figure>
+                    <figure class="rounded-2xl bg-white/[0.05] border border-white/10 p-6 flex flex-col gap-4">
+                        <div class="flex gap-0.5 text-gold" aria-label="5 na 5 gwiazdek"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></div>
+                        <blockquote class="font-serif text-lg leading-snug text-cream">„Naprawdę dobre jedzenie w dobrej cenie, duże porcje, którymi naprawdę idzie się najeść!”</blockquote>
+                        <figcaption class="mt-auto text-xs text-stone-400"><span class="font-semibold text-stone-200">HalucyN 1337</span> · Google, 4 mies. temu</figcaption>
+                    </figure>
+                    <figure class="rounded-2xl bg-white/[0.05] border border-white/10 p-6 flex flex-col gap-4">
+                        <div class="flex gap-0.5 text-gold" aria-label="5 na 5 gwiazdek"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg><svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></div>
+                        <blockquote class="font-serif text-lg leading-snug text-cream">„Zmiana zdecydowanie na plus. Wystrój to jeden z wielu zalet tego miejsca: dużo światła i wykończenie w eleganckim stylu.”</blockquote>
+                        <figcaption class="mt-auto text-xs text-stone-400"><span class="font-semibold text-stone-200">Andrzej K.</span> · Google, rok temu</figcaption>
+                    </figure>
                 </div>
             </div>
         </section>
@@ -1359,27 +1411,44 @@
             }, { passive: true });
         }
 
-        // Efekt stosu kart (galeria, mobile)
+        // Efekt stosu kart (mobile): karta "przykleja się" pod nagłówkiem, kolejna wsuwa się na nią.
+        // Bez position: sticky (zawodzi w części przeglądarek iOS), pozycja liczona w JS przez transform.
         function initStackCards() {
-            const cards = [...document.querySelectorAll('.stack-card')];
-            if (!cards.length) return;
+            const groups = [...document.querySelectorAll('.stack-group')];
+            if (!groups.length) return;
             const mq = window.matchMedia('(max-width: 639.98px)');
+            const header = document.querySelector('header');
             let ticking = false;
             const update = () => {
                 ticking = false;
-                cards.forEach((card, i) => {
-                    const next = cards[i + 1];
-                    if (!mq.matches || !next) { card.style.transform = ''; card.style.filter = ''; return; }
-                    const top = card.getBoundingClientRect().top;
-                    const h = card.offsetHeight;
-                    const p = Math.min(Math.max((top + h - next.getBoundingClientRect().top) / h, 0), 1);
-                    card.style.transform = `scale(${1 - 0.1 * p})`;
-                    card.style.filter = `brightness(${1 - 0.5 * p})`;
+                groups.forEach(group => {
+                    const cards = [...group.querySelectorAll('.stack-card')];
+                    if (!mq.matches) { cards.forEach(c => { c.style.transform = ''; c.style.filter = ''; c.dataset.ty = 0; }); return; }
+                    const baseTop = (header ? header.getBoundingClientRect().bottom : 80) + 10;
+                    const limit = group.getBoundingClientRect().bottom - 16;
+                    const ty = [], tops = [];
+                    cards.forEach((c, i) => {
+                        const r = c.getBoundingClientRect();
+                        const natural = r.top - (parseFloat(c.dataset.ty) || 0);
+                        const stuck = baseTop + i * 14;
+                        let t = stuck - natural;
+                        t = Math.min(Math.max(t, 0), Math.max(limit - (natural + r.height), 0));
+                        ty[i] = t; tops[i] = natural + t;
+                    });
+                    cards.forEach((c, i) => {
+                        c.dataset.ty = ty[i];
+                        const h = c.offsetHeight;
+                        let p = 0;
+                        if (i < cards.length - 1) p = Math.min(Math.max((tops[i] + h - tops[i + 1]) / h, 0), 1);
+                        c.style.transform = `translate3d(0,${ty[i].toFixed(1)}px,0) scale(${(1 - 0.08 * p).toFixed(4)})`;
+                        c.style.filter = p > 0 ? `brightness(${(1 - 0.5 * p).toFixed(3)})` : '';
+                    });
                 });
             };
             const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
             window.addEventListener('scroll', onScroll, { passive: true });
             window.addEventListener('resize', onScroll);
+            window.addEventListener('orientationchange', onScroll);
             update();
         }
 
