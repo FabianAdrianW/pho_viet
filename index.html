@@ -70,9 +70,8 @@
     </script>
 
     <style>
-        /* Skala całej strony: 80% na desktopie, 90% na mniejszych ekranach (czytelność) */
+        /* Skala całej strony: 90% */
         html { font-size: 90%; scroll-padding-top: 6rem; }
-        @media (min-width: 1024px) { html { font-size: 80%; } }
         body {
             background-color: #FAF7F2;
             color: #1C1917;
@@ -146,9 +145,16 @@
         .menu-row.is-open .menu-row-body { grid-template-rows: 1fr; opacity: 1; }
         .menu-row.is-open .row-chev { transform: rotate(180deg); color: #C41E28; }
         .menu-row.is-open .row-name { color: #C41E28; }
-        .cat-pill.is-active { background: #1C1917; color: #fff; }
         .tag-filter-btn[aria-pressed="true"] { background: #1C1917; color: #fff; border-color: #1C1917; }
-        .menu-cat { scroll-margin-top: 8.5rem; }
+        .cat-btn.is-active { background: #fff; box-shadow: 0 6px 18px -8px rgba(28,25,23,.25); color: #C41E28; }
+        .cat-btn.is-active .cat-bar { opacity: 1; }
+        .cat-tile.is-active { outline: 2.5px solid #C41E28; outline-offset: 2px; }
+        #menu-grid.is-switching { opacity: 0; transform: translateY(6px); }
+        #menu-grid { transition: opacity .22s ease, transform .22s ease; }
+        #menu-sheet .sheet-panel { transform: translateY(100%); transition: transform .32s cubic-bezier(.22,1,.36,1); }
+        #menu-sheet .sheet-backdrop { opacity: 0; transition: opacity .25s ease; }
+        #menu-sheet.is-open .sheet-panel { transform: translateY(0); }
+        #menu-sheet.is-open .sheet-backdrop { opacity: 1; }
         @media (hover: hover) {
             .menu-row:hover { background: rgba(242, 236, 225, .6); }
             .menu-row:hover .row-name { color: #C41E28; }
@@ -490,45 +496,83 @@
                     </div>
                 </div>
 
-                <!-- Pasek kategorii (sticky, scrollspy) -->
-                <div id="menu-bar" class="sticky top-20 z-30 -mx-4 px-4 sm:-mx-8 sm:px-8 py-2.5 bg-cream/95 backdrop-blur-md border-y border-stone-200/80 mb-5">
-                    <nav id="category-tabs" class="flex gap-1.5 overflow-x-auto no-scrollbar" aria-label="Kategorie karty dań">
-                        <a href="#kat-zupy" data-cat="zupy" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Zupy & Przystawki</a>
-                        <a href="#kat-kurczak" data-cat="kurczak" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Kurczak</a>
-                        <a href="#kat-kaczka" data-cat="kaczka" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Kaczka, Ryba & Owoce morza</a>
-                        <a href="#kat-wolowina" data-cat="wolowina" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Wołowina & Wieprzowina</a>
-                        <a href="#kat-makarony" data-cat="makarony" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Makarony & Ryż</a>
-                        <a href="#kat-wege" data-cat="wege" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Wege, Dzieci & Napoje</a>
-                    </nav>
+                <div id="menu-browser" class="lg:grid lg:grid-cols-[17rem_1fr] lg:gap-10 items-start">
+
+                    <!-- DESKTOP: panel boczny -->
+                    <aside class="hidden lg:block sticky top-24">
+                        <div class="space-y-6">
+                            <div class="relative">
+                                <input type="search" oninput="onMenuSearch(this.value)" placeholder="Szukaj dania…" aria-label="Szukaj w karcie dań"
+                                       class="menu-search w-full pl-9 pr-3 py-2.5 rounded-xl bg-white border border-stone-200 text-sm text-ink placeholder:text-stone-400 focus:outline-none focus:border-spice focus:ring-2 focus:ring-spice/15">
+                                <svg class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </div>
+                            <div>
+                                <span class="text-[0.7rem] uppercase tracking-[0.2em] text-stone-500 font-bold block mb-2 px-1">Kategorie</span>
+                                <nav class="cat-nav space-y-1" aria-label="Kategorie karty dań"></nav>
+                            </div>
+                            <div>
+                                <span class="text-[0.7rem] uppercase tracking-[0.2em] text-stone-500 font-bold block mb-2 px-1">Pokaż tylko</span>
+                                <div class="space-y-1.5">
+                                <button type="button" data-tag="bestseller" onclick="setTagFilter('bestseller')" aria-pressed="false" class="tag-filter-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-ink border border-transparent hover:bg-sand transition"><span class="text-gold"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></span>Polecane</button>
+                                <button type="button" data-tag="spicy" onclick="setTagFilter('spicy')" aria-pressed="false" class="tag-filter-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-ink border border-transparent hover:bg-sand transition"><span class="text-spice"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.6 3.2c.3-.9 1-1.6 1.9-1.9l.4 1.1c-.5.2-.9.6-1.1 1.1 1.6.6 2.6 2.1 2.6 3.9 0 5.2-5 10.8-12.7 10.8-1.3 0-1.9-1.5-.9-2.3 3.2-2.5 4.8-5.5 5.6-8.4.5-1.9 2.1-3.3 4.2-3.3z"/></svg></span>Pikantne</button>
+                                <button type="button" data-tag="vegan" onclick="setTagFilter('vegan')" aria-pressed="false" class="tag-filter-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-ink border border-transparent hover:bg-sand transition"><span class="text-herb"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.5 2.5S8 1.5 4.6 7c-2 3.2-.9 6.6.3 8.2L2.6 17.5l1 1 2.3-2.3c1.6 1.2 5 2.3 8.2.3 5.5-3.4 3.4-14 3.4-14zM7 14.5c1.5-3 4-5.6 7-7.5-2.4 2.3-4.4 4.9-5.8 8z"/></svg></span>Wegańskie</button>
+                            </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <div>
+                        <!-- MOBILE: przyklejony przełącznik kategorii -->
+                        <div class="lg:hidden sticky top-20 z-30 -mx-4 px-4 py-2.5 mb-4 bg-cream/95 backdrop-blur-md border-b border-stone-200/80">
+                            <button type="button" onclick="openMenuSheet()" class="w-full flex items-center gap-3 px-3 py-2 rounded-2xl bg-white border border-stone-200 shadow-sm text-left" aria-haspopup="dialog">
+                                <img id="mobile-cat-thumb" src="img/foto-pho-ga.webp" alt="" class="w-10 h-10 rounded-xl object-cover object-[65%_center]">
+                                <span class="flex-1 min-w-0">
+                                    <span class="block text-[0.65rem] uppercase tracking-[0.18em] text-stone-500 font-bold">Kategoria</span>
+                                    <span id="mobile-cat-label" class="block font-semibold text-ink truncate">Zupy & Przystawki</span>
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink text-white text-xs font-semibold">
+                                    Zmień
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                                </span>
+                            </button>
+                        </div>
+
+                        <!-- Panel z daniami wybranej kategorii -->
+                        <div id="menu-grid" class="bg-white rounded-3xl border border-stone-200/90 shadow-sm overflow-hidden"></div>
+
+                        <!-- Stan pusty -->
+                        <div id="menu-empty" class="hidden text-center py-16 px-4 rounded-3xl bg-sand/60 border border-stone-200">
+                            <h3 class="font-serif text-2xl font-bold text-ink">Nie znaleziono dania</h3>
+                            <p class="text-stone-600 text-sm mt-2">Spróbuj innej nazwy albo wyczyść filtry.</p>
+                            <button type="button" onclick="resetMenuFilters()" class="mt-5 px-6 py-2.5 rounded-full bg-spice text-white text-sm font-semibold hover:bg-spiceDark transition">Wyczyść filtry</button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Legenda = filtry + wyszukiwarka -->
-                <div class="flex flex-col md:flex-row md:items-center gap-3 mb-6">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="text-xs text-stone-500 mr-1">Pokaż tylko:</span>
-                        <button type="button" data-tag="bestseller" onclick="setTagFilter('bestseller')" aria-pressed="false" class="tag-filter-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-200 bg-white text-ink transition"><span class="text-gold"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></span>Polecane</button>
-                        <button type="button" data-tag="spicy" onclick="setTagFilter('spicy')" aria-pressed="false" class="tag-filter-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-200 bg-white text-ink transition"><span class="text-spice"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.6 3.2c.3-.9 1-1.6 1.9-1.9l.4 1.1c-.5.2-.9.6-1.1 1.1 1.6.6 2.6 2.1 2.6 3.9 0 5.2-5 10.8-12.7 10.8-1.3 0-1.9-1.5-.9-2.3 3.2-2.5 4.8-5.5 5.6-8.4.5-1.9 2.1-3.3 4.2-3.3z"/></svg></span>Pikantne</button>
-                        <button type="button" data-tag="vegan" onclick="setTagFilter('vegan')" aria-pressed="false" class="tag-filter-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-200 bg-white text-ink transition"><span class="text-herb"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.5 2.5S8 1.5 4.6 7c-2 3.2-.9 6.6.3 8.2L2.6 17.5l1 1 2.3-2.3c1.6 1.2 5 2.3 8.2.3 5.5-3.4 3.4-14 3.4-14zM7 14.5c1.5-3 4-5.6 7-7.5-2.4 2.3-4.4 4.9-5.8 8z"/></svg></span>Wegańskie</button>
+                <!-- MOBILE: arkusz wyboru kategorii -->
+                <div id="menu-sheet" class="lg:hidden fixed inset-0 z-[60] hidden" role="dialog" aria-modal="true" aria-label="Wybierz kategorię">
+                    <div class="sheet-backdrop absolute inset-0 bg-black/50" onclick="closeMenuSheet()"></div>
+                    <div class="sheet-panel absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto bg-cream rounded-t-3xl px-5 pt-3 pb-8 shadow-2xl">
+                        <div class="w-10 h-1.5 rounded-full bg-stone-300 mx-auto mb-4"></div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="font-serif text-2xl font-bold text-ink">Karta dań</span>
+                            <button type="button" onclick="closeMenuSheet()" class="w-9 h-9 rounded-full bg-sand flex items-center justify-center" aria-label="Zamknij">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <div class="mb-5"><div class="relative">
+                                <input type="search" oninput="onMenuSearch(this.value)" placeholder="Szukaj dania…" aria-label="Szukaj w karcie dań"
+                                       class="menu-search w-full pl-9 pr-3 py-2.5 rounded-xl bg-white border border-stone-200 text-sm text-ink placeholder:text-stone-400 focus:outline-none focus:border-spice focus:ring-2 focus:ring-spice/15">
+                                <svg class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </div></div>
+                        <nav class="cat-nav grid grid-cols-2 gap-2.5 mb-6" data-variant="tiles" aria-label="Kategorie karty dań"></nav>
+                        <span class="text-[0.7rem] uppercase tracking-[0.2em] text-stone-500 font-bold block mb-2">Pokaż tylko</span>
+                        <div class="[&>div]:grid [&>div]:grid-cols-3 [&>div]:gap-2 [&>div]:space-y-0"><div class="space-y-1.5">
+                                <button type="button" data-tag="bestseller" onclick="setTagFilter('bestseller')" aria-pressed="false" class="tag-filter-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-ink border border-transparent hover:bg-sand transition"><span class="text-gold"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></span>Polecane</button>
+                                <button type="button" data-tag="spicy" onclick="setTagFilter('spicy')" aria-pressed="false" class="tag-filter-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-ink border border-transparent hover:bg-sand transition"><span class="text-spice"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.6 3.2c.3-.9 1-1.6 1.9-1.9l.4 1.1c-.5.2-.9.6-1.1 1.1 1.6.6 2.6 2.1 2.6 3.9 0 5.2-5 10.8-12.7 10.8-1.3 0-1.9-1.5-.9-2.3 3.2-2.5 4.8-5.5 5.6-8.4.5-1.9 2.1-3.3 4.2-3.3z"/></svg></span>Pikantne</button>
+                                <button type="button" data-tag="vegan" onclick="setTagFilter('vegan')" aria-pressed="false" class="tag-filter-btn w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium text-ink border border-transparent hover:bg-sand transition"><span class="text-herb"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.5 2.5S8 1.5 4.6 7c-2 3.2-.9 6.6.3 8.2L2.6 17.5l1 1 2.3-2.3c1.6 1.2 5 2.3 8.2.3 5.5-3.4 3.4-14 3.4-14zM7 14.5c1.5-3 4-5.6 7-7.5-2.4 2.3-4.4 4.9-5.8 8z"/></svg></span>Wegańskie</button>
+                            </div></div>
                     </div>
-                    <div class="relative md:ml-auto w-full md:w-64">
-                        <input id="menu-search" type="search" oninput="renderMenu()" placeholder="Szukaj dania, np. pho, curry…" aria-label="Szukaj w karcie dań"
-                               class="w-full pl-9 pr-3 py-2 rounded-full bg-white border border-stone-200 text-sm text-ink placeholder:text-stone-400 focus:outline-none focus:border-spice focus:ring-2 focus:ring-spice/15">
-                        <svg class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    </div>
-                </div>
-
-                <p class="text-xs text-stone-400 mb-3"><span class="hint-hover">Najedź kursorem na danie, aby zobaczyć opis.</span><span class="hint-touch">Dotknij dania, aby zobaczyć opis.</span></p>
-
-                <!-- Lista dań -->
-                <div id="menu-grid" class="bg-white rounded-3xl border border-stone-200/90 px-4 py-6 sm:p-10 shadow-sm space-y-10"></div>
-
-                <!-- Stan pusty wyszukiwania -->
-                <div id="menu-empty" class="hidden text-center py-16 px-4 rounded-3xl bg-sand/60 border border-stone-200">
-                    <h3 class="font-serif text-2xl font-bold text-ink">Nie znaleziono dania</h3>
-                    <p class="text-stone-600 text-sm mt-2">Spróbuj innej nazwy albo wyczyść filtry.</p>
-                    <button type="button" onclick="resetMenuFilters()" class="mt-5 px-6 py-2.5 rounded-full bg-spice text-white text-sm font-semibold hover:bg-spiceDark transition">
-                        Pokaż całą kartę
-                    </button>
                 </div>
             </div>
         </section>
@@ -967,8 +1011,16 @@
 
         let activeTag = 'all';
         let dropdownCloseTimer = null;
-        let catObserver = null;
-        const CATEGORIES = [['zupy', 'Zupy & Przystawki'], ['kurczak', 'Kurczak'], ['kaczka', 'Kaczka, Ryba & Owoce morza'], ['wolowina', 'Wołowina & Wieprzowina'], ['makarony', 'Makarony & Ryż'], ['wege', 'Wege, Dzieci & Napoje']];
+        let activeCategory = 'zupy';
+        let menuQuery = '';
+        const CATEGORIES = [
+            ['zupy', 'Zupy & Przystawki', 'Bulion gotowany 8 godzin, tajskie zupy i chrupiące przystawki.', 'foto-pho-ga'],
+            ['kurczak', 'Kurczak', 'Z woka, w curry, chrupiący — podawany z ryżem jaśminowym.', 'foto-curry'],
+            ['kaczka', 'Kaczka, Ryba & Owoce morza', 'Chrupiąca kaczka, krewetki królewskie i ryba.', 'foto-kaczka'],
+            ['wolowina', 'Wołowina & Wieprzowina', 'Luk-Lak, czarny pieprz i dania z ognistego woka.', 'foto-luk-lak'],
+            ['makarony', 'Makarony & Ryż', 'Pad Thai, Bún Chả, Udon i ryż smażony.', 'foto-pad-thai'],
+            ['wege', 'Wege, Dzieci & Napoje', 'Tofu, warzywa z woka, zestaw dla dzieci i napoje.', 'foto-wege']
+        ];
         const ICONS = {
             bestseller: '<span class="text-gold" title="Polecane"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></span>',
             spicy: '<span class="text-spice" title="Pikantne"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.6 3.2c.3-.9 1-1.6 1.9-1.9l.4 1.1c-.5.2-.9.6-1.1 1.1 1.6.6 2.6 2.1 2.6 3.9 0 5.2-5 10.8-12.7 10.8-1.3 0-1.9-1.5-.9-2.3 3.2-2.5 4.8-5.5 5.6-8.4.5-1.9 2.1-3.3 4.2-3.3z"/></svg></span>',
@@ -1020,6 +1072,8 @@
             }
         }
 
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeMenuSheet(); closeAllDropdowns(); } });
+
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.nav-dropdown-wrapper')) {
                 closeAllDropdowns();
@@ -1050,10 +1104,29 @@
         function selectCategoryAndGo(category) {
             switchView('home');
             closeAllDropdowns();
-            const target = category === 'all' ? document.getElementById('menu') : document.getElementById('kat-' + category);
-            if (category !== 'all' && !target) resetMenuFilters();
-            const el = category === 'all' ? document.getElementById('menu') : document.getElementById('kat-' + category);
+            if (category !== 'all') { resetMenuFilters(false); setCategory(category, false); }
+            const el = document.getElementById(category === 'all' ? 'menu' : 'menu-browser');
             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function setCategory(cat, scroll = true) {
+            activeCategory = cat;
+            if (menuQuery || activeTag !== 'all') resetMenuFilters(false);
+            closeMenuSheet();
+            const grid = document.getElementById('menu-grid');
+            grid.classList.add('is-switching');
+            setTimeout(() => {
+                renderMenu();
+                grid.classList.remove('is-switching');
+                const top = document.getElementById('menu-browser').getBoundingClientRect().top;
+                if (scroll && top < 0) document.getElementById('menu-browser').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 180);
+        }
+
+        function onMenuSearch(value) {
+            menuQuery = value;
+            document.querySelectorAll('.menu-search').forEach(i => { if (i.value !== value) i.value = value; });
+            renderMenu();
         }
 
         function setTagFilter(tag) {
@@ -1064,12 +1137,27 @@
             renderMenu();
         }
 
-        function resetMenuFilters() {
-            const searchInput = document.getElementById('menu-search');
-            if (searchInput) searchInput.value = '';
+        function resetMenuFilters(rerender = true) {
+            menuQuery = '';
+            document.querySelectorAll('.menu-search').forEach(i => i.value = '');
             activeTag = 'all';
             document.querySelectorAll('.tag-filter-btn').forEach(btn => btn.setAttribute('aria-pressed', 'false'));
-            renderMenu();
+            if (rerender) renderMenu();
+        }
+
+        function openMenuSheet() {
+            const sheet = document.getElementById('menu-sheet');
+            sheet.classList.remove('hidden');
+            requestAnimationFrame(() => sheet.classList.add('is-open'));
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenuSheet() {
+            const sheet = document.getElementById('menu-sheet');
+            if (!sheet || sheet.classList.contains('hidden')) return;
+            sheet.classList.remove('is-open');
+            document.body.style.overflow = '';
+            setTimeout(() => sheet.classList.add('hidden'), 300);
         }
 
         function toggleRow(btn) {
@@ -1100,19 +1188,51 @@
                 </div>`;
         }
 
+        function renderCategoryNav(counts) {
+            document.querySelectorAll('.cat-nav').forEach(nav => {
+                const tiles = nav.dataset.variant === 'tiles';
+                nav.innerHTML = CATEGORIES.map(([cat, label, , img]) => {
+                    const active = cat === activeCategory && !menuQuery && activeTag === 'all';
+                    if (tiles) {
+                        return `<button type="button" onclick="setCategory('${cat}')" class="cat-tile ${active ? 'is-active' : ''} relative h-24 rounded-2xl overflow-hidden text-left">
+                            <img src="img/${img}.webp" alt="" class="absolute inset-0 w-full h-full object-cover object-[65%_center]">
+                            <span class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></span>
+                            <span class="absolute left-3 right-3 bottom-2.5 text-white text-sm font-bold leading-tight">${label}<span class="block text-[0.7rem] font-medium text-stone-300 mt-0.5">${counts[cat]} pozycji</span></span>
+                        </button>`;
+                    }
+                    return `<button type="button" onclick="setCategory('${cat}')" class="cat-btn ${active ? 'is-active' : ''} relative w-full flex items-center gap-3 pl-3 pr-3 py-2 rounded-xl text-left text-ink hover:bg-white/70 transition">
+                        <span class="cat-bar absolute left-0 top-2 bottom-2 w-1 rounded-full bg-spice opacity-0 transition-opacity"></span>
+                        <img src="img/${img}.webp" alt="" class="w-9 h-9 rounded-lg object-cover object-[65%_center] shrink-0">
+                        <span class="flex-1 text-sm font-semibold leading-tight">${label}</span>
+                        <span class="text-xs text-stone-400 tabular-nums">${counts[cat]}</span>
+                    </button>`;
+                }).join('');
+            });
+            const cur = CATEGORIES.find(c => c[0] === activeCategory);
+            const lbl = document.getElementById('mobile-cat-label');
+            const th = document.getElementById('mobile-cat-thumb');
+            if (lbl) lbl.textContent = (menuQuery || activeTag !== 'all') ? 'Wyniki wyszukiwania' : cur[1];
+            if (th) th.src = `img/${cur[3]}.webp`;
+        }
+
         function renderMenu() {
             const grid = document.getElementById('menu-grid');
             const emptyState = document.getElementById('menu-empty');
-            const query = norm((document.getElementById('menu-search')?.value || '').trim());
+            const query = norm(menuQuery.trim());
+            const filtering = !!query || activeTag !== 'all';
+
+            const counts = {};
+            CATEGORIES.forEach(([c]) => counts[c] = MENU_ITEMS.filter(i => i.category === c).length);
+            renderCategoryNav(counts);
 
             const filtered = MENU_ITEMS.filter(item => {
+                if (!filtering) return item.category === activeCategory;
                 const matchTag = activeTag === 'all' || item.tags.includes(activeTag);
                 const matchQuery = !query || norm(item.short + ' ' + item.name + ' ' + item.desc).includes(query) || item.code === query;
                 return matchTag && matchQuery;
             });
 
             if (filtered.length === 0) {
-                grid.innerHTML = '';
                 grid.classList.add('hidden');
                 emptyState.classList.remove('hidden');
                 return;
@@ -1120,47 +1240,42 @@
             grid.classList.remove('hidden');
             emptyState.classList.add('hidden');
 
-            const openAll = !!query;
-            grid.innerHTML = CATEGORIES.map(([cat, label]) => {
-                const items = filtered.filter(i => i.category === cat);
-                if (!items.length) return '';
-                const half = Math.ceil(items.length / 2);
-                const col = list => `<div class="divide-y divide-stone-200/70">${list.map(i => rowHtml(i, openAll)).join('')}</div>`;
-                return `
-                <section id="kat-${cat}" data-cat="${cat}" class="menu-cat">
-                    <div class="flex items-baseline gap-4 mb-2">
-                        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-ink">${label}</h3>
-                        <span class="flex-1 h-px bg-stone-200"></span>
-                        <span class="text-xs text-stone-400 whitespace-nowrap">${items.length} ${items.length === 1 ? 'pozycja' : (items.length < 5 ? 'pozycje' : 'pozycji')}</span>
+            const hint = `<p class="text-xs text-stone-400 mt-1"><span class="hint-hover">Najedź kursorem na danie, aby zobaczyć opis.</span><span class="hint-touch">Dotknij dania, aby zobaczyć opis.</span></p>`;
+            const list = items => `<div class="divide-y divide-stone-200/70">${items.map(i => rowHtml(i, filtering && !!query)).join('')}</div>`;
+
+            if (filtering) {
+                const label = activeTag !== 'all' ? ({ bestseller: 'Polecane', spicy: 'Pikantne', vegan: 'Wegańskie' })[activeTag] : `Wyniki dla „${menuQuery.trim()}”`;
+                grid.innerHTML = `
+                    <div class="px-5 sm:px-8 pt-6 pb-3 flex items-center justify-between gap-4 border-b border-stone-200/70">
+                        <div><h3 class="font-serif text-2xl sm:text-3xl font-bold text-ink">${label}</h3>${hint}</div>
+                        <button type="button" onclick="resetMenuFilters()" class="text-xs font-semibold text-spice hover:underline whitespace-nowrap">Wyczyść ✕</button>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-x-12">${col(items.slice(0, half))}${col(items.slice(half))}</div>
-                </section>`;
-            }).join('');
+                    <div class="px-5 sm:px-8 py-4 space-y-6">` +
+                    CATEGORIES.map(([cat, name]) => {
+                        const items = filtered.filter(i => i.category === cat);
+                        return items.length ? `<div><span class="text-[0.7rem] uppercase tracking-[0.2em] text-stone-500 font-bold">${name}</span>${list(items)}</div>` : '';
+                    }).join('') + `</div>`;
+                return;
+            }
 
-            // Pigułki kategorii: wyszarz te bez wyników
-            document.querySelectorAll('.cat-pill').forEach(p => {
-                const has = filtered.some(i => i.category === p.dataset.cat);
-                p.classList.toggle('opacity-40', !has);
-                p.classList.toggle('pointer-events-none', !has);
-            });
-            initCategorySpy();
-        }
-
-        function setActivePill(cat) {
-            const nav = document.getElementById('category-tabs');
-            document.querySelectorAll('.cat-pill').forEach(p => {
-                const on = p.dataset.cat === cat;
-                p.classList.toggle('is-active', on);
-                if (on && nav) nav.scrollTo({ left: p.offsetLeft - nav.clientWidth / 2 + p.clientWidth / 2, behavior: 'smooth' });
-            });
-        }
-
-        function initCategorySpy() {
-            if (catObserver) catObserver.disconnect();
-            catObserver = new IntersectionObserver(entries => {
-                entries.forEach(e => { if (e.isIntersecting) setActivePill(e.target.dataset.cat); });
-            }, { rootMargin: '-35% 0px -60% 0px' });
-            document.querySelectorAll('.menu-cat').forEach(sec => catObserver.observe(sec));
+            const idx = CATEGORIES.findIndex(c => c[0] === activeCategory);
+            const [, label, desc, img] = CATEGORIES[idx];
+            const next = CATEGORIES[(idx + 1) % CATEGORIES.length];
+            grid.innerHTML = `
+                <div class="relative h-36 sm:h-44 overflow-hidden bg-[#0C0A09]">
+                    <img src="img/${img}.webp" alt="" class="absolute inset-0 w-full h-full object-cover object-[60%_55%] opacity-90">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#0C0A09] via-[#0C0A09]/70 to-transparent"></div>
+                    <div class="relative h-full flex flex-col justify-end px-5 sm:px-8 pb-5">
+                        <span class="text-[0.7rem] uppercase tracking-[0.2em] text-gold font-bold">${filtered.length} pozycji</span>
+                        <h3 class="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">${label}</h3>
+                        <p class="text-sm text-stone-300 mt-1 max-w-md">${desc}</p>
+                    </div>
+                </div>
+                <div class="px-5 sm:px-8 pt-3 pb-2">${hint}${list(filtered)}</div>
+                <button type="button" onclick="setCategory('${next[0]}')" class="w-full flex items-center justify-between gap-4 px-5 sm:px-8 py-4 bg-sand/50 hover:bg-sand border-t border-stone-200/70 text-left transition group">
+                    <span class="text-xs uppercase tracking-[0.18em] text-stone-500 font-bold">Następna kategoria</span>
+                    <span class="flex items-center gap-2 font-semibold text-ink group-hover:text-spice">${next[1]} <span aria-hidden="true">→</span></span>
+                </button>`;
         }
 
         // FAQ Accordion
