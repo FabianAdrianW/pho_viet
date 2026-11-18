@@ -120,7 +120,15 @@
             border-color: rgba(196, 30, 40, 0.28);
         }
 
-        /* Płynne animacje wejścia i parallax */
+        /* Hero */
+        @media (max-width: 1023.98px) {
+            .hero-photo { height: 117vw; -webkit-mask-image: linear-gradient(to bottom, transparent 0, rgba(0,0,0,.6) 22%, #000 42%); mask-image: linear-gradient(to bottom, transparent 0, rgba(0,0,0,.6) 22%, #000 42%); }
+            .hero-photo-img { left: -71vw; }
+            .hero-top-fade { background: linear-gradient(to top, rgba(12,10,9,.5) 0%, rgba(12,10,9,0) 28%); }
+        }
+        #top h1, #top p { text-shadow: 0 2px 18px rgba(0,0,0,.65); }
+
+        /* Płynne animacje wejścia */
         .scroll-reveal {
             opacity: 0;
             transform: translateY(24px);
@@ -343,19 +351,22 @@
     <main id="page-home">
 
         <!-- ================= HERO SECTION (OGNISTY WOK W PEŁNYM ŻARZE I PASJI) ================= -->
-        <section id="top" class="relative min-h-[88vh] flex items-center pt-28 pb-20 px-4 sm:px-8 bg-[#0C0A09] text-cream overflow-hidden">
-            <!-- Tło: ognisty wok, nieruchomy, z lekkim wtopieniem pod napisy (na telefonie delikatniejszym, żeby było widać ogień) -->
+        <section id="top" class="relative min-h-[100svh] lg:min-h-[88vh] flex items-center pt-28 pb-20 px-4 sm:px-8 bg-[#0C0A09] text-cream overflow-hidden">
+            <!-- Tło: ognisty wok, nieruchomy. Telefon: zdjęcie w naturalnych proporcjach, przesunięte tak, by ogień był bliżej lewej, a ciemna część kadru wypadała pod napisami (jak na desktopie) -->
             <div class="absolute inset-0 z-0 bg-[#0C0A09]">
-                <img 
-                    src="img/hero-wok.webp"
-                    alt="Wok w płomieniach z makaronem i warzywami — Pho Viet Oława"
-                    width="1376" height="768"
-                    class="absolute inset-y-0 right-0 h-full w-full lg:w-[78%] object-cover object-[70%_center]"
-                    fetchpriority="high"
-                >
-                <div class="absolute inset-0 bg-gradient-to-r from-[#0C0A09]/80 via-[#0C0A09]/50 lg:via-[#0C0A09]/40 to-[#0C0A09]/10 lg:to-transparent"></div>
+                <div class="hero-photo absolute inset-x-0 bottom-0 overflow-hidden lg:inset-y-0 lg:left-auto lg:right-0 lg:w-[78%] lg:!h-full">
+                    <img 
+                        src="img/hero-wok.webp"
+                        alt="Wok w płomieniach z makaronem i warzywami — Pho Viet Oława"
+                        width="1376" height="768"
+                        class="hero-photo-img absolute top-0 h-full w-auto max-w-none lg:left-0 lg:w-full lg:object-cover lg:object-[70%_center]"
+                        fetchpriority="high"
+                    >
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0C0A09]/80 via-[#0C0A09]/35 to-transparent lg:via-[#0C0A09]/40"></div>
                 <div class="hidden lg:block absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-[#0C0A09] to-transparent"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09]/55 via-[#0C0A09]/25 lg:via-transparent to-[#0C0A09]/75 lg:to-[#0C0A09]/60"></div>
+                <div class="hero-top-fade absolute inset-0 lg:hidden"></div>
+                <div class="hidden lg:block absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-transparent to-[#0C0A09]/60"></div>
                 <div class="hidden lg:block absolute inset-0 shadow-[inset_0_0_140px_40px_#0C0A09] pointer-events-none"></div>
             </div>
 
