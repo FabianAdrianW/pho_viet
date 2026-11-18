@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="pl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pho Viet Oława — Autentyczna Kuchnia Wietnamska i Tajska | ul. 3 Maja 20K</title>
+    <meta name="description" content="Pho Viet Oława (ul. 3 Maja 20K). Prawdziwa zupa Pho gotowana 8 godzin, Pad Thai z ognistego woka, chrupiąca kaczka, dania wegańskie i catering.">
+    
+    <meta property="og:type" content="restaurant">
+    <meta property="og:title" content="Pho Viet Oława — Kuchnia Wietnamska i Tajska">
+    <meta property="og:description" content="Zupa Pho gotowana 8 godzin, Pad Thai z woka, chrupiąca kaczka i dania wegańskie. ul. 3 Maja 20K, Oława. Tel. 788 299 666.">
+    <meta property="og:locale" content="pl_PL">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+    <link rel="apple-touch-icon" href="img/favicon.png">
+    <meta property="og:image" content="img/logo-pho-viet-czerwone.webp">
+    <meta name="theme-color" content="#120F0D">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Pho Viet",
+        "servesCuisine": ["Wietnamska", "Tajska"],
+        "telephone": "+48788299666",
+        "priceRange": "20–43 zł",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "ul. 3 Maja 20K",
+            "postalCode": "55-200",
+            "addressLocality": "Oława",
+            "addressRegion": "dolnośląskie",
+            "addressCountry": "PL"
+        },
+        "openingHoursSpecification": [
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "11:00", "closes": "21:00" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "20:00" }
+        ],
+        "acceptsReservations": false,
+        "hasMenu": "#menu"
+    }
+    </script>
+
+    <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Clean Modern Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: '#FAF7F2',
+                        sand: '#F2ECE1',
+                        ink: '#1C1917',
+                        spice: '#C41E28',
+                        spiceDark: '#981720',
+                        gold: '#C8963E',
+                        herb: '#2D5A3C',
+                        charcoal: '#141210'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-padding-top: 6rem; }
+        body {
+            background-color: #FAF7F2;
+            color: #1C1917;
+            overflow-x: hidden;
+        }
+
+        /* W pełni kryjące panele dropdown w Navbarze */
+        .nav-dropdown-panel {
+            visibility: hidden;
+            opacity: 0;
+            transform: translateX(-50%) translateY(10px) scale(0.985);
+            transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                        visibility 0.22s;
+            pointer-events: none;
+            background-color: transparent;
+        }
+
+        .nav-dropdown-wrapper.is-open .nav-dropdown-panel {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .nav-dropdown-wrapper.is-open .chevron-icon {
+            transform: rotate(180deg);
+            color: #C41E28;
+        }
+
+        /* Ukrycie paska przewijania dla poziomego menu na mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Karty dań */
+        .dish-card {
+            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+        }
+        .dish-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 36px -12px rgba(28, 25, 23, 0.14);
+            border-color: rgba(196, 30, 40, 0.28);
+        }
+
+        /* Płynne animacje wejścia i parallax */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .scroll-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-parallax-img {
+            will-change: transform;
+            transition: transform 0.12s linear;
+        }
+
+        /* Płynne akordeony FAQ */
+        .faq-answer-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .faq-item.is-open .faq-answer-wrapper {
+            grid-template-rows: 1fr;
+        }
+        .faq-answer-inner {
+            overflow: hidden;
+        }
+        .faq-icon-plus {
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease, color 0.25s ease;
+        }
+        .faq-item.is-open .faq-icon-plus {
+            transform: rotate(45deg);
+            background-color: #C41E28;
+            color: #FFFFFF;
+        }
+
+        /* Delikatne żarzenie ognia w Hero */
+        @keyframes emberGlow {
+            0%, 100% { opacity: 0.45; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.06); }
+        }
+        .ember-aura {
+            animation: emberGlow 5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-spice selection:text-white">
+
+    <!-- ================= STICKY NAVIGATION BAR ================= -->
+    <header id="main-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-[#120F0D] border-b border-white/15 text-cream shadow-xl">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Oryginalne Logo PHỞ VIỆT Oława • Kuchnia Azjatycka -->
+            <a href="#top" onclick="switchView('home'); closeAllDropdowns();" class="flex items-center gap-2.5 sm:gap-3.5 group min-w-0">
+                <span class="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-full bg-cream flex items-center justify-center shadow-lg ring-2 ring-spice/70 group-hover:scale-105 transition-transform shrink-0">
+                    <img src="img/logo-miska.png" alt="" class="w-[72%] h-auto" width="191" height="192">
+                </span>
+                <span class="leading-none">
+                    <img src="img/logo-napis.png" alt="Phở Việt" class="h-7 sm:h-9 w-auto block" width="593" height="120">
+                    <span class="text-[9px] sm:text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.2em] text-stone-300 font-semibold block mt-1.5 whitespace-nowrap">Oława • Kuchnia Azjatycka</span>
+                </span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex items-center gap-1 xl:gap-2">
+                
+                <!-- 1. Karta Dań (Dropdown ze zdjęciami na całą szerokość kafelków) -->
+                <div id="dropdown-menu-wrapper" class="nav-dropdown-wrapper relative"
+                     onmouseenter="openDropdown('dropdown-menu-wrapper')"
+                     onmouseleave="scheduleCloseDropdown('dropdown-menu-wrapper')">
+                    <button type="button"
+                            onclick="toggleDropdown('dropdown-menu-wrapper')"
+                            aria-haspopup="true" aria-expanded="false"
+                            class="px-4 py-2.5 rounded-full text-sm font-medium text-cream/90 hover:text-white hover:bg-white/10 transition flex items-center gap-1.5 whitespace-nowrap">
+                        <span>Karta Dań</span>
+                        <svg class="chevron-icon w-4 h-4 text-gold transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <!-- Rozwijany panel z wyraźnie odseparowanymi kafelkami fotograficznymi -->
+                    <div class="nav-dropdown-panel absolute left-1/2 top-full pt-3 w-[680px]">
+                        <div class="bg-[#181411] border border-black rounded-2xl p-5 shadow-[0_28px_65px_-12px_rgba(0,0,0,0.75)]">
+                            <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+                                <div>
+                                    <span class="text-[11px] uppercase tracking-[0.18em] text-gold font-bold block">Menu Restauracji</span>
+                                    <span class="text-xs text-stone-400">Wybierz kategorię, aby przejść do cennika dań</span>
+                                </div>
+                                <a href="#menu" onclick="selectCategoryAndGo('all'); closeAllDropdowns();" class="text-xs font-semibold text-gold hover:text-white transition flex items-center gap-1">
+                                    Pełna karta (60 pozycji) →
+                                </a>
+                            </div>
+
+                            <!-- 6 wyraźnie odseparowanych kafelków ze zdjęciami na 100% szerokości -->
+                            <div class="grid grid-cols-3 gap-4">
+                                <button type="button" onclick="selectCategoryAndGo('zupy')" class="group relative h-28 rounded-xl overflow-hidden border border-black hover:border-gold transition-all text-left shadow-md">
+                                    <img src="img/foto-pho-ga.webp" loading="lazy" alt="Zupy Pho i Przystawki" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
+                                    <div class="absolute bottom-2.5 left-3 right-3">
+                                        <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Zupy & Przystawki</span>
+                                        <span class="block text-[11px] text-stone-300 mt-0.5">Pho, Tom Yum, Sajgonki</span>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="selectCategoryAndGo('kurczak')" class="group relative h-28 rounded-xl overflow-hidden border border-black hover:border-gold transition-all text-left shadow-md">
+                                    <img src="img/foto-curry.webp" loading="lazy" alt="Dania z Kurczaka" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
+                                    <div class="absolute bottom-2.5 left-3 right-3">
+                                        <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Dania z Kurczaka</span>
+                                        <span class="block text-[11px] text-stone-300 mt-0.5">Chrupiący, Curry, Teriyaki</span>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="selectCategoryAndGo('kaczka')" class="group relative h-28 rounded-xl overflow-hidden border border-black hover:border-gold transition-all text-left shadow-md">
+                                    <img src="img/foto-kaczka.webp" loading="lazy" alt="Kaczka, Ryba i Krewetki" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
+                                    <div class="absolute bottom-2.5 left-3 right-3">
+                                        <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Kaczka & Krewetki</span>
+                                        <span class="block text-[11px] text-stone-300 mt-0.5">Po tajsku, pięć smaków</span>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="selectCategoryAndGo('wolowina')" class="group relative h-28 rounded-xl overflow-hidden border border-black hover:border-gold transition-all text-left shadow-md">
+                                    <img src="img/foto-luk-lak.webp" loading="lazy" alt="Wołowina i Wieprzowina" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
+                                    <div class="absolute bottom-2.5 left-3 right-3">
+                                        <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Wołowina & Wieprzowina</span>
+                                        <span class="block text-[11px] text-stone-300 mt-0.5">Luk-Lak, z woka, pieprz</span>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="selectCategoryAndGo('makarony')" class="group relative h-28 rounded-xl overflow-hidden border border-black hover:border-gold transition-all text-left shadow-md">
+                                    <img src="img/foto-pad-thai.webp" loading="lazy" alt="Makarony i Ryż z Woka" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
+                                    <div class="absolute bottom-2.5 left-3 right-3">
+                                        <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Makarony & Ryż</span>
+                                        <span class="block text-[11px] text-stone-300 mt-0.5">Pad Thai, Udon, Bun Cha</span>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="selectCategoryAndGo('wege')" class="group relative h-28 rounded-xl overflow-hidden border border-black hover:border-gold transition-all text-left shadow-md">
+                                    <img src="img/foto-wege.webp" loading="lazy" alt="Wege, Dzieci i Napoje" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
+                                    <div class="absolute bottom-2.5 left-3 right-3">
+                                        <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Wege, Dzieci & Napoje</span>
+                                        <span class="block text-[11px] text-stone-300 mt-0.5">Tofu, zestawy, napoje</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. O lokalu (bezpośredni przycisk) -->
+                <a href="#rzemioslo" onclick="switchView('home'); closeAllDropdowns();" class="px-4 py-2.5 rounded-full text-sm font-medium text-cream/90 hover:text-white hover:bg-white/10 transition whitespace-nowrap">
+                    O lokalu
+                </a>
+
+                <!-- 3. Catering & Imprezy -->
+                <button type="button" onclick="switchView('catering'); closeAllDropdowns();" class="px-4 py-2.5 rounded-full text-sm font-medium text-cream/90 hover:text-white hover:bg-white/10 transition whitespace-nowrap">
+                    Catering
+                </button>
+
+                <!-- 4. Kontakt & Dojazd -->
+                <a href="#lokal" onclick="switchView('home'); closeAllDropdowns();" class="px-4 py-2.5 rounded-full text-sm font-medium text-cream/90 hover:text-white hover:bg-white/10 transition whitespace-nowrap">
+                    Kontakt & Dojazd
+                </a>
+            </div>
+
+            <!-- Right Actions (Telefon + Mobile Hamburger) -->
+            <div class="flex items-center gap-2.5 shrink-0">
+                <a href="tel:+48788299666" aria-label="Zadzwoń: 788 299 666" class="inline-flex items-center gap-2 p-3 sm:px-5 sm:py-2.5 rounded-full bg-spice hover:bg-spiceDark text-white text-xs sm:text-sm font-semibold shadow-lg shadow-spice/30 transition whitespace-nowrap">
+                    <svg class="w-4 h-4 text-gold shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
+                    <span class="hidden sm:inline">788 299 666</span>
+                </a>
+
+                <!-- Mobile Menu Toggle -->
+                <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-controls="mobile-menu" aria-expanded="false" class="lg:hidden p-2.5 rounded-xl bg-white/10 text-cream hover:bg-white/20 transition" aria-label="Otwórz nawigację">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-[#181411] border-t border-white/10 px-4 pt-4 pb-6 space-y-3">
+            <a href="#menu" onclick="selectCategoryAndGo('all'); toggleMobileMenu();" class="block px-4 py-3 rounded-xl bg-white/5 text-cream font-semibold">Karta Dań (60 pozycji)</a>
+            <a href="#rzemioslo" onclick="switchView('home'); toggleMobileMenu();" class="block px-4 py-3 rounded-xl hover:bg-white/5 text-cream/90">O lokalu & Nasza Filozofia</a>
+            <button type="button" onclick="switchView('catering'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-cream/90">Catering & Półmiski na imprezy</button>
+            <a href="#lokal" onclick="switchView('home'); toggleMobileMenu();" class="block px-4 py-3 rounded-xl hover:bg-white/5 text-cream/90">Kontakt, Godziny i Dojazd (ul. 3 Maja 20K)</a>
+        </div>
+    </header>
+
+    <!-- ========================================================================= -->
+    <!--                             STRONA GŁÓWNA                                 -->
+    <!-- ========================================================================= -->
+    <main id="page-home">
+
+        <!-- ================= HERO SECTION (OGNISTY WOK W PEŁNYM ŻARZE I PASJI) ================= -->
+        <section id="top" class="relative min-h-[88vh] flex items-center pt-28 pb-20 px-4 sm:px-8 bg-[#0C0A09] text-cream overflow-hidden">
+            <!-- Panoramiczne tło z ognistym wokiem i płomieniami (dokładnie to zdjęcie o które prosiłeś) -->
+            <div class="absolute inset-0 z-0 bg-[#0C0A09]">
+                <img 
+                    id="hero-parallax-img"
+                    src="img/hero-wok.webp"
+                    alt="Wok w płomieniach z makaronem i warzywami — Pho Viet Oława"
+                    class="absolute inset-y-0 right-0 h-full w-full lg:w-[78%] object-cover object-[70%_center] scroll-parallax-img"
+                    fetchpriority="high"
+                >
+                <!-- Wtopienie zdjęcia: miękkie krawędzie lewa/góra/dół + delikatny żar przy płomieniach -->
+                <div class="ember-aura absolute right-[22%] top-[30%] w-[26rem] h-[26rem] rounded-full bg-orange-600/15 blur-3xl pointer-events-none mix-blend-screen"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0C0A09] via-[#0C0A09]/80 lg:via-[#0C0A09]/40 to-transparent"></div>
+                <div class="absolute inset-y-0 left-0 w-full lg:w-[40%] bg-gradient-to-r from-[#0C0A09] to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-transparent to-[#0C0A09]/60"></div>
+                <div class="absolute inset-0 shadow-[inset_0_0_140px_40px_#0C0A09] pointer-events-none"></div>
+            </div>
+
+            <div class="max-w-7xl mx-auto w-full relative z-10">
+                <div class="max-w-2xl space-y-7">
+                    <!-- Status otwarcia na żywo -->
+                    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs sm:text-sm font-medium">
+                        <span id="live-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span id="live-status-text" class="text-cream">Otwarte teraz • ul. 3 Maja 20K, Oława</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl sm:text-6xl lg:text-[66px] font-bold leading-[1.06] tracking-tight text-white">
+                        Żar woka, aromat <span class="text-gold italic">prawdziwego Pho</span> i pasja Azji w Oławie.
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-stone-300 leading-relaxed max-w-xl">
+                        Od 8-godzinnego wywaru wołowego z przyprawami korzennymi, przez chrupiące sajgonki, po dania smażone na żywym ogniu. Sprawdź naszą pełną kartę dań z cenami i zamów telefonicznie lub odwiedź nas przy ul. 3 Maja 20K.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4 pt-2">
+                        <a href="#menu" class="px-7 py-4 rounded-full bg-gradient-to-r from-spice to-spiceDark hover:from-spiceDark hover:to-spice text-white font-semibold text-sm sm:text-base shadow-xl shadow-spice/35 transition transform hover:-translate-y-0.5">
+                            Przeglądaj Kartę Dań i Ceny
+                        </a>
+                        <a href="tel:+48788299666" class="px-7 py-4 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/25 text-white font-semibold text-sm sm:text-base transition flex items-center gap-2.5">
+                            <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            <span>Zamów na wynos: 788 299 666</span>
+                        </a>
+                    </div>
+
+                    <!-- Szybkie atuty zaufania -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/15 max-w-lg">
+                        <div>
+                            <span class="font-serif text-2xl sm:text-3xl font-bold text-gold block">4.7 / 5</span>
+                            <span class="text-xs text-stone-400">Ponad 440 opinii Google</span>
+                        </div>
+                        <div>
+                            <span class="font-serif text-2xl sm:text-3xl font-bold text-white block">8 godzin</span>
+                            <span class="text-xs text-stone-400">Gotowania wywaru Pho</span>
+                        </div>
+                        <div>
+                            <span class="font-serif text-2xl sm:text-3xl font-bold text-white block">60 dań</span>
+                            <span class="text-xs text-stone-400">Wietnamskich i tajskich</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= KARTA DAŃ Z CENNIKIEM (60 POZYCJI) ================= -->
+        <section id="menu" class="py-20 sm:py-28 px-4 sm:px-8 bg-cream relative">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Nagłówek karty dań -->
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 scroll-reveal">
+                    <div>
+                        <span class="text-xs uppercase tracking-[0.22em] text-spice font-bold block mb-2">Karta Dań & Cennik</span>
+                        <h2 class="font-serif text-4xl sm:text-5xl font-bold text-ink leading-tight">
+                            Smaki Wietnamu i Tajlandii
+                        </h2>
+                        <p class="text-stone-600 mt-3 max-w-2xl text-sm sm:text-base">
+                            Wszystkie dania przygotowujemy na bieżąco na Twoje zamówienie. Zupy podajemy w porcji małej lub dużej — zadzwoń pod <a href="tel:+48788299666" class="font-semibold text-spice underline">788 299 666</a> lub zamów z dostawą.
+                        </p>
+                    </div>
+
+                    <!-- Bezpośrednie linki do dostawy online (Pyszne.pl & Uber Eats) -->
+                    <div id="dostawa" class="flex flex-wrap items-center gap-3 shrink-0">
+                        <a href="https://www.pyszne.pl/menu/pho-viet-3-maja-olawa" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FF8000] hover:bg-[#e67300] text-white text-xs sm:text-sm font-semibold shadow-sm transition">
+                            <span>Dostawa przez Pyszne.pl</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                        <a href="https://www.ubereats.com/pl/store/pho-viet/JtX3udVYVbqqTRf5SZ7hhw" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#142328] hover:bg-black text-white text-xs sm:text-sm font-semibold shadow-sm transition">
+                            <span>Dostawa przez Uber Eats</span>
+                            <svg class="w-4 h-4 text-[#06C167]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Polecane przez szefa -->
+                <div class="mb-14 scroll-reveal">
+                    <div class="flex items-end justify-between gap-4 mb-5">
+                        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-ink">Polecane przez szefa kuchni</h3>
+                        <span class="text-[11px] text-stone-500">Zdjęcia mają charakter poglądowy</span>
+                    </div>
+                    <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory scroll-px-4 sm:scroll-px-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+                    <article class="group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4] shrink-0 w-[78%] sm:w-auto snap-start">
+                        <img src="img/foto-pho-bo.webp" alt="Zupa Pho Bo" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[62%_center] group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/30 to-transparent"></div>
+                        <span class="absolute top-4 left-4 px-2.5 py-1 rounded-lg bg-[#0C0A09]/80 backdrop-blur-sm text-gold text-xs font-bold">Nr 01 • Klasyk Hanoi</span>
+                        <div class="absolute inset-x-0 bottom-0 p-5">
+                            <h3 class="font-serif text-2xl font-bold text-white leading-tight">Zupa Pho Bo</h3>
+                            <p class="text-xs text-stone-300 mt-1.5 leading-relaxed">Wywar wołowy gotowany 8 godzin, makaron ryżowy, wołowina i świeże zioła.</p>
+                            <span class="mt-3 inline-block font-serif text-2xl font-bold text-gold">20 / 29 zł</span>
+                        </div>
+                    </article>
+                    <article class="group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4] shrink-0 w-[78%] sm:w-auto snap-start">
+                        <img src="img/foto-pad-thai.webp" alt="Pad Thai" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[62%_center] group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/30 to-transparent"></div>
+                        <span class="absolute top-4 left-4 px-2.5 py-1 rounded-lg bg-[#0C0A09]/80 backdrop-blur-sm text-gold text-xs font-bold">Nr 42 • Bestseller</span>
+                        <div class="absolute inset-x-0 bottom-0 p-5">
+                            <h3 class="font-serif text-2xl font-bold text-white leading-tight">Pad Thai</h3>
+                            <p class="text-xs text-stone-300 mt-1.5 leading-relaxed">Makaron ryżowy w sosie tamaryndowym z krewetkami lub kurczakiem, orzeszki, limonka.</p>
+                            <span class="mt-3 inline-block font-serif text-2xl font-bold text-gold">31–39 zł</span>
+                        </div>
+                    </article>
+                    <article class="group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4] shrink-0 w-[78%] sm:w-auto snap-start">
+                        <img src="img/foto-kaczka.webp" alt="Chrupiąca kaczka po tajsku" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[62%_center] group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/30 to-transparent"></div>
+                        <span class="absolute top-4 left-4 px-2.5 py-1 rounded-lg bg-[#0C0A09]/80 backdrop-blur-sm text-gold text-xs font-bold">Nr 25 • Specjał szefa</span>
+                        <div class="absolute inset-x-0 bottom-0 p-5">
+                            <h3 class="font-serif text-2xl font-bold text-white leading-tight">Chrupiąca kaczka po tajsku</h3>
+                            <p class="text-xs text-stone-300 mt-1.5 leading-relaxed">Pierś z kaczki o chrupiącej skórce na warzywach z woka, z ryżem jaśminowym.</p>
+                            <span class="mt-3 inline-block font-serif text-2xl font-bold text-gold">42 zł</span>
+                        </div>
+                    </article>
+                    <article class="group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4] shrink-0 w-[78%] sm:w-auto snap-start">
+                        <img src="img/foto-luk-lak.webp" alt="Wołowina Luk-Lak" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-[62%_center] group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/30 to-transparent"></div>
+                        <span class="absolute top-4 left-4 px-2.5 py-1 rounded-lg bg-[#0C0A09]/80 backdrop-blur-sm text-gold text-xs font-bold">Nr 34 • Specjał Wietnamu</span>
+                        <div class="absolute inset-x-0 bottom-0 p-5">
+                            <h3 class="font-serif text-2xl font-bold text-white leading-tight">Wołowina Luk-Lak</h3>
+                            <p class="text-xs text-stone-300 mt-1.5 leading-relaxed">Kostki wołowiny smażone na żywym ogniu z czosnkiem, cebulą i papryką.</p>
+                            <span class="mt-3 inline-block font-serif text-2xl font-bold text-gold">36 zł</span>
+                        </div>
+                    </article>
+                    </div>
+                </div>
+
+                <!-- Reprezentatywne kafelki wyboru kategorii (bez emotek i bez numeracji) -->
+                <div id="category-tabs" class="flex lg:grid lg:grid-cols-7 gap-3 mb-8 overflow-x-auto lg:overflow-visible no-scrollbar snap-x scroll-px-4 lg:scroll-px-0 -mx-4 px-4 lg:mx-0 lg:px-0">
+                    <button type="button" data-cat="all" onclick="setCategory('all')" class="cat-tab-btn active-cat shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-spice text-white border-spice shadow-md">
+                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Wszystkie</span>
+                        <span class="text-xs opacity-85 block mt-1">Cała karta dań</span>
+                    </button>
+                    <button type="button" data-cat="zupy" onclick="setCategory('zupy')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
+                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Zupy & Start</span>
+                        <span class="text-xs text-stone-500 block mt-1">Pho, Tom Yum, Sajgonki</span>
+                    </button>
+                    <button type="button" data-cat="kurczak" onclick="setCategory('kurczak')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
+                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Kurczak</span>
+                        <span class="text-xs text-stone-500 block mt-1">Chrupiący, Curry, Wok</span>
+                    </button>
+                    <button type="button" data-cat="kaczka" onclick="setCategory('kaczka')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
+                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Kaczka & Morze</span>
+                        <span class="text-xs text-stone-500 block mt-1">Kaczka, Krewetki, Ryba</span>
+                    </button>
+                    <button type="button" data-cat="wolowina" onclick="setCategory('wolowina')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
+                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Wołowina</span>
+                        <span class="text-xs text-stone-500 block mt-1">Wołowina i Wieprzowina</span>
+                    </button>
+                    <button type="button" data-cat="makarony" onclick="setCategory('makarony')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
+                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Makarony & Ryż</span>
+                        <span class="text-xs text-stone-500 block mt-1">Pad Thai, Udon, Bun Cha</span>
+                    </button>
+                    <button type="button" data-cat="wege" onclick="setCategory('wege')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
+                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Wege & Napoje</span>
+                        <span class="text-xs text-stone-500 block mt-1">Tofu, Dzieci, Napoje</span>
+                    </button>
+                </div>
+
+                <!-- Pasek szybkiego filtrowania i wyszukiwarka -->
+                <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 rounded-2xl bg-sand/70 border border-stone-200/80 mb-10">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button type="button" data-tag="all" onclick="setTagFilter('all')" class="tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-ink text-white transition">
+                            Wszystkie dania
+                        </button>
+                        <button type="button" data-tag="bestseller" onclick="setTagFilter('bestseller')" class="tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-white text-ink hover:bg-stone-100 border border-stone-200 transition">
+                            Najczęściej wybierane
+                        </button>
+                        <button type="button" data-tag="vegan" onclick="setTagFilter('vegan')" class="tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-white text-ink hover:bg-stone-100 border border-stone-200 transition">
+                            Opcje wegańskie
+                        </button>
+                        <button type="button" data-tag="spicy" onclick="setTagFilter('spicy')" class="tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-white text-ink hover:bg-stone-100 border border-stone-200 transition">
+                            Pikantne
+                        </button>
+                    </div>
+
+                    <div class="relative w-full md:w-72">
+                        <input id="menu-search" type="text" oninput="renderMenu()" placeholder="Szukaj dania (np. Pho, Pad Thai)..."
+                               class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-stone-200 text-sm text-ink placeholder:text-stone-400 focus:outline-none focus:border-spice">
+                        <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Siatka Kart Dań -->
+                <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 gap-x-14 bg-white rounded-3xl border border-stone-200/90 p-5 sm:p-10 shadow-sm">
+                    <!-- Renderowane dynamicznie z tablicy MENU_ITEMS -->
+                </div>
+
+                <!-- Przycisk rozwijania / zwijania pełnej karty dań -->
+                <div id="menu-expand-bar" class="mt-10 text-center">
+                    <button id="menu-expand-btn" type="button" onclick="toggleMenuExpand()"
+                            class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-ink hover:bg-spice text-white font-semibold text-sm sm:text-base shadow-lg transition-all">
+                        <span id="menu-expand-label">Pokaż całą kartę dań</span>
+                        <svg id="menu-expand-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Stan pusty wyszukiwania -->
+                <div id="menu-empty" class="hidden text-center py-16 px-4 rounded-3xl bg-sand/60 border border-stone-200">
+                    <h3 class="font-serif text-2xl font-bold text-ink">Nie znaleziono dania pasującego do filtra</h3>
+                    <p class="text-stone-600 text-sm mt-2">Spróbuj wpisać inną nazwę składnika lub wyczyść aktywne filtry.</p>
+                    <button type="button" onclick="resetMenuFilters()" class="mt-5 px-6 py-2.5 rounded-full bg-spice text-white text-sm font-semibold hover:bg-spiceDark transition">
+                        Pokaż wszystkie dania
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= O LOKALU & NASZA FILOZOFIA ================= -->
+        <section id="rzemioslo" class="py-20 sm:py-28 px-4 sm:px-8 bg-[#161311] text-cream overflow-hidden">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Zdjęcie rzemiosła kuchni z wyraźnym kontrastem -->
+                <div class="lg:col-span-6 scroll-reveal">
+                    <div class="relative rounded-3xl overflow-hidden border border-white/15 shadow-2xl aspect-[4/3]">
+                        <img src="img/foto-o-lokalu.webp" loading="lazy"
+                             alt="Tradycyjne gotowanie wywaru Pho i świeże zioła w Pho Viet Oława"
+                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
+                        <img src="img/logo-pho-viet-czerwone.webp" alt="Logo Phở Việt" loading="lazy" class="absolute top-5 right-5 w-20 sm:w-28 rounded-2xl shadow-2xl ring-1 ring-white/25 rotate-3">
+                        <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs uppercase tracking-[0.2em] text-gold font-bold block">Rzemiosło kuchni</span>
+                                <span class="font-serif text-2xl font-bold text-white">Świeżość w każdym talerzu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Treść filozofii Pho Viet -->
+                <div class="lg:col-span-6 space-y-6 scroll-reveal">
+                    <span class="text-xs uppercase tracking-[0.22em] text-gold font-bold block">O lokalu Pho Viet Oława</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-bold text-white leading-tight">
+                        Autentyczne receptury z Hanoi i Bangkoku w sercu Oławy.
+                    </h2>
+                    <p class="text-stone-300 text-base leading-relaxed">
+                        W Pho Viet wierzymy, że sekret kuchni wietnamskiej i tajskiej tkwi w cierpliwości oraz jakości składników. Nasz bulion do zupy Pho gotujemy powoli przez 8 godzin na kościach wołowych z prażonym imbirem, anyżem gwiaździstym, cynamonem i kardamonem.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                            <span class="font-serif text-xl font-bold text-gold block">01. Wywar 8h</span>
+                            <p class="text-xs text-stone-400 mt-1.5 leading-relaxed">Głęboki, naturalnie klarowny bulion bez sztucznych wzmacniaczy.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                            <span class="font-serif text-xl font-bold text-gold block">02. Ogień Woka</span>
+                            <p class="text-xs text-stone-400 mt-1.5 leading-relaxed">Wysoka temperatura zamyka soczystość mięsa i chrupkość warzyw.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/10">
+                            <span class="font-serif text-xl font-bold text-gold block">03. Świeże zioła</span>
+                            <p class="text-xs text-stone-400 mt-1.5 leading-relaxed">Kolendra, mięta, trawa cytrynowa i limonka dodawane tuż przed podaniem.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= GALERIA DAŃ I LOKALU ================= -->
+        <section id="galeria" class="py-20 sm:py-24 px-4 sm:px-8 bg-sand/60">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12 scroll-reveal">
+                    <div>
+                        <span class="text-xs uppercase tracking-[0.22em] text-spice font-bold block mb-2">Nasza Kuchnia w Obiektywie</span>
+                        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-ink">Specjały, po które wracają goście</h2>
+                    </div>
+                    <a href="#menu" class="text-sm font-semibold text-spice hover:text-spiceDark transition">
+                        Zobacz pełny cennik w karcie dań →
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 scroll-reveal">
+                    <div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
+                        <img src="img/foto-tom-yum.webp" alt="Tajska zupa Tom Yum z krewetkami" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-white">
+                            <span class="text-xs text-gold font-semibold uppercase tracking-wider">Kwaśno-pikantna</span>
+                            <h3 class="font-serif text-xl font-bold">Tom Yum z krewetkami</h3>
+                        </div>
+                    </div>
+                    <div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
+                        <img src="img/foto-sajgonki.webp" alt="Chrupiące sajgonki wietnamskie z sosem nuoc cham" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-white">
+                            <span class="text-xs text-gold font-semibold uppercase tracking-wider">Chrupiące</span>
+                            <h3 class="font-serif text-xl font-bold">Sajgonki Wietnamskie</h3>
+                        </div>
+                    </div>
+                    <div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
+                        <img src="img/foto-curry.webp" alt="Kurczak w czerwonym curry z ryżem jaśminowym" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-white">
+                            <span class="text-xs text-gold font-semibold uppercase tracking-wider">Tajskie curry</span>
+                            <h3 class="font-serif text-xl font-bold">Kurczak w czerwonym curry</h3>
+                        </div>
+                    </div>
+                    <div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
+                        <img src="img/foto-wege.webp" alt="Wegański Pad Thai z tofu" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 text-white">
+                            <span class="text-xs text-gold font-semibold uppercase tracking-wider">100% Vegan</span>
+                            <h3 class="font-serif text-xl font-bold">Wegański Pad Thai</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= FAQ (PYTANIA I ODPOWIEDZI) ================= -->
+        <section id="faq" class="py-20 sm:py-28 px-4 sm:px-8 bg-cream">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                
+                <!-- Lewa kolumna z kartą szybkiego kontaktu -->
+                <div class="lg:col-span-5 lg:sticky lg:top-28 space-y-6 scroll-reveal">
+                    <span class="text-xs uppercase tracking-[0.22em] text-spice font-bold block">Informacje dla Gości</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-bold text-ink leading-tight">
+                        Najczęściej zadawane pytania
+                    </h2>
+                    <p class="text-stone-600 text-sm sm:text-base leading-relaxed">
+                        Planujesz wizytę w naszym lokalu przy ul. 3 Maja 20K w Oławie lub chcesz odebrać ciepły posiłek bez czekania w kolejce? Zadzwoń bezpośrednio na kuchnię.
+                    </p>
+
+                    <div class="p-6 rounded-3xl bg-sand border border-stone-200/90 space-y-4">
+                        <span class="text-xs uppercase tracking-widest text-stone-500 font-bold block">Szybki kontakt telefoniczny</span>
+                        <a href="tel:+48788299666" class="font-serif text-3xl font-bold text-spice hover:text-spiceDark transition block">
+                            +48 788 299 666
+                        </a>
+                        <p class="text-xs text-stone-600">
+                            Zamówienia telefoniczne na odbiór osobisty przyjmujemy przez cały czas otwarcia restauracji.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Prawa kolumna: Akordeony FAQ -->
+                <div class="lg:col-span-7 space-y-4 scroll-reveal">
+                    <div class="faq-item is-open rounded-2xl bg-white border border-stone-200/90 p-6 shadow-sm">
+                        <button type="button" onclick="toggleFaq(this)" class="w-full flex items-center justify-between gap-4 text-left">
+                            <div class="flex items-center gap-4">
+                                <span class="font-serif text-xl font-bold text-spice">01</span>
+                                <span class="font-semibold text-base sm:text-lg text-ink">Jak mogę zamówić jedzenie na wynos lub z dostawą?</span>
+                            </div>
+                            <span class="faq-icon-plus w-8 h-8 rounded-full bg-sand text-ink flex items-center justify-center shrink-0 font-bold text-lg">+</span>
+                        </button>
+                        <div class="faq-answer-wrapper">
+                            <div class="faq-answer-inner">
+                                <p class="pt-4 pl-9 text-sm sm:text-base text-stone-600 leading-relaxed">
+                                    Najszybszym sposobem na odbiór osobisty w Oławie jest telefon pod numer <strong>788 299 666</strong> — przygotujemy dania dokładnie na ustaloną godzinę. Jeśli wolisz dostawę pod drzwi z płatnością online, skorzystaj z naszych oficjalnych profili na <strong>Pyszne.pl</strong> oraz <strong>Uber Eats</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item rounded-2xl bg-white border border-stone-200/90 p-6 shadow-sm">
+                        <button type="button" onclick="toggleFaq(this)" class="w-full flex items-center justify-between gap-4 text-left">
+                            <div class="flex items-center gap-4">
+                                <span class="font-serif text-xl font-bold text-spice">02</span>
+                                <span class="font-semibold text-base sm:text-lg text-ink">Czy w karcie znajdują się dania łagodne dla dzieci i opcje wegańskie?</span>
+                            </div>
+                            <span class="faq-icon-plus w-8 h-8 rounded-full bg-sand text-ink flex items-center justify-center shrink-0 font-bold text-lg">+</span>
+                        </button>
+                        <div class="faq-answer-wrapper">
+                            <div class="faq-answer-inner">
+                                <p class="pt-4 pl-9 text-sm sm:text-base text-stone-600 leading-relaxed">
+                                    Tak! Większość naszych dań z woka (w tym chrupiący kurczak, Pad Thai czy makaron Udon) jest domyślnie łagodna, a chili podajemy osobno. W zakładce <strong>Wege & Napoje</strong> znajdziesz także szeroki wybór dań ze smażonym tofu, grzybami mun i świeżymi warzywami.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item rounded-2xl bg-white border border-stone-200/90 p-6 shadow-sm">
+                        <button type="button" onclick="toggleFaq(this)" class="w-full flex items-center justify-between gap-4 text-left">
+                            <div class="flex items-center gap-4">
+                                <span class="font-serif text-xl font-bold text-spice">03</span>
+                                <span class="font-semibold text-base sm:text-lg text-ink">Gdzie dokładnie znajduje się lokal i czy można zjeść na miejscu?</span>
+                            </div>
+                            <span class="faq-icon-plus w-8 h-8 rounded-full bg-sand text-ink flex items-center justify-center shrink-0 font-bold text-lg">+</span>
+                        </button>
+                        <div class="faq-answer-wrapper">
+                            <div class="faq-answer-inner">
+                                <p class="pt-4 pl-9 text-sm sm:text-base text-stone-600 leading-relaxed">
+                                    Restauracja Pho Viet mieści się przy <strong>ul. 3 Maja 20K w Oławie</strong>. Zapraszamy zarówno na spokojny obiad na sali, jak i po szybki odbiór zamówień na wynos. W pobliżu lokalu dostępne są wygodne miejsca postojowe.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item rounded-2xl bg-white border border-stone-200/90 p-6 shadow-sm">
+                        <button type="button" onclick="toggleFaq(this)" class="w-full flex items-center justify-between gap-4 text-left">
+                            <div class="flex items-center gap-4">
+                                <span class="font-serif text-xl font-bold text-spice">04</span>
+                                <span class="font-semibold text-base sm:text-lg text-ink">Czy przygotowujecie większe zamówienia na imprezy firmowe i rodzinne?</span>
+                            </div>
+                            <span class="faq-icon-plus w-8 h-8 rounded-full bg-sand text-ink flex items-center justify-center shrink-0 font-bold text-lg">+</span>
+                        </button>
+                        <div class="faq-answer-wrapper">
+                            <div class="faq-answer-inner">
+                                <p class="pt-4 pl-9 text-sm sm:text-base text-stone-600 leading-relaxed">
+                                    Oczywiście. Przygotowujemy zestawy korytek bankietowych, półmiski sajgonek, pierożków Hakao oraz gorące dania z woka w podgrzewaczach na spotkania rodzinne i firmowe w Oławie i okolicach. Szczegóły znajdziesz w zakładce <strong>Catering</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LOKAL, GODZINY OTWARCIA I MAPA GOOGLE ================= -->
+        <section id="lokal" class="py-20 sm:py-24 px-4 sm:px-8 bg-sand border-t border-stone-200/80">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                
+                <div class="lg:col-span-5 space-y-6 scroll-reveal">
+                    <span class="text-xs uppercase tracking-[0.22em] text-spice font-bold block">Odwiedź Nas w Oławie</span>
+                    <h2 class="font-serif text-4xl sm:text-5xl font-bold text-ink leading-tight">
+                        Pho Viet • ul. 3 Maja 20K
+                    </h2>
+                    <p class="text-stone-600 text-sm sm:text-base leading-relaxed">
+                        55-200 Oława, woj. dolnośląskie. Zapraszamy codziennie na świeżo gotowaną zupę Pho, dania z woka i chrupiące przystawki.
+                    </p>
+
+                    <!-- Godziny otwarcia -->
+                    <div class="p-6 rounded-2xl bg-cream border border-stone-200 space-y-3">
+                        <div data-days="1,2,3,4,5,6" class="hours-row flex items-center justify-between text-sm rounded-lg -mx-2 px-2 py-1">
+                            <span class="text-stone-600 font-medium">Poniedziałek – Sobota</span>
+                            <span class="font-bold text-ink">11:00 – 21:00</span>
+                        </div>
+                        <div class="border-t border-stone-200/70"></div>
+                        <div data-days="0" class="hours-row flex items-center justify-between text-sm rounded-lg -mx-2 px-2 py-1">
+                            <span class="text-stone-600 font-medium">Niedziela</span>
+                            <span class="font-bold text-ink">12:00 – 20:00</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <a href="https://www.google.com/maps/search/?api=1&query=Pho+Viet+3+Maja+20K+O%C5%82awa" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-ink hover:bg-stone-800 text-white text-sm font-semibold transition shadow-md">
+                            <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <span>Prowadź do lokalu (GPS)</span>
+                        </a>
+                        <a href="tel:+48788299666" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-spice hover:bg-spiceDark text-white text-sm font-semibold transition">
+                            <span>Zadzwoń: 788 299 666</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Osadzona mapa Google Oława -->
+                <div class="lg:col-span-7 scroll-reveal">
+                    <div class="rounded-3xl overflow-hidden border border-stone-300 shadow-lg h-[380px] sm:h-[430px] bg-stone-200 relative">
+                        <iframe
+                            title="Mapa dojazdu do Pho Viet Oława, ul. 3 Maja 20K"
+                            src="https://maps.google.com/maps?q=Pho+Viet+3+Maja+20K+O%C5%82awa&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                            width="100%"
+                            height="100%"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========================================================================= -->
+    <!--                          PODSTRONA CATERING                               -->
+    <!-- ========================================================================= -->
+    <section id="page-catering" class="hidden pt-28 pb-24 px-4 sm:px-8 bg-cream min-h-screen">
+        <div class="max-w-6xl mx-auto">
+            <button type="button" onclick="switchView('home')" class="inline-flex items-center gap-2 text-sm font-semibold text-spice hover:text-spiceDark mb-8">
+                ← Powrót na stronę główną
+            </button>
+
+            <div class="rounded-3xl overflow-hidden bg-[#0C0A09] text-cream p-8 sm:p-14 mb-12 relative min-h-[520px] flex items-end lg:items-center">
+                <img src="img/foto-catering.webp" alt="Stół cateringowy Pho Viet: sajgonki, pierożki Hakao, krewetki w tempurze, curry i Pad Thai" class="absolute inset-0 w-full h-full object-cover object-center">
+                <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#0C0A09] via-[#0C0A09]/75 to-[#0C0A09]/10"></div>
+                <div class="max-w-2xl relative z-10 space-y-5">
+                    <span class="text-xs uppercase tracking-[0.22em] text-gold font-bold block">Catering & Przyjęcia Okolicznościowe</span>
+                    <h1 class="font-serif text-4xl sm:text-6xl font-bold text-white leading-tight">
+                        Azjatycki stół na Twoje wydarzenie w Oławie.
+                    </h1>
+                    <p class="text-stone-300 text-base leading-relaxed">
+                        Organizujesz urodziny, spotkanie firmowe lub rodzinny obiad? Przygotujemy gorące półmiski dań z woka, chrupiące sajgonki, pierożki Hakao oraz zestawy wegańskie dopasowane do liczby gości.
+                    </p>
+                    <div class="pt-2">
+                        <a href="tel:+48788299666" class="inline-flex items-center gap-2 px-7 py-4 rounded-full bg-spice hover:bg-spiceDark text-white font-semibold text-sm sm:text-base transition">
+                            <span>Zapytaj o wycenę: 788 299 666</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-7 rounded-3xl bg-white border border-stone-200 shadow-sm space-y-3">
+                    <span class="text-xs uppercase tracking-widest text-spice font-bold">Zestaw Startowy</span>
+                    <h3 class="font-serif text-2xl font-bold text-ink">Półmisek Przystawek</h3>
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        Chrupiące sajgonki wietnamskie, pierożki krewetkowe Hakao na parze, krewetki w tempurze oraz domowe sosy słodko-pikantne.
+                    </p>
+                </div>
+                <div class="p-7 rounded-3xl bg-white border border-stone-200 shadow-sm space-y-3">
+                    <span class="text-xs uppercase tracking-widest text-spice font-bold">Zestaw Bankietowy</span>
+                    <h3 class="font-serif text-2xl font-bold text-ink">Gorące Dania z Woka</h3>
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        Chrupiąca kaczka po tajsku, kurczak w zielonym curry, wołowina z czarnym pieprzem oraz makaron Pad Thai podawane z ryżem jaśminowym.
+                    </p>
+                </div>
+                <div class="p-7 rounded-3xl bg-white border border-stone-200 shadow-sm space-y-3">
+                    <span class="text-xs uppercase tracking-widest text-spice font-bold">Opcja Roślinna</span>
+                    <h3 class="font-serif text-2xl font-bold text-ink">Zestaw 100% Wege</h3>
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        Smażone tofu w pięciu smakach, warzywa z woka z grzybami mun, wegański Pad Thai oraz sajgonki warzywne.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-[#120F0D] text-stone-400 pt-16 pb-28 lg:pb-12 px-4 sm:px-8 border-t border-white/10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-10">
+            <div class="md:col-span-5 flex items-center gap-5">
+                <span class="w-20 h-20 rounded-full bg-cream flex items-center justify-center ring-2 ring-spice/70 shrink-0">
+                    <img src="img/logo-miska.png" alt="" class="w-[72%] h-auto" loading="lazy">
+                </span>
+                <div>
+                    <img src="img/logo-napis.png" alt="Phở Việt" class="h-10 w-auto" loading="lazy">
+                    <p class="text-sm text-stone-400 mt-2">Kuchnia wietnamska i tajska w Oławie</p>
+                </div>
+            </div>
+            <div class="md:col-span-4 text-sm space-y-1.5">
+                <span class="text-xs uppercase tracking-[0.2em] text-gold font-bold block mb-3">Adres i kontakt</span>
+                <p>ul. 3 Maja 20K, 55-200 Oława</p>
+                <a href="tel:+48788299666" class="block text-stone-200 hover:text-gold transition">Tel. 788 299 666</a>
+                <p>Pon–Sob 11:00–21:00 • Niedz 12:00–20:00</p>
+            </div>
+            <div class="md:col-span-3 text-sm">
+                <span class="text-xs uppercase tracking-[0.2em] text-gold font-bold block mb-3">Na skróty</span>
+                <ul class="space-y-1.5">
+                    <li><a href="#menu" onclick="switchView('home')" class="text-stone-300 hover:text-gold transition">Karta dań</a></li>
+                    <li><button type="button" onclick="switchView('catering')" class="text-stone-300 hover:text-gold transition">Catering</button></li>
+                    <li><a href="https://www.pyszne.pl/menu/pho-viet-3-maja-olawa" target="_blank" rel="noopener noreferrer" class="text-stone-300 hover:text-gold transition">Pyszne.pl</a> • <a href="https://www.ubereats.com/pl/store/pho-viet/JtX3udVYVbqqTRf5SZ7hhw" target="_blank" rel="noopener noreferrer" class="text-stone-300 hover:text-gold transition">Uber Eats</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-10 pt-6 border-t border-white/10 text-xs text-stone-500 flex flex-col sm:flex-row justify-between gap-2">
+            <span>© <span id="year">2026</span> Phở Việt Oława</span>
+            <span>Zdjęcia dań mają charakter poglądowy</span>
+        </div>
+    </footer>
+
+    <!-- Mobilny pasek akcji -->
+    <div class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[#120F0D]/95 backdrop-blur-md border-t border-white/10 px-4 py-3 grid grid-cols-2 gap-3" style="padding-bottom: max(0.75rem, env(safe-area-inset-bottom));">
+        <a href="tel:+48788299666" class="flex items-center justify-center gap-2 py-3 rounded-full bg-spice text-white text-sm font-semibold shadow-lg shadow-spice/30">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            Zadzwoń
+        </a>
+        <a href="#dostawa" onclick="switchView('home')" class="flex items-center justify-center gap-2 py-3 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold">
+            Zamów z dostawą
+        </a>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        // Kompletna, 60-pozycyjna karta dań Pho Viet Oława z poprawnym podziałem kategorii
+        const MENU_ITEMS = [
+            // Zupy & Przystawki (1-11) — krewetki w tempurze (nr 12) są w kategorii Kaczka, Ryba & Morze
+            { id: 1, code: '01', category: 'zupy', tags: ['bestseller'], name: 'Zupa PHO BO z makaronem ryżowym i wołowiną (mała / duża)', desc: 'Tradycyjny bulion wołowy gotowany 8h z makaronem ryżowym, plastrami wołowiny, kolendrą i limonką. Mała: 20 zł | Duża: 29 zł.', priceLabel: '20 / 29 zł', badge: 'Klasyk Hanoi' },
+            { id: 2, code: '02', category: 'zupy', tags: ['bestseller'], name: 'Zupa PHO GA z makaronem ryżowym i kurczakiem (mała / duża)', desc: 'Aromatyczny bulion drobiowy z soczystym kurczakiem, makaronem ryżowym i świeżymi ziołami. Mała: 19 zł | Duża: 27 zł.', priceLabel: '19 / 27 zł', badge: 'Polecane' },
+            { id: 3, code: '03', category: 'zupy', tags: [], name: 'Zupa PHO TOM z makaronem ryżowym i krewetkami (mała / duża)', desc: 'Klarowny bulion z krewetkami królewskimi, makaronem ryżowym, kiełkami i kolendrą. Mała: 26 zł | Duża: 39 zł.', priceLabel: '26 / 39 zł', badge: 'Zupa Pho' },
+            { id: 4, code: '04', category: 'zupy', tags: [], name: 'Zupa MI BO — makaron chiński z wołowiną (mała / duża)', desc: 'Aromatyczny wywar z makaronem chińskim (nitki), wołowiną i warzywami. Mała: 20 zł | Duża: 29 zł.', priceLabel: '20 / 29 zł', badge: 'Tradycyjna' },
+            { id: 5, code: '05', category: 'zupy', tags: [], name: 'Zupa MI GA — makaron chiński z kurczakiem (mała / duża)', desc: 'Rozgrzewający bulion z makaronem chińskim (nitki), kurczakiem i zieleniną. Mała: 19 zł | Duża: 26 zł.', priceLabel: '19 / 26 zł', badge: 'Klasyczna' },
+            { id: 6, code: '06', category: 'zupy', tags: [], name: 'Zupa MIEN GA / MIEN LON — z makaronem sojowym (mała / duża)', desc: 'Zupa z makaronem sojowym z kurczakiem (19 / 26 zł) lub wieprzowiną (20 / 28 zł).', priceLabel: '19–28 zł', badge: 'Wietnamska' },
+            { id: 7, code: '07', category: 'zupy', tags: ['spicy', 'bestseller'], name: 'Zupa Tajska TOM YUM z krewetkami lub kurczakiem', desc: 'Kwaśno-pikantna zupa z trawą cytrynową, liśćmi limonki kaffir i mleczkiem kokosowym.', priceLabel: '29 zł', badge: 'Pikantna' },
+            { id: 8, code: '08', category: 'zupy', tags: [], name: 'Zupa WON-TON / z pierożkami krewetkowymi HAKAO', desc: 'Klarowny bulion z domowymi pierożkami mięsnymi Won-Ton lub krewetkowymi Hakao i warzywami.', priceLabel: '19 zł', badge: 'Domowe pierożki' },
+            { id: 9, code: '09', category: 'zupy', tags: ['spicy'], name: 'Zupa po pekińsku / Zupa rybna', desc: 'Gęsta, lekko pikantna zupa po pekińsku z bambusem i grzybami mun lub aromatyczna zupa rybna.', priceLabel: '17 / 19 zł', badge: 'Rozgrzewająca' },
+            { id: 10, code: '10', category: 'zupy', tags: ['bestseller'], name: 'Sajgonki Wietnamskie (3 szt.) + surówka (+ ryż 22 zł)', desc: 'Chrupiące roladki z mięsem wieprzowym, grzybami mun i makaronem sojowym podawane z surówką.', priceLabel: '20 / 22 zł', badge: 'Przystawka' },
+            { id: 11, code: '11', category: 'zupy', tags: [], name: 'Pierożki HAKAO na parze z krewetkami (6 szt.)', desc: 'Delikatne pierożki z krewetkami gotowane na parze w bambusowym koszyku z sosem sojowym.', priceLabel: '24 zł', badge: 'Przystawka' },
+
+            // Kurczak (13-24)
+            { id: 13, code: '13', category: 'kurczak', tags: ['bestseller'], name: 'Kurczak chrupiący z ryżem i surówką', desc: 'Złociste kawałki piersi z kurczaka w chrupiącej panierce podawane z ryżem jaśminowym, surówką i sosem.', priceLabel: '29 zł', badge: 'Bestseller' },
+            { id: 14, code: '14', category: 'kurczak', tags: [], name: 'Kurczak w pięciu smakach z warzywami', desc: 'Aromatyczny kurczak smażony w woku z przyprawą pięciu smaków, warzywami, ryżem i surówką.', priceLabel: '28 zł', badge: 'Aromatyczne' },
+            { id: 15, code: '15', category: 'kurczak', tags: ['spicy'], name: 'Kurczak GONG BAO na ostro z orzeszkami', desc: 'Klasyczne danie z woka z kurczakiem, warzywami, chili i prażonymi orzeszkami ziemnymi.', priceLabel: '28 zł', badge: 'Pikantne' },
+            { id: 16, code: '16', category: 'kurczak', tags: [], name: 'Kurczak w żółtym lub czerwonym curry', desc: 'Soczysty kurczak duszony w kremowym mleczku kokosowym z pastą curry, warzywami i ryżem.', priceLabel: '30 zł', badge: 'Tajskie Curry' },
+            { id: 17, code: '17', category: 'kurczak', tags: ['spicy'], name: 'Kurczak w zielonym curry z bambusem', desc: 'Wyraziste zielone curry na mleczku kokosowym z pędami bambusa, cukinią i bazylią tajską.', priceLabel: '30 zł', badge: 'Pikantne' },
+            { id: 18, code: '18', category: 'kurczak', tags: ['bestseller'], name: 'Kurczak TERIYAKI z sezamem', desc: 'Delikatny kurczak w błyszczącej glazurze teriyaki posypany prażonym sezamem z ryżem i surówką.', priceLabel: '29 zł', badge: 'Słodko-słone' },
+            { id: 19, code: '19', category: 'kurczak', tags: [], name: 'Kurczak słodko-kwaśny z ananasem', desc: 'Kawałki kurczaka w sosie słodko-kwaśnym z ananasem, papryką i ryżem jaśminowym.', priceLabel: '28 zł', badge: 'Łagodne' },
+            { id: 20, code: '20', category: 'kurczak', tags: ['spicy'], name: 'Kurczak po tajsku z trawą cytrynową i chili', desc: 'Smażony na dużym ogniu z trawą cytrynową, czosnkiem, chili i świeżymi warzywami.', priceLabel: '29 zł', badge: 'Tajski Wok' },
+            { id: 21, code: '21', category: 'kurczak', tags: [], name: 'Kurczak z grzybami mun i pędami bambusa', desc: 'Tradycyjne połączenie kurczaka, chrupiących grzybów mun i bambusa w sosie sojowo-ostrygowym.', priceLabel: '28 zł', badge: 'Klasyk' },
+            { id: 22, code: '22', category: 'kurczak', tags: [], name: 'Kurczak z orzechami nerkowca', desc: 'Smażony z warzywami i chrupiącymi orzechami nerkowca w aromatycznym sosie z woka.', priceLabel: '31 zł', badge: 'Polecane' },
+            { id: 23, code: '23', category: 'kurczak', tags: [], name: 'Kurczak pieczony po chińsku z ryżem', desc: 'Soczyste udko kurczaka pieczone w marynacie korzennej z ryżem jaśminowym i surówką.', priceLabel: '29 zł', badge: 'Pieczeń' },
+            { id: 24, code: '24', category: 'kurczak', tags: [], name: 'Skrzydełka po wietnamsku (6 szt.) z ryżem', desc: 'Karmelizowane skrzydełka w marynacie czosnkowo-miodowej z sosem rybnym i ryżem.', priceLabel: '28 zł', badge: 'Specjał' },
+
+            // Kaczka, Ryba & Krewetki (25-33)
+            { id: 25, code: '25', category: 'kaczka', tags: ['bestseller'], name: 'Chrupiąca kaczka po tajsku z ryżem', desc: 'Złocista pierś z kaczki o chrupiącej skórce podawana na warzywach z woka z ryżem i surówką.', priceLabel: '42 zł', badge: 'Specjał Szefa' },
+            { id: 26, code: '26', category: 'kaczka', tags: [], name: 'Kaczka w pięciu smakach z warzywami', desc: 'Chrupiąca kaczka w aromatycznym sosie pięciu smaków z warzywami, ryżem jaśminowym i surówką.', priceLabel: '41 zł', badge: 'Polecane' },
+            { id: 27, code: '27', category: 'kaczka', tags: ['spicy'], name: 'Kaczka w czerwonym curry z mleczkiem kokosowym', desc: 'Plastry chrupiącej kaczki w kremowym tajskim czerwonym curry z ananasem i bazylią.', priceLabel: '43 zł', badge: 'Tajskie Curry' },
+            { id: 28, code: '28', category: 'kaczka', tags: [], name: 'Kaczka TERIYAKI z sezamem i ryżem', desc: 'Kaczka pieczona na chrupko polana sosem teriyaki z prażonym sezamem i surówką.', priceLabel: '42 zł', badge: 'Wykwintne' },
+            { id: 29, code: '29', category: 'kaczka', tags: ['bestseller'], name: 'Krewetki TIGER z woka z warzywami i czosnkiem', desc: 'Duże krewetki królewskie smażone z czosnkiem, warzywami, ryżem jaśminowym i surówką.', priceLabel: '39 zł', badge: 'Owoce morza' },
+            { id: 30, code: '30', category: 'kaczka', tags: ['spicy'], name: 'Krewetki po tajsku na ostro z trawą cytrynową', desc: 'Krewetki królewskie smażone z chili, trawą cytrynową i świeżymi ziołami.', priceLabel: '39 zł', badge: 'Pikantne' },
+            { id: 31, code: '31', category: 'kaczka', tags: [], name: 'Krewetki w czerwonym lub żółtym curry', desc: 'Krewetki królewskie w aksamitnym sosie kokosowym curry z warzywami i ryżem.', priceLabel: '40 zł', badge: 'Curry' },
+            { id: 12, code: '12', category: 'kaczka', tags: [], name: 'Krewetki w tempurze (6 szt.)', desc: 'Złociste krewetki królewskie w chrupiącej panierce podawane z sosem słodkie chili.', priceLabel: '29 zł', badge: 'Owoce morza' },
+            { id: 32, code: '32', category: 'kaczka', tags: [], name: 'Ryba chrupiąca w panierce z ryżem i surówką', desc: 'Złocisty filet rybny smażony na chrupko podawany z ryżem jaśminowym, surówką i sosem.', priceLabel: '31 zł', badge: 'Chrupiąca' },
+            { id: 33, code: '33', category: 'kaczka', tags: [], name: 'Ryba słodko-kwaśna lub w pięciu smakach', desc: 'Filet rybny w aromatycznym sosie z warzywami, ryżem jaśminowym i świeżą surówką.', priceLabel: '32 zł', badge: 'Klasyk' },
+
+            // Wołowina & Wieprzowina (34-41)
+            { id: 34, code: '34', category: 'wolowina', tags: ['bestseller'], name: 'Wołowina LUK-LAK smażona z czosnkiem i cebulą', desc: 'Wietnamski specjał: soczyste kostki wołowiny smażone na żywym ogniu z czosnkiem, ryżem i surówką.', priceLabel: '36 zł', badge: 'Specjał Wietnamu' },
+            { id: 35, code: '35', category: 'wolowina', tags: ['spicy'], name: 'Wołowina z czarnym pieprzem i warzywami', desc: 'Plastry wołowiny w wyrazistym sosie z grubo mielonego czarnego pieprzu z ryżem i surówką.', priceLabel: '35 zł', badge: 'Wyraziste' },
+            { id: 36, code: '36', category: 'wolowina', tags: ['spicy'], name: 'Wołowina po tajsku na ostro z bazylią', desc: 'Smażona w woku z chili, czosnkiem, pędami bambusa i tajską bazylią.', priceLabel: '35 zł', badge: 'Pikantne' },
+            { id: 37, code: '37', category: 'wolowina', tags: [], name: 'Wołowina z grzybami mun i bambusem', desc: 'Klasyczna wołowina z woka z chrupiącymi grzybami mun, bambusem i ryżem jaśminowym.', priceLabel: '34 zł', badge: 'Klasyczna' },
+            { id: 38, code: '38', category: 'wolowina', tags: [], name: 'Wołowina w pięciu smakach lub curry', desc: 'Delikatna wołowina w wybranym sosie z warzywami, ryżem jaśminowym i surówką.', priceLabel: '35 zł', badge: 'Aromatyczne' },
+            { id: 39, code: '39', category: 'wolowina', tags: [], name: 'Wieprzowina w pięciu smakach z warzywami', desc: 'Soczysta wieprzowina z woka w sosie pięciu smaków podawana z ryżem i surówką.', priceLabel: '29 zł', badge: 'Klasyk' },
+            { id: 40, code: '40', category: 'wolowina', tags: ['spicy'], name: 'Wieprzowina po syczuańsku na ostro', desc: 'Wieprzowina smażona na ostro z warzywami, czosnkiem, chili i ryżem jaśminowym.', priceLabel: '29 zł', badge: 'Pikantne' },
+            { id: 41, code: '41', category: 'wolowina', tags: [], name: 'Wieprzowina z grzybami mun i bambusem', desc: 'Smażona w woku z grzybami mun, pędami bambusa, ryżem i świeżą surówką.', priceLabel: '29 zł', badge: 'Tradycyjne' },
+
+            // Makarony, Ryż & Dania Wietnamskie (42-50)
+            { id: 42, code: '42', category: 'makarony', tags: ['bestseller'], name: 'PAD THAI z kurczakiem, wołowiną lub krewetkami', desc: 'Smażony makaron ryżowy w sosie tamaryndowym z jajkiem, kiełkami, limonką i orzeszkami. Kurczak: 31 zł | Wołowina: 35 zł | Krewetki: 39 zł.', priceLabel: '31–39 zł', badge: 'Bestseller' },
+            { id: 43, code: '43', category: 'makarony', tags: ['bestseller'], name: 'BUN CHA — grillowana wieprzowina z makaronem Bun', desc: 'Autentyczne danie z Hanoi: grillowany boczek i klopsiki wieprzowe z makaronem ryżowym, ziołami i sosem Nuoc Cham.', priceLabel: '34 zł', badge: 'Klasyk Hanoi' },
+            { id: 44, code: '44', category: 'makarony', tags: ['bestseller'], name: 'BUN BO NAM BO — wołowina z makaronem ryżowym i ziołami', desc: 'Smażona wołowina na makaronie ryżowym ze świeżymi ziołami, kiełkami, prażoną cebulką i orzeszkami.', priceLabel: '35 zł', badge: 'Hit Wietnamu' },
+            { id: 45, code: '45', category: 'makarony', tags: [], name: 'BUN NEM — makaron ryżowy z chrupiącymi sajgonkami', desc: 'Lekka miska z makaronem ryżowym, chrupiącymi sajgonkami, świeżą sałatą, kolendrą i sosem wietnamskim.', priceLabel: '31 zł', badge: 'Świeże' },
+            { id: 46, code: '46', category: 'makarony', tags: [], name: 'Makaron UDON smażony w woku (kurczak / wołowina / krewetki)', desc: 'Gruby, sprężysty makaron pszenny Udon smażony z warzywami w sosie teriyaki-sojowym (31 / 35 / 39 zł).', priceLabel: '31–39 zł', badge: 'Porcja 450g' },
+            { id: 47, code: '47', category: 'makarony', tags: [], name: 'Makaron chiński smażony (kurczak / wołowina / krewetki)', desc: 'Cienki makaron chiński z woka z chrupiącymi warzywami i wybranym dodatkiem (28 / 33 / 37 zł).', priceLabel: '28–37 zł', badge: 'Klasyk Woka' },
+            { id: 48, code: '48', category: 'makarony', tags: [], name: 'Makaron sojowy smażony (kurczak / wołowina / krewetki)', desc: 'Przezroczysty makaron z fasoli mung smażony z warzywami, grzybami mun i sosem sojowym (29 / 34 / 38 zł).', priceLabel: '29–38 zł', badge: 'Bezglutenowy makaron' },
+            { id: 49, code: '49', category: 'makarony', tags: [], name: 'Ryż smażony z kurczakiem, wołowiną lub krewetkami', desc: 'Aromatyczny ryż jaśminowy smażony w woku z jajkiem, warzywami i wybranym dodatkiem (28 / 33 / 37 zł).', priceLabel: '28–37 zł', badge: 'Syte danie' },
+            { id: 50, code: '50', category: 'makarony', tags: [], name: 'Ryż smażony z chrupiącym kurczakiem lub kaczką', desc: 'Ryż smażony z warzywami podawany z chrupiącym kurczakiem (32 zł) lub chrupiącą kaczką (43 zł).', priceLabel: '32 / 43 zł', badge: 'Polecane' },
+
+            // Wege, Dla Dzieci & Napoje (51-60)
+            { id: 51, code: '51', category: 'wege', tags: ['vegan', 'bestseller'], name: 'Zupa wegańska PHO CHAY z tofu i grzybami (mała / duża)', desc: 'Aromatyczny bulion warzywno-korzenny z makaronem ryżowym, smażonym tofu, grzybami i kolendrą (19 / 26 zł).', priceLabel: '19 / 26 zł', badge: '100% Vegan' },
+            { id: 52, code: '52', category: 'wege', tags: ['vegan'], name: 'Zupa z warzywami / z pierożkami warzywnymi HAKAO', desc: 'Klarowny wywar warzywny ze świeżymi warzywami (17 zł) lub pierożkami warzywnymi Hakao (19 zł).', priceLabel: '17 / 19 zł', badge: '100% Vegan' },
+            { id: 53, code: '53', category: 'wege', tags: ['vegan', 'bestseller'], name: 'Tofu w pięciu smakach lub słodko-kwaśne z warzywami', desc: 'Złociste kostki tofu smażone z warzywami w aromatycznym sosie, podawane z ryżem i surówką.', priceLabel: '27 zł', badge: '100% Vegan' },
+            { id: 54, code: '54', category: 'wege', tags: ['vegan'], name: 'Tofu w żółtym lub czerwonym curry z mleczkiem kokosowym', desc: 'Smażone tofu duszone w kremowym curry kokosowym z warzywami, podawane z ryżem jaśminowym.', priceLabel: '29 zł', badge: '100% Vegan' },
+            { id: 55, code: '55', category: 'wege', tags: ['vegan'], name: 'Warzywa z woka z grzybami mun i bambusem + ryż', desc: 'Świeże, chrupiące warzywa smażone na dużym ogniu z grzybami mun, ryżem jaśminowym i surówką.', priceLabel: '25 zł', badge: '100% Vegan' },
+            { id: 56, code: '56', category: 'wege', tags: ['vegan'], name: 'Wegański PAD THAI lub UDON z tofu i warzywami', desc: 'Smażony makaron ryżowy Pad Thai (29 zł) lub pszenny Udon (29 zł) ze smażonym tofu i warzywami.', priceLabel: '29 zł', badge: '100% Vegan' },
+            { id: 57, code: '57', category: 'wege', tags: [], name: 'Zestaw dla Dzieci: Chrupiące stripsy z kurczaka + frytki / ryż', desc: 'Łagodne, złociste polędwiczki z kurczaka podawane z frytkami lub ryżem jaśminowym i surówką.', priceLabel: '23 zł', badge: 'Dla Dzieci' },
+            { id: 58, code: '58', category: 'wege', tags: [], name: 'Dodatki: Ryż jaśminowy / Frytki / Makaron / Surówka', desc: 'Porcja ryżu jaśminowego (7 zł), frytek (9 zł), makaronu smażonego (10 zł) lub świeżej surówki (7 zł).', priceLabel: '7–10 zł', badge: 'Dodatki' },
+            { id: 59, code: '59', category: 'wege', tags: [], name: 'Napoje azjatyckie: Liczi, Mango, Kokos, Aloes (330 ml)', desc: 'Orzeźwiające egzotyczne napoje w puszce lub butelce prosto z Azji.', priceLabel: '9 zł', badge: 'Napoje' },
+            { id: 60, code: '60', category: 'wege', tags: [], name: 'Napoje klasyczne: Coca-Cola, Fanta, Sprite, Woda, Herbata jaśminowa', desc: 'Zimne napoje gazowane 0,33l/0,5l (8–9 zł), woda mineralna (6 zł) oraz gorąca zielona herbata jaśminowa (9 zł).', priceLabel: '6–9 zł', badge: 'Napoje' }
+        ];
+
+        let activeCategory = 'all';
+        let activeTag = 'all';
+        let isMenuExpanded = false;
+        const INITIAL_MENU_LIMIT = 18;
+        const CATEGORY_NAMES = { zupy: 'Zupy & Przystawki', kurczak: 'Kurczak', kaczka: 'Kaczka, Ryba & Owoce morza', wolowina: 'Wołowina & Wieprzowina', makarony: 'Makarony & Ryż', wege: 'Wege, Dla dzieci & Napoje' };
+        let dropdownCloseTimer = null;
+
+        // Zarządzanie dropdownami w Navbarze
+        function openDropdown(id) {
+            clearTimeout(dropdownCloseTimer);
+            document.querySelectorAll('.nav-dropdown-wrapper').forEach(el => {
+                if (el.id !== id) el.classList.remove('is-open');
+            });
+            const target = document.getElementById(id);
+            if (target) target.classList.add('is-open');
+            syncDropdownAria();
+        }
+
+        function syncDropdownAria() {
+            document.querySelectorAll('.nav-dropdown-wrapper').forEach(el => {
+                const btn = el.querySelector('button[aria-expanded]');
+                if (btn) btn.setAttribute('aria-expanded', el.classList.contains('is-open') ? 'true' : 'false');
+            });
+        }
+
+        function scheduleCloseDropdown(id) {
+            dropdownCloseTimer = setTimeout(() => {
+                const target = document.getElementById(id);
+                if (target) target.classList.remove('is-open');
+                syncDropdownAria();
+            }, 140);
+        }
+
+        function toggleDropdown(id) {
+            const target = document.getElementById(id);
+            if (!target) return;
+            const isOpen = target.classList.contains('is-open');
+            closeAllDropdowns();
+            if (!isOpen) target.classList.add('is-open');
+            syncDropdownAria();
+        }
+
+        function closeAllDropdowns() {
+            clearTimeout(dropdownCloseTimer);
+            document.querySelectorAll('.nav-dropdown-wrapper').forEach(el => el.classList.remove('is-open'));
+            syncDropdownAria();
+            if (document.activeElement && document.activeElement.blur) {
+                document.activeElement.blur();
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-dropdown-wrapper')) {
+                closeAllDropdowns();
+            }
+        });
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const isHidden = mobileMenu.classList.toggle('hidden');
+            const btn = document.getElementById('mobile-menu-btn');
+            if (btn) btn.setAttribute('aria-expanded', isHidden ? 'false' : 'true');
+        }
+
+        // Przełączanie widoków Strona Główna / Catering
+        function switchView(view) {
+            const homePage = document.getElementById('page-home');
+            const cateringPage = document.getElementById('page-catering');
+            if (view === 'catering') {
+                homePage.classList.add('hidden');
+                cateringPage.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                cateringPage.classList.add('hidden');
+                homePage.classList.remove('hidden');
+            }
+        }
+
+        function selectCategoryAndGo(category) {
+            switchView('home');
+            closeAllDropdowns();
+            setCategory(category);
+            const menuSection = document.getElementById('menu');
+            if (menuSection) {
+                menuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Filtrowanie karty dań
+        function setCategory(cat) {
+            activeCategory = cat;
+            isMenuExpanded = false;
+            document.querySelectorAll('.cat-tab-btn').forEach(btn => {
+                const isSelected = btn.getAttribute('data-cat') === cat;
+                if (isSelected) {
+                    btn.className = 'cat-tab-btn active-cat shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-spice text-white border-spice shadow-md';
+                    const sub = btn.querySelector('span:last-child');
+                    if (sub) sub.className = 'text-xs opacity-85 block mt-1';
+                } else {
+                    btn.className = 'cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80';
+                    const sub = btn.querySelector('span:last-child');
+                    if (sub) sub.className = 'text-xs text-stone-500 block mt-1';
+                }
+            });
+            renderMenu();
+        }
+
+        function setTagFilter(tag) {
+            activeTag = tag;
+            isMenuExpanded = false;
+            document.querySelectorAll('.tag-filter-btn').forEach(btn => {
+                const isSelected = btn.getAttribute('data-tag') === tag;
+                btn.className = isSelected
+                    ? 'tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-ink text-white transition'
+                    : 'tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-white text-ink hover:bg-stone-100 border border-stone-200 transition';
+            });
+            renderMenu();
+        }
+
+        function toggleMenuExpand() {
+            isMenuExpanded = !isMenuExpanded;
+            renderMenu();
+            if (!isMenuExpanded) {
+                const menuSection = document.getElementById('menu');
+                if (menuSection) menuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function resetMenuFilters() {
+            const searchInput = document.getElementById('menu-search');
+            if (searchInput) searchInput.value = '';
+            isMenuExpanded = false;
+            setTagFilter('all');
+            setCategory('all');
+        }
+
+        function renderMenu() {
+            const grid = document.getElementById('menu-grid');
+            const emptyState = document.getElementById('menu-empty');
+            const expandBar = document.getElementById('menu-expand-bar');
+            const expandLabel = document.getElementById('menu-expand-label');
+            const expandIcon = document.getElementById('menu-expand-icon');
+            const query = (document.getElementById('menu-search')?.value || '').trim().toLowerCase();
+
+            const filtered = MENU_ITEMS.filter(item => {
+                const matchCat = activeCategory === 'all' || item.category === activeCategory;
+                const matchTag = activeTag === 'all' || (item.tags && item.tags.includes(activeTag));
+                const matchQuery = !query || item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query) || item.code.includes(query);
+                return matchCat && matchTag && matchQuery;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                if (expandBar) expandBar.classList.add('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            // Jeśli użytkownik wpisuje frazę w wyszukiwarce lub lista ma <= 9 dań, pokazujemy wszystkie dopasowane
+            const shouldLimit = !query && filtered.length > INITIAL_MENU_LIMIT;
+            const visibleItems = (shouldLimit && !isMenuExpanded)
+                ? filtered.slice(0, INITIAL_MENU_LIMIT)
+                : filtered;
+
+            if (expandBar && expandLabel && expandIcon) {
+                if (shouldLimit) {
+                    expandBar.classList.remove('hidden');
+                    const hiddenCount = filtered.length - INITIAL_MENU_LIMIT;
+                    expandLabel.textContent = isMenuExpanded
+                        ? 'Zwiń listę dań'
+                        : `Pokaż więcej dań (+${hiddenCount} pozycji)`;
+                    expandIcon.style.transform = isMenuExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+                } else {
+                    expandBar.classList.add('hidden');
+                }
+            }
+
+            let lastCat = null;
+            grid.innerHTML = visibleItems.map(item => {
+                const header = (activeCategory === 'all' && !query && item.category !== lastCat)
+                    ? `<h3 class="md:col-span-2 font-serif text-2xl sm:text-3xl font-bold text-ink pt-6 first:pt-0 pb-1 border-b-2 border-spice/70">${CATEGORY_NAMES[item.category]}</h3>`
+                    : '';
+                lastCat = item.category;
+                const chips = [
+                    item.tags.includes('bestseller') ? '<span class="px-2 py-0.5 rounded-md bg-gold/15 text-[#8a6418] text-[11px] font-semibold">Polecane</span>' : '',
+                    item.tags.includes('spicy') ? '<span class="px-2 py-0.5 rounded-md bg-spice/10 text-spice text-[11px] font-semibold">Pikantne</span>' : '',
+                    item.tags.includes('vegan') ? '<span class="px-2 py-0.5 rounded-md bg-herb/10 text-herb text-[11px] font-semibold">Wegańskie</span>' : ''
+                ].join('');
+                return header + `
+                <article class="py-4 border-b border-stone-200/80">
+                    <div class="flex items-baseline gap-3">
+                        <span class="font-serif text-base font-bold text-spice shrink-0 w-7">${item.code}</span>
+                        <h4 class="font-serif text-lg sm:text-xl font-bold text-ink leading-snug">${item.name}</h4>
+                        <span class="flex-1 border-b border-dotted border-stone-300 translate-y-[-4px] min-w-[1.5rem]"></span>
+                        <span class="font-serif text-lg sm:text-xl font-bold text-spice whitespace-nowrap">${item.priceLabel}</span>
+                    </div>
+                    <p class="text-sm text-stone-600 mt-1 pl-10 leading-relaxed">${item.desc}</p>
+                    ${chips ? `<div class="flex flex-wrap gap-1.5 mt-2 pl-10">${chips}</div>` : ''}
+                </article>`;
+            }).join('');
+        }
+
+        // FAQ Accordion
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            const isOpen = item.classList.contains('is-open');
+            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('is-open'));
+            if (!isOpen) item.classList.add('is-open');
+        }
+
+        // Status otwarcia na żywo (Pon-Sob 11:00-21:00, Niedz 12:00-20:00)
+        function updateLiveOpenStatus() {
+            const now = new Date();
+            const day = now.getDay(); // 0 = Niedziela
+            const hour = now.getHours() + now.getMinutes() / 60;
+            const dot = document.getElementById('live-status-dot');
+            const text = document.getElementById('live-status-text');
+            if (!dot || !text) return;
+
+            const hoursFor = d => d === 0 ? [12, 20] : [11, 21];
+            const [openH, closeH] = hoursFor(day);
+            const isOpen = hour >= openH && hour < closeH;
+            let scheduleInfo;
+            if (isOpen) {
+                scheduleInfo = `Otwarte teraz do ${closeH}:00`;
+            } else if (hour < openH) {
+                scheduleInfo = `Zamknięte • Otwieramy dziś o ${openH}:00`;
+            } else {
+                const [nextOpen] = hoursFor((day + 1) % 7);
+                scheduleInfo = `Zamknięte • Otwieramy jutro o ${nextOpen}:00`;
+            }
+
+            dot.className = isOpen
+                ? 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse'
+                : 'w-2.5 h-2.5 rounded-full bg-amber-400';
+            text.textContent = `${scheduleInfo} • ul. 3 Maja 20K, Oława`;
+            document.querySelectorAll('.hours-row').forEach(row => {
+                const today = row.dataset.days.split(',').map(Number).includes(day);
+                row.classList.toggle('bg-spice/10', today);
+                if (today && !row.querySelector('.today-tag')) {
+                    row.firstElementChild.insertAdjacentHTML('beforeend', ' <span class="today-tag text-[11px] font-bold text-spice uppercase tracking-wider">• dziś</span>');
+                }
+            });
+            const y = document.getElementById('year');
+            if (y) y.textContent = now.getFullYear();
+        }
+
+        // Animacje podczas scrollowania (Parallax + Reveal)
+        function initScrollEffects() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+            const heroImg = document.getElementById('hero-parallax-img');
+            window.addEventListener('scroll', () => {
+                if (!heroImg) return;
+                const y = window.scrollY;
+                if (y < 900) {
+                    heroImg.style.transform = `translateY(${y * 0.18}px) scale(${1.05 + y * 0.00012})`;
+                }
+            }, { passive: true });
+        }
+
+        window.onload = function () {
+            renderMenu();
+            updateLiveOpenStatus();
+            initScrollEffects();
+        };
+    </script>
+</body>
+</html>
