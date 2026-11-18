@@ -130,7 +130,19 @@
         }
         .scroll-reveal.is-visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: none;
+        }
+
+        /* Mobile: kafelki galerii nakładają się na siebie podczas przewijania */
+        @media (max-width: 639.98px) and (prefers-reduced-motion: no-preference) {
+            .stack-wrap { padding-bottom: 1.5rem; }
+            .stack-card {
+                position: sticky;
+                top: calc(5.75rem + var(--i) * 0.85rem);
+                transform-origin: 50% 0;
+                will-change: transform, filter;
+                box-shadow: 0 -12px 30px -14px rgba(0, 0, 0, .55);
+            }
         }
 
         .scroll-parallax-img {
@@ -639,8 +651,8 @@
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 scroll-reveal">
-                    <div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
+                <div class="stack-wrap grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 scroll-reveal">
+                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]" style="--i:0">
                         <img src="img/foto-tom-yum.webp" alt="Tajska zupa Tom Yum z krewetkami" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -648,7 +660,7 @@
                             <h3 class="font-serif text-xl font-bold">Tom Yum z krewetkami</h3>
                         </div>
                     </div>
-                    <div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
+                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]" style="--i:1">
                         <img src="img/foto-sajgonki.webp" alt="Chrupiące sajgonki wietnamskie z sosem nuoc cham" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -656,7 +668,7 @@
                             <h3 class="font-serif text-xl font-bold">Sajgonki Wietnamskie</h3>
                         </div>
                     </div>
-                    <div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
+                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]" style="--i:2">
                         <img src="img/foto-curry.webp" alt="Kurczak w czerwonym curry z ryżem jaśminowym" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -664,7 +676,7 @@
                             <h3 class="font-serif text-xl font-bold">Kurczak w czerwonym curry</h3>
                         </div>
                     </div>
-                    <div class="group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]">
+                    <div class="stack-card group relative rounded-2xl overflow-hidden aspect-[4/5] shadow-md bg-[#0C0A09]" style="--i:3">
                         <img src="img/foto-wege.webp" alt="Wegański Pad Thai z tofu" loading="lazy" class="w-full h-full object-cover object-[60%_center] group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4 text-white">
@@ -1345,10 +1357,35 @@
             }, { passive: true });
         }
 
+        // Efekt stosu kart (galeria, mobile)
+        function initStackCards() {
+            const cards = [...document.querySelectorAll('.stack-card')];
+            if (!cards.length) return;
+            const mq = window.matchMedia('(max-width: 639.98px) and (prefers-reduced-motion: no-preference)');
+            let ticking = false;
+            const update = () => {
+                ticking = false;
+                cards.forEach((card, i) => {
+                    const next = cards[i + 1];
+                    if (!mq.matches || !next) { card.style.transform = ''; card.style.filter = ''; return; }
+                    const top = card.getBoundingClientRect().top;
+                    const h = card.offsetHeight;
+                    const p = Math.min(Math.max((top + h - next.getBoundingClientRect().top) / h, 0), 1);
+                    card.style.transform = `scale(${1 - 0.08 * p})`;
+                    card.style.filter = `brightness(${1 - 0.5 * p})`;
+                });
+            };
+            const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll);
+            update();
+        }
+
         window.onload = function () {
             renderMenu();
             updateLiveOpenStatus();
             initScrollEffects();
+            initStackCards();
         };
     </script>
 </body>
