@@ -185,13 +185,6 @@
         }
 
         /* Delikatne żarzenie ognia w Hero */
-        @keyframes emberGlow {
-            0%, 100% { opacity: 0.45; transform: scale(1); }
-            50% { opacity: 0.75; transform: scale(1.06); }
-        }
-        .ember-aura {
-            animation: emberGlow 5s ease-in-out infinite;
-        }
     </style>
 </head>
 <body class="antialiased selection:bg-spice selection:text-white">
@@ -350,22 +343,19 @@
     <main id="page-home">
 
         <!-- ================= HERO SECTION (OGNISTY WOK W PEŁNYM ŻARZE I PASJI) ================= -->
-        <section id="top" class="relative min-h-[100svh] lg:min-h-[88vh] flex items-end lg:items-center pt-[50svh] lg:pt-28 pb-14 lg:pb-20 px-4 sm:px-8 bg-[#0C0A09] text-cream overflow-hidden">
-            <!-- Tło: zdjęcie woka na cały ekran, na telefonie pod napisami; nieruchome (bez parallaxu), żeby przewijanie było płynne -->
+        <section id="top" class="relative min-h-[88vh] flex items-center pt-28 pb-20 px-4 sm:px-8 bg-[#0C0A09] text-cream overflow-hidden">
+            <!-- Tło: ognisty wok, nieruchomy, z lekkim wtopieniem pod napisy (na telefonie delikatniejszym, żeby było widać ogień) -->
             <div class="absolute inset-0 z-0 bg-[#0C0A09]">
                 <img 
                     src="img/hero-wok.webp"
                     alt="Wok w płomieniach z makaronem i warzywami — Pho Viet Oława"
                     width="1376" height="768"
-                    class="absolute top-0 left-0 w-full h-[76svh] lg:inset-y-0 lg:left-auto lg:right-0 lg:h-full lg:w-[78%] object-cover object-[62%_40%] lg:object-[63%_center]"
+                    class="absolute inset-y-0 right-0 h-full w-full lg:w-[78%] object-cover object-[70%_center]"
                     fetchpriority="high"
                 >
-                <!-- Telefon: wtopienie w tło od dołu, wok i płomienie w górnej połowie zostają jasne, tekst leży na ciemniejszym tle -->
-                <div class="hero-fade-m absolute inset-0 lg:hidden"></div>
-                <!-- Desktop: miękkie krawędzie lewa/góra/dół -->
-                <div class="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#0C0A09] via-[#0C0A09]/40 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0C0A09]/65 via-[#0C0A09]/25 lg:via-[#0C0A09]/40 to-transparent"></div>
                 <div class="hidden lg:block absolute inset-y-0 left-0 w-[40%] bg-gradient-to-r from-[#0C0A09] to-transparent"></div>
-                <div class="hidden lg:block absolute inset-0 bg-gradient-to-t from-[#0C0A09] via-transparent to-[#0C0A09]/60"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0C0A09]/85 via-transparent to-[#0C0A09]/45 lg:to-[#0C0A09]/60"></div>
                 <div class="hidden lg:block absolute inset-0 shadow-[inset_0_0_140px_40px_#0C0A09] pointer-events-none"></div>
             </div>
 
