@@ -70,7 +70,9 @@
     </script>
 
     <style>
-        html { scroll-padding-top: 6rem; }
+        /* Skala całej strony: 80% na desktopie, 90% na mniejszych ekranach (czytelność) */
+        html { font-size: 90%; scroll-padding-top: 6rem; }
+        @media (min-width: 1024px) { html { font-size: 80%; } }
         body {
             background-color: #FAF7F2;
             color: #1C1917;
@@ -137,6 +139,24 @@
             transition: transform 0.12s linear;
         }
 
+        /* Wiersze karty dań: kompaktowe, opis rozwijany */
+        .menu-row-body { display: grid; grid-template-rows: 0fr; opacity: 0;
+            transition: grid-template-rows .3s cubic-bezier(.22,1,.36,1), opacity .25s ease; }
+        .menu-row-body > div { overflow: hidden; }
+        .menu-row.is-open .menu-row-body { grid-template-rows: 1fr; opacity: 1; }
+        .menu-row.is-open .row-chev { transform: rotate(180deg); color: #C41E28; }
+        .menu-row.is-open .row-name { color: #C41E28; }
+        .cat-pill.is-active { background: #1C1917; color: #fff; }
+        .tag-filter-btn[aria-pressed="true"] { background: #1C1917; color: #fff; border-color: #1C1917; }
+        .menu-cat { scroll-margin-top: 8.5rem; }
+        @media (hover: hover) {
+            .menu-row:hover { background: rgba(242, 236, 225, .6); }
+            .menu-row:hover .row-name { color: #C41E28; }
+            .menu-row:hover .menu-row-body { grid-template-rows: 1fr; opacity: 1; transition-delay: .12s; }
+            .row-chev, .hint-touch { display: none; }
+        }
+        @media (hover: none) { .hint-hover { display: none; } }
+
         /* Płynne akordeony FAQ */
         .faq-answer-wrapper {
             display: grid;
@@ -176,12 +196,12 @@
             
             <!-- Oryginalne Logo PHỞ VIỆT Oława • Kuchnia Azjatycka -->
             <a href="#top" onclick="switchView('home'); closeAllDropdowns();" class="flex items-center gap-2.5 sm:gap-3.5 group min-w-0">
-                <span class="w-11 h-11 sm:w-[52px] sm:h-[52px] rounded-full bg-cream flex items-center justify-center shadow-lg ring-2 ring-spice/70 group-hover:scale-105 transition-transform shrink-0">
+                <span class="w-11 h-11 sm:w-[3.25rem] sm:h-[3.25rem] rounded-full bg-cream flex items-center justify-center shadow-lg ring-2 ring-spice/70 group-hover:scale-105 transition-transform shrink-0">
                     <img src="img/logo-miska.png" alt="" class="w-[72%] h-auto" width="191" height="192">
                 </span>
                 <span class="leading-none">
                     <img src="img/logo-napis.png" alt="Phở Việt" class="h-7 sm:h-9 w-auto block" width="593" height="120">
-                    <span class="text-[9px] sm:text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.2em] text-stone-300 font-semibold block mt-1.5 whitespace-nowrap">Oława • Kuchnia Azjatycka</span>
+                    <span class="text-[0.5625rem] sm:text-[0.625rem] uppercase tracking-[0.14em] sm:tracking-[0.2em] text-stone-300 font-semibold block mt-1.5 whitespace-nowrap">Oława • Kuchnia Azjatycka</span>
                 </span>
             </a>
 
@@ -203,11 +223,11 @@
                     </button>
 
                     <!-- Rozwijany panel z wyraźnie odseparowanymi kafelkami fotograficznymi -->
-                    <div class="nav-dropdown-panel absolute left-1/2 top-full pt-3 w-[680px]">
+                    <div class="nav-dropdown-panel absolute left-1/2 top-full pt-3 w-[42.5rem]">
                         <div class="bg-[#181411] border border-black rounded-2xl p-5 shadow-[0_28px_65px_-12px_rgba(0,0,0,0.75)]">
                             <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
                                 <div>
-                                    <span class="text-[11px] uppercase tracking-[0.18em] text-gold font-bold block">Menu Restauracji</span>
+                                    <span class="text-[0.6875rem] uppercase tracking-[0.18em] text-gold font-bold block">Menu Restauracji</span>
                                     <span class="text-xs text-stone-400">Wybierz kategorię, aby przejść do cennika dań</span>
                                 </div>
                                 <a href="#menu" onclick="selectCategoryAndGo('all'); closeAllDropdowns();" class="text-xs font-semibold text-gold hover:text-white transition flex items-center gap-1">
@@ -222,7 +242,7 @@
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
                                     <div class="absolute bottom-2.5 left-3 right-3">
                                         <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Zupy & Przystawki</span>
-                                        <span class="block text-[11px] text-stone-300 mt-0.5">Pho, Tom Yum, Sajgonki</span>
+                                        <span class="block text-[0.6875rem] text-stone-300 mt-0.5">Pho, Tom Yum, Sajgonki</span>
                                     </div>
                                 </button>
 
@@ -231,7 +251,7 @@
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
                                     <div class="absolute bottom-2.5 left-3 right-3">
                                         <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Dania z Kurczaka</span>
-                                        <span class="block text-[11px] text-stone-300 mt-0.5">Chrupiący, Curry, Teriyaki</span>
+                                        <span class="block text-[0.6875rem] text-stone-300 mt-0.5">Chrupiący, Curry, Teriyaki</span>
                                     </div>
                                 </button>
 
@@ -240,7 +260,7 @@
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
                                     <div class="absolute bottom-2.5 left-3 right-3">
                                         <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Kaczka & Krewetki</span>
-                                        <span class="block text-[11px] text-stone-300 mt-0.5">Po tajsku, pięć smaków</span>
+                                        <span class="block text-[0.6875rem] text-stone-300 mt-0.5">Po tajsku, pięć smaków</span>
                                     </div>
                                 </button>
 
@@ -249,7 +269,7 @@
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
                                     <div class="absolute bottom-2.5 left-3 right-3">
                                         <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Wołowina & Wieprzowina</span>
-                                        <span class="block text-[11px] text-stone-300 mt-0.5">Luk-Lak, z woka, pieprz</span>
+                                        <span class="block text-[0.6875rem] text-stone-300 mt-0.5">Luk-Lak, z woka, pieprz</span>
                                     </div>
                                 </button>
 
@@ -258,7 +278,7 @@
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
                                     <div class="absolute bottom-2.5 left-3 right-3">
                                         <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Makarony & Ryż</span>
-                                        <span class="block text-[11px] text-stone-300 mt-0.5">Pad Thai, Udon, Bun Cha</span>
+                                        <span class="block text-[0.6875rem] text-stone-300 mt-0.5">Pad Thai, Udon, Bun Cha</span>
                                     </div>
                                 </button>
 
@@ -267,7 +287,7 @@
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent"></div>
                                     <div class="absolute bottom-2.5 left-3 right-3">
                                         <span class="block text-sm font-bold text-white leading-tight group-hover:text-gold transition-colors">Wege, Dzieci & Napoje</span>
-                                        <span class="block text-[11px] text-stone-300 mt-0.5">Tofu, zestawy, napoje</span>
+                                        <span class="block text-[0.6875rem] text-stone-300 mt-0.5">Tofu, zestawy, napoje</span>
                                     </div>
                                 </button>
                             </div>
@@ -350,7 +370,7 @@
                         <span id="live-status-text" class="text-cream">Otwarte teraz • ul. 3 Maja 20K, Oława</span>
                     </div>
 
-                    <h1 class="font-serif text-4xl sm:text-6xl lg:text-[66px] font-bold leading-[1.06] tracking-tight text-white">
+                    <h1 class="font-serif text-4xl sm:text-6xl lg:text-[4.125rem] font-bold leading-[1.06] tracking-tight text-white">
                         Żar woka, aromat <span class="text-gold italic">prawdziwego Pho</span> i pasja Azji w Oławie.
                     </h1>
 
@@ -424,7 +444,7 @@
                 <div class="mb-14 scroll-reveal">
                     <div class="flex items-end justify-between gap-4 mb-5">
                         <h3 class="font-serif text-2xl sm:text-3xl font-bold text-ink">Polecane przez szefa kuchni</h3>
-                        <span class="text-[11px] text-stone-500">Zdjęcia mają charakter poglądowy</span>
+                        <span class="text-[0.6875rem] text-stone-500">Zdjęcia mają charakter poglądowy</span>
                     </div>
                     <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 overflow-x-auto sm:overflow-visible snap-x snap-mandatory scroll-px-4 sm:scroll-px-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
                     <article class="group relative rounded-3xl overflow-hidden bg-[#0C0A09] shadow-xl aspect-[3/4] shrink-0 w-[78%] sm:w-auto snap-start">
@@ -470,86 +490,44 @@
                     </div>
                 </div>
 
-                <!-- Reprezentatywne kafelki wyboru kategorii (bez emotek i bez numeracji) -->
-                <div id="category-tabs" class="flex lg:grid lg:grid-cols-7 gap-3 mb-8 overflow-x-auto lg:overflow-visible no-scrollbar snap-x scroll-px-4 lg:scroll-px-0 -mx-4 px-4 lg:mx-0 lg:px-0">
-                    <button type="button" data-cat="all" onclick="setCategory('all')" class="cat-tab-btn active-cat shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-spice text-white border-spice shadow-md">
-                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Wszystkie</span>
-                        <span class="text-xs opacity-85 block mt-1">Cała karta dań</span>
-                    </button>
-                    <button type="button" data-cat="zupy" onclick="setCategory('zupy')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
-                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Zupy & Start</span>
-                        <span class="text-xs text-stone-500 block mt-1">Pho, Tom Yum, Sajgonki</span>
-                    </button>
-                    <button type="button" data-cat="kurczak" onclick="setCategory('kurczak')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
-                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Kurczak</span>
-                        <span class="text-xs text-stone-500 block mt-1">Chrupiący, Curry, Wok</span>
-                    </button>
-                    <button type="button" data-cat="kaczka" onclick="setCategory('kaczka')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
-                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Kaczka & Morze</span>
-                        <span class="text-xs text-stone-500 block mt-1">Kaczka, Krewetki, Ryba</span>
-                    </button>
-                    <button type="button" data-cat="wolowina" onclick="setCategory('wolowina')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
-                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Wołowina</span>
-                        <span class="text-xs text-stone-500 block mt-1">Wołowina i Wieprzowina</span>
-                    </button>
-                    <button type="button" data-cat="makarony" onclick="setCategory('makarony')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
-                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Makarony & Ryż</span>
-                        <span class="text-xs text-stone-500 block mt-1">Pad Thai, Udon, Bun Cha</span>
-                    </button>
-                    <button type="button" data-cat="wege" onclick="setCategory('wege')" class="cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80">
-                        <span class="font-serif text-lg sm:text-xl font-bold block leading-tight">Wege & Napoje</span>
-                        <span class="text-xs text-stone-500 block mt-1">Tofu, Dzieci, Napoje</span>
-                    </button>
+                <!-- Pasek kategorii (sticky, scrollspy) -->
+                <div id="menu-bar" class="sticky top-20 z-30 -mx-4 px-4 sm:-mx-8 sm:px-8 py-2.5 bg-cream/95 backdrop-blur-md border-y border-stone-200/80 mb-5">
+                    <nav id="category-tabs" class="flex gap-1.5 overflow-x-auto no-scrollbar" aria-label="Kategorie karty dań">
+                        <a href="#kat-zupy" data-cat="zupy" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Zupy & Przystawki</a>
+                        <a href="#kat-kurczak" data-cat="kurczak" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Kurczak</a>
+                        <a href="#kat-kaczka" data-cat="kaczka" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Kaczka, Ryba & Owoce morza</a>
+                        <a href="#kat-wolowina" data-cat="wolowina" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Wołowina & Wieprzowina</a>
+                        <a href="#kat-makarony" data-cat="makarony" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Makarony & Ryż</a>
+                        <a href="#kat-wege" data-cat="wege" class="cat-pill shrink-0 px-4 py-2 rounded-full text-sm font-semibold text-stone-600 hover:text-ink hover:bg-sand transition whitespace-nowrap">Wege, Dzieci & Napoje</a>
+                    </nav>
                 </div>
 
-                <!-- Pasek szybkiego filtrowania i wyszukiwarka -->
-                <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 rounded-2xl bg-sand/70 border border-stone-200/80 mb-10">
+                <!-- Legenda = filtry + wyszukiwarka -->
+                <div class="flex flex-col md:flex-row md:items-center gap-3 mb-6">
                     <div class="flex flex-wrap items-center gap-2">
-                        <button type="button" data-tag="all" onclick="setTagFilter('all')" class="tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-ink text-white transition">
-                            Wszystkie dania
-                        </button>
-                        <button type="button" data-tag="bestseller" onclick="setTagFilter('bestseller')" class="tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-white text-ink hover:bg-stone-100 border border-stone-200 transition">
-                            Najczęściej wybierane
-                        </button>
-                        <button type="button" data-tag="vegan" onclick="setTagFilter('vegan')" class="tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-white text-ink hover:bg-stone-100 border border-stone-200 transition">
-                            Opcje wegańskie
-                        </button>
-                        <button type="button" data-tag="spicy" onclick="setTagFilter('spicy')" class="tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-white text-ink hover:bg-stone-100 border border-stone-200 transition">
-                            Pikantne
-                        </button>
+                        <span class="text-xs text-stone-500 mr-1">Pokaż tylko:</span>
+                        <button type="button" data-tag="bestseller" onclick="setTagFilter('bestseller')" aria-pressed="false" class="tag-filter-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-200 bg-white text-ink transition"><span class="text-gold"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></span>Polecane</button>
+                        <button type="button" data-tag="spicy" onclick="setTagFilter('spicy')" aria-pressed="false" class="tag-filter-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-200 bg-white text-ink transition"><span class="text-spice"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.6 3.2c.3-.9 1-1.6 1.9-1.9l.4 1.1c-.5.2-.9.6-1.1 1.1 1.6.6 2.6 2.1 2.6 3.9 0 5.2-5 10.8-12.7 10.8-1.3 0-1.9-1.5-.9-2.3 3.2-2.5 4.8-5.5 5.6-8.4.5-1.9 2.1-3.3 4.2-3.3z"/></svg></span>Pikantne</button>
+                        <button type="button" data-tag="vegan" onclick="setTagFilter('vegan')" aria-pressed="false" class="tag-filter-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border border-stone-200 bg-white text-ink transition"><span class="text-herb"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.5 2.5S8 1.5 4.6 7c-2 3.2-.9 6.6.3 8.2L2.6 17.5l1 1 2.3-2.3c1.6 1.2 5 2.3 8.2.3 5.5-3.4 3.4-14 3.4-14zM7 14.5c1.5-3 4-5.6 7-7.5-2.4 2.3-4.4 4.9-5.8 8z"/></svg></span>Wegańskie</button>
                     </div>
-
-                    <div class="relative w-full md:w-72">
-                        <input id="menu-search" type="text" oninput="renderMenu()" placeholder="Szukaj dania (np. Pho, Pad Thai)..."
-                               class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-stone-200 text-sm text-ink placeholder:text-stone-400 focus:outline-none focus:border-spice">
-                        <svg class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
+                    <div class="relative md:ml-auto w-full md:w-64">
+                        <input id="menu-search" type="search" oninput="renderMenu()" placeholder="Szukaj dania, np. pho, curry…" aria-label="Szukaj w karcie dań"
+                               class="w-full pl-9 pr-3 py-2 rounded-full bg-white border border-stone-200 text-sm text-ink placeholder:text-stone-400 focus:outline-none focus:border-spice focus:ring-2 focus:ring-spice/15">
+                        <svg class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
                 </div>
 
-                <!-- Siatka Kart Dań -->
-                <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 gap-x-14 bg-white rounded-3xl border border-stone-200/90 p-5 sm:p-10 shadow-sm">
-                    <!-- Renderowane dynamicznie z tablicy MENU_ITEMS -->
-                </div>
+                <p class="text-xs text-stone-400 mb-3"><span class="hint-hover">Najedź kursorem na danie, aby zobaczyć opis.</span><span class="hint-touch">Dotknij dania, aby zobaczyć opis.</span></p>
 
-                <!-- Przycisk rozwijania / zwijania pełnej karty dań -->
-                <div id="menu-expand-bar" class="mt-10 text-center">
-                    <button id="menu-expand-btn" type="button" onclick="toggleMenuExpand()"
-                            class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-ink hover:bg-spice text-white font-semibold text-sm sm:text-base shadow-lg transition-all">
-                        <span id="menu-expand-label">Pokaż całą kartę dań</span>
-                        <svg id="menu-expand-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    </button>
-                </div>
+                <!-- Lista dań -->
+                <div id="menu-grid" class="bg-white rounded-3xl border border-stone-200/90 px-4 py-6 sm:p-10 shadow-sm space-y-10"></div>
 
                 <!-- Stan pusty wyszukiwania -->
                 <div id="menu-empty" class="hidden text-center py-16 px-4 rounded-3xl bg-sand/60 border border-stone-200">
-                    <h3 class="font-serif text-2xl font-bold text-ink">Nie znaleziono dania pasującego do filtra</h3>
-                    <p class="text-stone-600 text-sm mt-2">Spróbuj wpisać inną nazwę składnika lub wyczyść aktywne filtry.</p>
+                    <h3 class="font-serif text-2xl font-bold text-ink">Nie znaleziono dania</h3>
+                    <p class="text-stone-600 text-sm mt-2">Spróbuj innej nazwy albo wyczyść filtry.</p>
                     <button type="button" onclick="resetMenuFilters()" class="mt-5 px-6 py-2.5 rounded-full bg-spice text-white text-sm font-semibold hover:bg-spiceDark transition">
-                        Pokaż wszystkie dania
+                        Pokaż całą kartę
                     </button>
                 </div>
             </div>
@@ -795,7 +773,7 @@
 
                 <!-- Osadzona mapa Google Oława -->
                 <div class="lg:col-span-7 scroll-reveal">
-                    <div class="rounded-3xl overflow-hidden border border-stone-300 shadow-lg h-[380px] sm:h-[430px] bg-stone-200 relative">
+                    <div class="rounded-3xl overflow-hidden border border-stone-300 shadow-lg h-[23.75rem] sm:h-[26.875rem] bg-stone-200 relative">
                         <iframe
                             title="Mapa dojazdu do Pho Viet Oława, ul. 3 Maja 20K"
                             src="https://maps.google.com/maps?q=Pho+Viet+3+Maja+20K+O%C5%82awa&t=&z=16&ie=UTF8&iwloc=&output=embed"
@@ -821,7 +799,7 @@
                 ← Powrót na stronę główną
             </button>
 
-            <div class="rounded-3xl overflow-hidden bg-[#0C0A09] text-cream p-8 sm:p-14 mb-12 relative min-h-[520px] flex items-end lg:items-center">
+            <div class="rounded-3xl overflow-hidden bg-[#0C0A09] text-cream p-8 sm:p-14 mb-12 relative min-h-[32.5rem] flex items-end lg:items-center">
                 <img src="img/foto-catering.webp" alt="Stół cateringowy Pho Viet: sajgonki, pierożki Hakao, krewetki w tempurze, curry i Pad Thai" class="absolute inset-0 w-full h-full object-cover object-center">
                 <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#0C0A09] via-[#0C0A09]/75 to-[#0C0A09]/10"></div>
                 <div class="max-w-2xl relative z-10 space-y-5">
@@ -915,84 +893,88 @@
         // Kompletna, 60-pozycyjna karta dań Pho Viet Oława z poprawnym podziałem kategorii
         const MENU_ITEMS = [
             // Zupy & Przystawki (1-11) — krewetki w tempurze (nr 12) są w kategorii Kaczka, Ryba & Morze
-            { id: 1, code: '01', category: 'zupy', tags: ['bestseller'], name: 'Zupa PHO BO z makaronem ryżowym i wołowiną (mała / duża)', desc: 'Tradycyjny bulion wołowy gotowany 8h z makaronem ryżowym, plastrami wołowiny, kolendrą i limonką. Mała: 20 zł | Duża: 29 zł.', priceLabel: '20 / 29 zł', badge: 'Klasyk Hanoi' },
-            { id: 2, code: '02', category: 'zupy', tags: ['bestseller'], name: 'Zupa PHO GA z makaronem ryżowym i kurczakiem (mała / duża)', desc: 'Aromatyczny bulion drobiowy z soczystym kurczakiem, makaronem ryżowym i świeżymi ziołami. Mała: 19 zł | Duża: 27 zł.', priceLabel: '19 / 27 zł', badge: 'Polecane' },
-            { id: 3, code: '03', category: 'zupy', tags: [], name: 'Zupa PHO TOM z makaronem ryżowym i krewetkami (mała / duża)', desc: 'Klarowny bulion z krewetkami królewskimi, makaronem ryżowym, kiełkami i kolendrą. Mała: 26 zł | Duża: 39 zł.', priceLabel: '26 / 39 zł', badge: 'Zupa Pho' },
-            { id: 4, code: '04', category: 'zupy', tags: [], name: 'Zupa MI BO — makaron chiński z wołowiną (mała / duża)', desc: 'Aromatyczny wywar z makaronem chińskim (nitki), wołowiną i warzywami. Mała: 20 zł | Duża: 29 zł.', priceLabel: '20 / 29 zł', badge: 'Tradycyjna' },
-            { id: 5, code: '05', category: 'zupy', tags: [], name: 'Zupa MI GA — makaron chiński z kurczakiem (mała / duża)', desc: 'Rozgrzewający bulion z makaronem chińskim (nitki), kurczakiem i zieleniną. Mała: 19 zł | Duża: 26 zł.', priceLabel: '19 / 26 zł', badge: 'Klasyczna' },
-            { id: 6, code: '06', category: 'zupy', tags: [], name: 'Zupa MIEN GA / MIEN LON — z makaronem sojowym (mała / duża)', desc: 'Zupa z makaronem sojowym z kurczakiem (19 / 26 zł) lub wieprzowiną (20 / 28 zł).', priceLabel: '19–28 zł', badge: 'Wietnamska' },
-            { id: 7, code: '07', category: 'zupy', tags: ['spicy', 'bestseller'], name: 'Zupa Tajska TOM YUM z krewetkami lub kurczakiem', desc: 'Kwaśno-pikantna zupa z trawą cytrynową, liśćmi limonki kaffir i mleczkiem kokosowym.', priceLabel: '29 zł', badge: 'Pikantna' },
-            { id: 8, code: '08', category: 'zupy', tags: [], name: 'Zupa WON-TON / z pierożkami krewetkowymi HAKAO', desc: 'Klarowny bulion z domowymi pierożkami mięsnymi Won-Ton lub krewetkowymi Hakao i warzywami.', priceLabel: '19 zł', badge: 'Domowe pierożki' },
-            { id: 9, code: '09', category: 'zupy', tags: ['spicy'], name: 'Zupa po pekińsku / Zupa rybna', desc: 'Gęsta, lekko pikantna zupa po pekińsku z bambusem i grzybami mun lub aromatyczna zupa rybna.', priceLabel: '17 / 19 zł', badge: 'Rozgrzewająca' },
-            { id: 10, code: '10', category: 'zupy', tags: ['bestseller'], name: 'Sajgonki Wietnamskie (3 szt.) + surówka (+ ryż 22 zł)', desc: 'Chrupiące roladki z mięsem wieprzowym, grzybami mun i makaronem sojowym podawane z surówką.', priceLabel: '20 / 22 zł', badge: 'Przystawka' },
-            { id: 11, code: '11', category: 'zupy', tags: [], name: 'Pierożki HAKAO na parze z krewetkami (6 szt.)', desc: 'Delikatne pierożki z krewetkami gotowane na parze w bambusowym koszyku z sosem sojowym.', priceLabel: '24 zł', badge: 'Przystawka' },
+            { id: 1, code: '01', short: 'Phở Bò z wołowiną', category: 'zupy', tags: ['bestseller'], name: 'Zupa PHO BO z makaronem ryżowym i wołowiną (mała / duża)', desc: 'Tradycyjny bulion wołowy gotowany 8h z makaronem ryżowym, plastrami wołowiny, kolendrą i limonką. Mała: 20 zł | Duża: 29 zł.', priceLabel: '20 / 29 zł', badge: 'Klasyk Hanoi' },
+            { id: 2, code: '02', short: 'Phở Gà z kurczakiem', category: 'zupy', tags: ['bestseller'], name: 'Zupa PHO GA z makaronem ryżowym i kurczakiem (mała / duża)', desc: 'Aromatyczny bulion drobiowy z soczystym kurczakiem, makaronem ryżowym i świeżymi ziołami. Mała: 19 zł | Duża: 27 zł.', priceLabel: '19 / 27 zł', badge: 'Polecane' },
+            { id: 3, code: '03', short: 'Phở Tôm z krewetkami', category: 'zupy', tags: [], name: 'Zupa PHO TOM z makaronem ryżowym i krewetkami (mała / duża)', desc: 'Klarowny bulion z krewetkami królewskimi, makaronem ryżowym, kiełkami i kolendrą. Mała: 26 zł | Duża: 39 zł.', priceLabel: '26 / 39 zł', badge: 'Zupa Pho' },
+            { id: 4, code: '04', short: 'Mì Bò — makaron chiński z wołowiną', category: 'zupy', tags: [], name: 'Zupa MI BO — makaron chiński z wołowiną (mała / duża)', desc: 'Aromatyczny wywar z makaronem chińskim (nitki), wołowiną i warzywami. Mała: 20 zł | Duża: 29 zł.', priceLabel: '20 / 29 zł', badge: 'Tradycyjna' },
+            { id: 5, code: '05', short: 'Mì Gà — makaron chiński z kurczakiem', category: 'zupy', tags: [], name: 'Zupa MI GA — makaron chiński z kurczakiem (mała / duża)', desc: 'Rozgrzewający bulion z makaronem chińskim (nitki), kurczakiem i zieleniną. Mała: 19 zł | Duża: 26 zł.', priceLabel: '19 / 26 zł', badge: 'Klasyczna' },
+            { id: 6, code: '06', short: 'Miến Gà / Miến Lợn — makaron sojowy', category: 'zupy', tags: [], name: 'Zupa MIEN GA / MIEN LON — z makaronem sojowym (mała / duża)', desc: 'Zupa z makaronem sojowym z kurczakiem (19 / 26 zł) lub wieprzowiną (20 / 28 zł).', priceLabel: '19–28 zł', badge: 'Wietnamska' },
+            { id: 7, code: '07', short: 'Tom Yum z krewetkami lub kurczakiem', category: 'zupy', tags: ['spicy', 'bestseller'], name: 'Zupa Tajska TOM YUM z krewetkami lub kurczakiem', desc: 'Kwaśno-pikantna zupa z trawą cytrynową, liśćmi limonki kaffir i mleczkiem kokosowym.', priceLabel: '29 zł', badge: 'Pikantna' },
+            { id: 8, code: '08', short: 'Zupa Won-Ton / z pierożkami Hakao', category: 'zupy', tags: [], name: 'Zupa WON-TON / z pierożkami krewetkowymi HAKAO', desc: 'Klarowny bulion z domowymi pierożkami mięsnymi Won-Ton lub krewetkowymi Hakao i warzywami.', priceLabel: '19 zł', badge: 'Domowe pierożki' },
+            { id: 9, code: '09', short: 'Zupa pekińska / zupa rybna', category: 'zupy', tags: ['spicy'], name: 'Zupa po pekińsku / Zupa rybna', desc: 'Gęsta, lekko pikantna zupa po pekińsku z bambusem i grzybami mun lub aromatyczna zupa rybna.', priceLabel: '17 / 19 zł', badge: 'Rozgrzewająca' },
+            { id: 10, code: '10', short: 'Sajgonki wietnamskie (3 szt.)', category: 'zupy', tags: ['bestseller'], name: 'Sajgonki Wietnamskie (3 szt.) + surówka (+ ryż 22 zł)', desc: 'Chrupiące roladki z mięsem wieprzowym, grzybami mun i makaronem sojowym podawane z surówką.', priceLabel: '20 / 22 zł', badge: 'Przystawka' },
+            { id: 11, code: '11', short: 'Pierożki Hakao na parze (6 szt.)', category: 'zupy', tags: [], name: 'Pierożki HAKAO na parze z krewetkami (6 szt.)', desc: 'Delikatne pierożki z krewetkami gotowane na parze w bambusowym koszyku z sosem sojowym.', priceLabel: '24 zł', badge: 'Przystawka' },
 
             // Kurczak (13-24)
-            { id: 13, code: '13', category: 'kurczak', tags: ['bestseller'], name: 'Kurczak chrupiący z ryżem i surówką', desc: 'Złociste kawałki piersi z kurczaka w chrupiącej panierce podawane z ryżem jaśminowym, surówką i sosem.', priceLabel: '29 zł', badge: 'Bestseller' },
-            { id: 14, code: '14', category: 'kurczak', tags: [], name: 'Kurczak w pięciu smakach z warzywami', desc: 'Aromatyczny kurczak smażony w woku z przyprawą pięciu smaków, warzywami, ryżem i surówką.', priceLabel: '28 zł', badge: 'Aromatyczne' },
-            { id: 15, code: '15', category: 'kurczak', tags: ['spicy'], name: 'Kurczak GONG BAO na ostro z orzeszkami', desc: 'Klasyczne danie z woka z kurczakiem, warzywami, chili i prażonymi orzeszkami ziemnymi.', priceLabel: '28 zł', badge: 'Pikantne' },
-            { id: 16, code: '16', category: 'kurczak', tags: [], name: 'Kurczak w żółtym lub czerwonym curry', desc: 'Soczysty kurczak duszony w kremowym mleczku kokosowym z pastą curry, warzywami i ryżem.', priceLabel: '30 zł', badge: 'Tajskie Curry' },
-            { id: 17, code: '17', category: 'kurczak', tags: ['spicy'], name: 'Kurczak w zielonym curry z bambusem', desc: 'Wyraziste zielone curry na mleczku kokosowym z pędami bambusa, cukinią i bazylią tajską.', priceLabel: '30 zł', badge: 'Pikantne' },
-            { id: 18, code: '18', category: 'kurczak', tags: ['bestseller'], name: 'Kurczak TERIYAKI z sezamem', desc: 'Delikatny kurczak w błyszczącej glazurze teriyaki posypany prażonym sezamem z ryżem i surówką.', priceLabel: '29 zł', badge: 'Słodko-słone' },
-            { id: 19, code: '19', category: 'kurczak', tags: [], name: 'Kurczak słodko-kwaśny z ananasem', desc: 'Kawałki kurczaka w sosie słodko-kwaśnym z ananasem, papryką i ryżem jaśminowym.', priceLabel: '28 zł', badge: 'Łagodne' },
-            { id: 20, code: '20', category: 'kurczak', tags: ['spicy'], name: 'Kurczak po tajsku z trawą cytrynową i chili', desc: 'Smażony na dużym ogniu z trawą cytrynową, czosnkiem, chili i świeżymi warzywami.', priceLabel: '29 zł', badge: 'Tajski Wok' },
-            { id: 21, code: '21', category: 'kurczak', tags: [], name: 'Kurczak z grzybami mun i pędami bambusa', desc: 'Tradycyjne połączenie kurczaka, chrupiących grzybów mun i bambusa w sosie sojowo-ostrygowym.', priceLabel: '28 zł', badge: 'Klasyk' },
-            { id: 22, code: '22', category: 'kurczak', tags: [], name: 'Kurczak z orzechami nerkowca', desc: 'Smażony z warzywami i chrupiącymi orzechami nerkowca w aromatycznym sosie z woka.', priceLabel: '31 zł', badge: 'Polecane' },
-            { id: 23, code: '23', category: 'kurczak', tags: [], name: 'Kurczak pieczony po chińsku z ryżem', desc: 'Soczyste udko kurczaka pieczone w marynacie korzennej z ryżem jaśminowym i surówką.', priceLabel: '29 zł', badge: 'Pieczeń' },
-            { id: 24, code: '24', category: 'kurczak', tags: [], name: 'Skrzydełka po wietnamsku (6 szt.) z ryżem', desc: 'Karmelizowane skrzydełka w marynacie czosnkowo-miodowej z sosem rybnym i ryżem.', priceLabel: '28 zł', badge: 'Specjał' },
+            { id: 13, code: '13', short: 'Kurczak chrupiący', category: 'kurczak', tags: ['bestseller'], name: 'Kurczak chrupiący z ryżem i surówką', desc: 'Złociste kawałki piersi z kurczaka w chrupiącej panierce podawane z ryżem jaśminowym, surówką i sosem.', priceLabel: '29 zł', badge: 'Bestseller' },
+            { id: 14, code: '14', short: 'Kurczak w pięciu smakach', category: 'kurczak', tags: [], name: 'Kurczak w pięciu smakach z warzywami', desc: 'Aromatyczny kurczak smażony w woku z przyprawą pięciu smaków, warzywami, ryżem i surówką.', priceLabel: '28 zł', badge: 'Aromatyczne' },
+            { id: 15, code: '15', short: 'Kurczak Gong Bao', category: 'kurczak', tags: ['spicy'], name: 'Kurczak GONG BAO na ostro z orzeszkami', desc: 'Klasyczne danie z woka z kurczakiem, warzywami, chili i prażonymi orzeszkami ziemnymi.', priceLabel: '28 zł', badge: 'Pikantne' },
+            { id: 16, code: '16', short: 'Kurczak w żółtym lub czerwonym curry', category: 'kurczak', tags: [], name: 'Kurczak w żółtym lub czerwonym curry', desc: 'Soczysty kurczak duszony w kremowym mleczku kokosowym z pastą curry, warzywami i ryżem.', priceLabel: '30 zł', badge: 'Tajskie Curry' },
+            { id: 17, code: '17', short: 'Kurczak w zielonym curry', category: 'kurczak', tags: ['spicy'], name: 'Kurczak w zielonym curry z bambusem', desc: 'Wyraziste zielone curry na mleczku kokosowym z pędami bambusa, cukinią i bazylią tajską.', priceLabel: '30 zł', badge: 'Pikantne' },
+            { id: 18, code: '18', short: 'Kurczak teriyaki', category: 'kurczak', tags: ['bestseller'], name: 'Kurczak TERIYAKI z sezamem', desc: 'Delikatny kurczak w błyszczącej glazurze teriyaki posypany prażonym sezamem z ryżem i surówką.', priceLabel: '29 zł', badge: 'Słodko-słone' },
+            { id: 19, code: '19', short: 'Kurczak słodko-kwaśny', category: 'kurczak', tags: [], name: 'Kurczak słodko-kwaśny z ananasem', desc: 'Kawałki kurczaka w sosie słodko-kwaśnym z ananasem, papryką i ryżem jaśminowym.', priceLabel: '28 zł', badge: 'Łagodne' },
+            { id: 20, code: '20', short: 'Kurczak z trawą cytrynową i chili', category: 'kurczak', tags: ['spicy'], name: 'Kurczak po tajsku z trawą cytrynową i chili', desc: 'Smażony na dużym ogniu z trawą cytrynową, czosnkiem, chili i świeżymi warzywami.', priceLabel: '29 zł', badge: 'Tajski Wok' },
+            { id: 21, code: '21', short: 'Kurczak z grzybami mun i bambusem', category: 'kurczak', tags: [], name: 'Kurczak z grzybami mun i pędami bambusa', desc: 'Tradycyjne połączenie kurczaka, chrupiących grzybów mun i bambusa w sosie sojowo-ostrygowym.', priceLabel: '28 zł', badge: 'Klasyk' },
+            { id: 22, code: '22', short: 'Kurczak z nerkowcami', category: 'kurczak', tags: [], name: 'Kurczak z orzechami nerkowca', desc: 'Smażony z warzywami i chrupiącymi orzechami nerkowca w aromatycznym sosie z woka.', priceLabel: '31 zł', badge: 'Polecane' },
+            { id: 23, code: '23', short: 'Kurczak pieczony po chińsku', category: 'kurczak', tags: [], name: 'Kurczak pieczony po chińsku z ryżem', desc: 'Soczyste udko kurczaka pieczone w marynacie korzennej z ryżem jaśminowym i surówką.', priceLabel: '29 zł', badge: 'Pieczeń' },
+            { id: 24, code: '24', short: 'Skrzydełka po wietnamsku (6 szt.)', category: 'kurczak', tags: [], name: 'Skrzydełka po wietnamsku (6 szt.) z ryżem', desc: 'Karmelizowane skrzydełka w marynacie czosnkowo-miodowej z sosem rybnym i ryżem.', priceLabel: '28 zł', badge: 'Specjał' },
 
             // Kaczka, Ryba & Krewetki (25-33)
-            { id: 25, code: '25', category: 'kaczka', tags: ['bestseller'], name: 'Chrupiąca kaczka po tajsku z ryżem', desc: 'Złocista pierś z kaczki o chrupiącej skórce podawana na warzywach z woka z ryżem i surówką.', priceLabel: '42 zł', badge: 'Specjał Szefa' },
-            { id: 26, code: '26', category: 'kaczka', tags: [], name: 'Kaczka w pięciu smakach z warzywami', desc: 'Chrupiąca kaczka w aromatycznym sosie pięciu smaków z warzywami, ryżem jaśminowym i surówką.', priceLabel: '41 zł', badge: 'Polecane' },
-            { id: 27, code: '27', category: 'kaczka', tags: ['spicy'], name: 'Kaczka w czerwonym curry z mleczkiem kokosowym', desc: 'Plastry chrupiącej kaczki w kremowym tajskim czerwonym curry z ananasem i bazylią.', priceLabel: '43 zł', badge: 'Tajskie Curry' },
-            { id: 28, code: '28', category: 'kaczka', tags: [], name: 'Kaczka TERIYAKI z sezamem i ryżem', desc: 'Kaczka pieczona na chrupko polana sosem teriyaki z prażonym sezamem i surówką.', priceLabel: '42 zł', badge: 'Wykwintne' },
-            { id: 29, code: '29', category: 'kaczka', tags: ['bestseller'], name: 'Krewetki TIGER z woka z warzywami i czosnkiem', desc: 'Duże krewetki królewskie smażone z czosnkiem, warzywami, ryżem jaśminowym i surówką.', priceLabel: '39 zł', badge: 'Owoce morza' },
-            { id: 30, code: '30', category: 'kaczka', tags: ['spicy'], name: 'Krewetki po tajsku na ostro z trawą cytrynową', desc: 'Krewetki królewskie smażone z chili, trawą cytrynową i świeżymi ziołami.', priceLabel: '39 zł', badge: 'Pikantne' },
-            { id: 31, code: '31', category: 'kaczka', tags: [], name: 'Krewetki w czerwonym lub żółtym curry', desc: 'Krewetki królewskie w aksamitnym sosie kokosowym curry z warzywami i ryżem.', priceLabel: '40 zł', badge: 'Curry' },
-            { id: 12, code: '12', category: 'kaczka', tags: [], name: 'Krewetki w tempurze (6 szt.)', desc: 'Złociste krewetki królewskie w chrupiącej panierce podawane z sosem słodkie chili.', priceLabel: '29 zł', badge: 'Owoce morza' },
-            { id: 32, code: '32', category: 'kaczka', tags: [], name: 'Ryba chrupiąca w panierce z ryżem i surówką', desc: 'Złocisty filet rybny smażony na chrupko podawany z ryżem jaśminowym, surówką i sosem.', priceLabel: '31 zł', badge: 'Chrupiąca' },
-            { id: 33, code: '33', category: 'kaczka', tags: [], name: 'Ryba słodko-kwaśna lub w pięciu smakach', desc: 'Filet rybny w aromatycznym sosie z warzywami, ryżem jaśminowym i świeżą surówką.', priceLabel: '32 zł', badge: 'Klasyk' },
+            { id: 25, code: '25', short: 'Chrupiąca kaczka po tajsku', category: 'kaczka', tags: ['bestseller'], name: 'Chrupiąca kaczka po tajsku z ryżem', desc: 'Złocista pierś z kaczki o chrupiącej skórce podawana na warzywach z woka z ryżem i surówką.', priceLabel: '42 zł', badge: 'Specjał Szefa' },
+            { id: 26, code: '26', short: 'Kaczka w pięciu smakach', category: 'kaczka', tags: [], name: 'Kaczka w pięciu smakach z warzywami', desc: 'Chrupiąca kaczka w aromatycznym sosie pięciu smaków z warzywami, ryżem jaśminowym i surówką.', priceLabel: '41 zł', badge: 'Polecane' },
+            { id: 27, code: '27', short: 'Kaczka w czerwonym curry', category: 'kaczka', tags: ['spicy'], name: 'Kaczka w czerwonym curry z mleczkiem kokosowym', desc: 'Plastry chrupiącej kaczki w kremowym tajskim czerwonym curry z ananasem i bazylią.', priceLabel: '43 zł', badge: 'Tajskie Curry' },
+            { id: 28, code: '28', short: 'Kaczka teriyaki', category: 'kaczka', tags: [], name: 'Kaczka TERIYAKI z sezamem i ryżem', desc: 'Kaczka pieczona na chrupko polana sosem teriyaki z prażonym sezamem i surówką.', priceLabel: '42 zł', badge: 'Wykwintne' },
+            { id: 29, code: '29', short: 'Krewetki tiger z czosnkiem', category: 'kaczka', tags: ['bestseller'], name: 'Krewetki TIGER z woka z warzywami i czosnkiem', desc: 'Duże krewetki królewskie smażone z czosnkiem, warzywami, ryżem jaśminowym i surówką.', priceLabel: '39 zł', badge: 'Owoce morza' },
+            { id: 30, code: '30', short: 'Krewetki po tajsku na ostro', category: 'kaczka', tags: ['spicy'], name: 'Krewetki po tajsku na ostro z trawą cytrynową', desc: 'Krewetki królewskie smażone z chili, trawą cytrynową i świeżymi ziołami.', priceLabel: '39 zł', badge: 'Pikantne' },
+            { id: 31, code: '31', short: 'Krewetki w curry', category: 'kaczka', tags: [], name: 'Krewetki w czerwonym lub żółtym curry', desc: 'Krewetki królewskie w aksamitnym sosie kokosowym curry z warzywami i ryżem.', priceLabel: '40 zł', badge: 'Curry' },
+            { id: 12, code: '12', short: 'Krewetki w tempurze (6 szt.)', category: 'kaczka', tags: [], name: 'Krewetki w tempurze (6 szt.)', desc: 'Złociste krewetki królewskie w chrupiącej panierce podawane z sosem słodkie chili.', priceLabel: '29 zł', badge: 'Owoce morza' },
+            { id: 32, code: '32', short: 'Ryba chrupiąca', category: 'kaczka', tags: [], name: 'Ryba chrupiąca w panierce z ryżem i surówką', desc: 'Złocisty filet rybny smażony na chrupko podawany z ryżem jaśminowym, surówką i sosem.', priceLabel: '31 zł', badge: 'Chrupiąca' },
+            { id: 33, code: '33', short: 'Ryba słodko-kwaśna / pięć smaków', category: 'kaczka', tags: [], name: 'Ryba słodko-kwaśna lub w pięciu smakach', desc: 'Filet rybny w aromatycznym sosie z warzywami, ryżem jaśminowym i świeżą surówką.', priceLabel: '32 zł', badge: 'Klasyk' },
 
             // Wołowina & Wieprzowina (34-41)
-            { id: 34, code: '34', category: 'wolowina', tags: ['bestseller'], name: 'Wołowina LUK-LAK smażona z czosnkiem i cebulą', desc: 'Wietnamski specjał: soczyste kostki wołowiny smażone na żywym ogniu z czosnkiem, ryżem i surówką.', priceLabel: '36 zł', badge: 'Specjał Wietnamu' },
-            { id: 35, code: '35', category: 'wolowina', tags: ['spicy'], name: 'Wołowina z czarnym pieprzem i warzywami', desc: 'Plastry wołowiny w wyrazistym sosie z grubo mielonego czarnego pieprzu z ryżem i surówką.', priceLabel: '35 zł', badge: 'Wyraziste' },
-            { id: 36, code: '36', category: 'wolowina', tags: ['spicy'], name: 'Wołowina po tajsku na ostro z bazylią', desc: 'Smażona w woku z chili, czosnkiem, pędami bambusa i tajską bazylią.', priceLabel: '35 zł', badge: 'Pikantne' },
-            { id: 37, code: '37', category: 'wolowina', tags: [], name: 'Wołowina z grzybami mun i bambusem', desc: 'Klasyczna wołowina z woka z chrupiącymi grzybami mun, bambusem i ryżem jaśminowym.', priceLabel: '34 zł', badge: 'Klasyczna' },
-            { id: 38, code: '38', category: 'wolowina', tags: [], name: 'Wołowina w pięciu smakach lub curry', desc: 'Delikatna wołowina w wybranym sosie z warzywami, ryżem jaśminowym i surówką.', priceLabel: '35 zł', badge: 'Aromatyczne' },
-            { id: 39, code: '39', category: 'wolowina', tags: [], name: 'Wieprzowina w pięciu smakach z warzywami', desc: 'Soczysta wieprzowina z woka w sosie pięciu smaków podawana z ryżem i surówką.', priceLabel: '29 zł', badge: 'Klasyk' },
-            { id: 40, code: '40', category: 'wolowina', tags: ['spicy'], name: 'Wieprzowina po syczuańsku na ostro', desc: 'Wieprzowina smażona na ostro z warzywami, czosnkiem, chili i ryżem jaśminowym.', priceLabel: '29 zł', badge: 'Pikantne' },
-            { id: 41, code: '41', category: 'wolowina', tags: [], name: 'Wieprzowina z grzybami mun i bambusem', desc: 'Smażona w woku z grzybami mun, pędami bambusa, ryżem i świeżą surówką.', priceLabel: '29 zł', badge: 'Tradycyjne' },
+            { id: 34, code: '34', short: 'Wołowina Luk-Lak', category: 'wolowina', tags: ['bestseller'], name: 'Wołowina LUK-LAK smażona z czosnkiem i cebulą', desc: 'Wietnamski specjał: soczyste kostki wołowiny smażone na żywym ogniu z czosnkiem, ryżem i surówką.', priceLabel: '36 zł', badge: 'Specjał Wietnamu' },
+            { id: 35, code: '35', short: 'Wołowina z czarnym pieprzem', category: 'wolowina', tags: ['spicy'], name: 'Wołowina z czarnym pieprzem i warzywami', desc: 'Plastry wołowiny w wyrazistym sosie z grubo mielonego czarnego pieprzu z ryżem i surówką.', priceLabel: '35 zł', badge: 'Wyraziste' },
+            { id: 36, code: '36', short: 'Wołowina po tajsku z bazylią', category: 'wolowina', tags: ['spicy'], name: 'Wołowina po tajsku na ostro z bazylią', desc: 'Smażona w woku z chili, czosnkiem, pędami bambusa i tajską bazylią.', priceLabel: '35 zł', badge: 'Pikantne' },
+            { id: 37, code: '37', short: 'Wołowina z grzybami mun', category: 'wolowina', tags: [], name: 'Wołowina z grzybami mun i bambusem', desc: 'Klasyczna wołowina z woka z chrupiącymi grzybami mun, bambusem i ryżem jaśminowym.', priceLabel: '34 zł', badge: 'Klasyczna' },
+            { id: 38, code: '38', short: 'Wołowina w pięciu smakach / curry', category: 'wolowina', tags: [], name: 'Wołowina w pięciu smakach lub curry', desc: 'Delikatna wołowina w wybranym sosie z warzywami, ryżem jaśminowym i surówką.', priceLabel: '35 zł', badge: 'Aromatyczne' },
+            { id: 39, code: '39', short: 'Wieprzowina w pięciu smakach', category: 'wolowina', tags: [], name: 'Wieprzowina w pięciu smakach z warzywami', desc: 'Soczysta wieprzowina z woka w sosie pięciu smaków podawana z ryżem i surówką.', priceLabel: '29 zł', badge: 'Klasyk' },
+            { id: 40, code: '40', short: 'Wieprzowina po syczuańsku', category: 'wolowina', tags: ['spicy'], name: 'Wieprzowina po syczuańsku na ostro', desc: 'Wieprzowina smażona na ostro z warzywami, czosnkiem, chili i ryżem jaśminowym.', priceLabel: '29 zł', badge: 'Pikantne' },
+            { id: 41, code: '41', short: 'Wieprzowina z grzybami mun', category: 'wolowina', tags: [], name: 'Wieprzowina z grzybami mun i bambusem', desc: 'Smażona w woku z grzybami mun, pędami bambusa, ryżem i świeżą surówką.', priceLabel: '29 zł', badge: 'Tradycyjne' },
 
             // Makarony, Ryż & Dania Wietnamskie (42-50)
-            { id: 42, code: '42', category: 'makarony', tags: ['bestseller'], name: 'PAD THAI z kurczakiem, wołowiną lub krewetkami', desc: 'Smażony makaron ryżowy w sosie tamaryndowym z jajkiem, kiełkami, limonką i orzeszkami. Kurczak: 31 zł | Wołowina: 35 zł | Krewetki: 39 zł.', priceLabel: '31–39 zł', badge: 'Bestseller' },
-            { id: 43, code: '43', category: 'makarony', tags: ['bestseller'], name: 'BUN CHA — grillowana wieprzowina z makaronem Bun', desc: 'Autentyczne danie z Hanoi: grillowany boczek i klopsiki wieprzowe z makaronem ryżowym, ziołami i sosem Nuoc Cham.', priceLabel: '34 zł', badge: 'Klasyk Hanoi' },
-            { id: 44, code: '44', category: 'makarony', tags: ['bestseller'], name: 'BUN BO NAM BO — wołowina z makaronem ryżowym i ziołami', desc: 'Smażona wołowina na makaronie ryżowym ze świeżymi ziołami, kiełkami, prażoną cebulką i orzeszkami.', priceLabel: '35 zł', badge: 'Hit Wietnamu' },
-            { id: 45, code: '45', category: 'makarony', tags: [], name: 'BUN NEM — makaron ryżowy z chrupiącymi sajgonkami', desc: 'Lekka miska z makaronem ryżowym, chrupiącymi sajgonkami, świeżą sałatą, kolendrą i sosem wietnamskim.', priceLabel: '31 zł', badge: 'Świeże' },
-            { id: 46, code: '46', category: 'makarony', tags: [], name: 'Makaron UDON smażony w woku (kurczak / wołowina / krewetki)', desc: 'Gruby, sprężysty makaron pszenny Udon smażony z warzywami w sosie teriyaki-sojowym (31 / 35 / 39 zł).', priceLabel: '31–39 zł', badge: 'Porcja 450g' },
-            { id: 47, code: '47', category: 'makarony', tags: [], name: 'Makaron chiński smażony (kurczak / wołowina / krewetki)', desc: 'Cienki makaron chiński z woka z chrupiącymi warzywami i wybranym dodatkiem (28 / 33 / 37 zł).', priceLabel: '28–37 zł', badge: 'Klasyk Woka' },
-            { id: 48, code: '48', category: 'makarony', tags: [], name: 'Makaron sojowy smażony (kurczak / wołowina / krewetki)', desc: 'Przezroczysty makaron z fasoli mung smażony z warzywami, grzybami mun i sosem sojowym (29 / 34 / 38 zł).', priceLabel: '29–38 zł', badge: 'Bezglutenowy makaron' },
-            { id: 49, code: '49', category: 'makarony', tags: [], name: 'Ryż smażony z kurczakiem, wołowiną lub krewetkami', desc: 'Aromatyczny ryż jaśminowy smażony w woku z jajkiem, warzywami i wybranym dodatkiem (28 / 33 / 37 zł).', priceLabel: '28–37 zł', badge: 'Syte danie' },
-            { id: 50, code: '50', category: 'makarony', tags: [], name: 'Ryż smażony z chrupiącym kurczakiem lub kaczką', desc: 'Ryż smażony z warzywami podawany z chrupiącym kurczakiem (32 zł) lub chrupiącą kaczką (43 zł).', priceLabel: '32 / 43 zł', badge: 'Polecane' },
+            { id: 42, code: '42', short: 'Pad Thai', category: 'makarony', tags: ['bestseller'], name: 'PAD THAI z kurczakiem, wołowiną lub krewetkami', desc: 'Smażony makaron ryżowy w sosie tamaryndowym z jajkiem, kiełkami, limonką i orzeszkami. Kurczak: 31 zł | Wołowina: 35 zł | Krewetki: 39 zł.', priceLabel: '31–39 zł', badge: 'Bestseller' },
+            { id: 43, code: '43', short: 'Bún Chả', category: 'makarony', tags: ['bestseller'], name: 'BUN CHA — grillowana wieprzowina z makaronem Bun', desc: 'Autentyczne danie z Hanoi: grillowany boczek i klopsiki wieprzowe z makaronem ryżowym, ziołami i sosem Nuoc Cham.', priceLabel: '34 zł', badge: 'Klasyk Hanoi' },
+            { id: 44, code: '44', short: 'Bún Bò Nam Bộ', category: 'makarony', tags: ['bestseller'], name: 'BUN BO NAM BO — wołowina z makaronem ryżowym i ziołami', desc: 'Smażona wołowina na makaronie ryżowym ze świeżymi ziołami, kiełkami, prażoną cebulką i orzeszkami.', priceLabel: '35 zł', badge: 'Hit Wietnamu' },
+            { id: 45, code: '45', short: 'Bún Nem', category: 'makarony', tags: [], name: 'BUN NEM — makaron ryżowy z chrupiącymi sajgonkami', desc: 'Lekka miska z makaronem ryżowym, chrupiącymi sajgonkami, świeżą sałatą, kolendrą i sosem wietnamskim.', priceLabel: '31 zł', badge: 'Świeże' },
+            { id: 46, code: '46', short: 'Udon z woka', category: 'makarony', tags: [], name: 'Makaron UDON smażony w woku (kurczak / wołowina / krewetki)', desc: 'Gruby, sprężysty makaron pszenny Udon smażony z warzywami w sosie teriyaki-sojowym (31 / 35 / 39 zł).', priceLabel: '31–39 zł', badge: 'Porcja 450g' },
+            { id: 47, code: '47', short: 'Makaron chiński smażony', category: 'makarony', tags: [], name: 'Makaron chiński smażony (kurczak / wołowina / krewetki)', desc: 'Cienki makaron chiński z woka z chrupiącymi warzywami i wybranym dodatkiem (28 / 33 / 37 zł).', priceLabel: '28–37 zł', badge: 'Klasyk Woka' },
+            { id: 48, code: '48', short: 'Makaron sojowy smażony', category: 'makarony', tags: [], name: 'Makaron sojowy smażony (kurczak / wołowina / krewetki)', desc: 'Przezroczysty makaron z fasoli mung smażony z warzywami, grzybami mun i sosem sojowym (29 / 34 / 38 zł).', priceLabel: '29–38 zł', badge: 'Bezglutenowy makaron' },
+            { id: 49, code: '49', short: 'Ryż smażony', category: 'makarony', tags: [], name: 'Ryż smażony z kurczakiem, wołowiną lub krewetkami', desc: 'Aromatyczny ryż jaśminowy smażony w woku z jajkiem, warzywami i wybranym dodatkiem (28 / 33 / 37 zł).', priceLabel: '28–37 zł', badge: 'Syte danie' },
+            { id: 50, code: '50', short: 'Ryż smażony z chrupiącym kurczakiem / kaczką', category: 'makarony', tags: [], name: 'Ryż smażony z chrupiącym kurczakiem lub kaczką', desc: 'Ryż smażony z warzywami podawany z chrupiącym kurczakiem (32 zł) lub chrupiącą kaczką (43 zł).', priceLabel: '32 / 43 zł', badge: 'Polecane' },
 
             // Wege, Dla Dzieci & Napoje (51-60)
-            { id: 51, code: '51', category: 'wege', tags: ['vegan', 'bestseller'], name: 'Zupa wegańska PHO CHAY z tofu i grzybami (mała / duża)', desc: 'Aromatyczny bulion warzywno-korzenny z makaronem ryżowym, smażonym tofu, grzybami i kolendrą (19 / 26 zł).', priceLabel: '19 / 26 zł', badge: '100% Vegan' },
-            { id: 52, code: '52', category: 'wege', tags: ['vegan'], name: 'Zupa z warzywami / z pierożkami warzywnymi HAKAO', desc: 'Klarowny wywar warzywny ze świeżymi warzywami (17 zł) lub pierożkami warzywnymi Hakao (19 zł).', priceLabel: '17 / 19 zł', badge: '100% Vegan' },
-            { id: 53, code: '53', category: 'wege', tags: ['vegan', 'bestseller'], name: 'Tofu w pięciu smakach lub słodko-kwaśne z warzywami', desc: 'Złociste kostki tofu smażone z warzywami w aromatycznym sosie, podawane z ryżem i surówką.', priceLabel: '27 zł', badge: '100% Vegan' },
-            { id: 54, code: '54', category: 'wege', tags: ['vegan'], name: 'Tofu w żółtym lub czerwonym curry z mleczkiem kokosowym', desc: 'Smażone tofu duszone w kremowym curry kokosowym z warzywami, podawane z ryżem jaśminowym.', priceLabel: '29 zł', badge: '100% Vegan' },
-            { id: 55, code: '55', category: 'wege', tags: ['vegan'], name: 'Warzywa z woka z grzybami mun i bambusem + ryż', desc: 'Świeże, chrupiące warzywa smażone na dużym ogniu z grzybami mun, ryżem jaśminowym i surówką.', priceLabel: '25 zł', badge: '100% Vegan' },
-            { id: 56, code: '56', category: 'wege', tags: ['vegan'], name: 'Wegański PAD THAI lub UDON z tofu i warzywami', desc: 'Smażony makaron ryżowy Pad Thai (29 zł) lub pszenny Udon (29 zł) ze smażonym tofu i warzywami.', priceLabel: '29 zł', badge: '100% Vegan' },
-            { id: 57, code: '57', category: 'wege', tags: [], name: 'Zestaw dla Dzieci: Chrupiące stripsy z kurczaka + frytki / ryż', desc: 'Łagodne, złociste polędwiczki z kurczaka podawane z frytkami lub ryżem jaśminowym i surówką.', priceLabel: '23 zł', badge: 'Dla Dzieci' },
-            { id: 58, code: '58', category: 'wege', tags: [], name: 'Dodatki: Ryż jaśminowy / Frytki / Makaron / Surówka', desc: 'Porcja ryżu jaśminowego (7 zł), frytek (9 zł), makaronu smażonego (10 zł) lub świeżej surówki (7 zł).', priceLabel: '7–10 zł', badge: 'Dodatki' },
-            { id: 59, code: '59', category: 'wege', tags: [], name: 'Napoje azjatyckie: Liczi, Mango, Kokos, Aloes (330 ml)', desc: 'Orzeźwiające egzotyczne napoje w puszce lub butelce prosto z Azji.', priceLabel: '9 zł', badge: 'Napoje' },
-            { id: 60, code: '60', category: 'wege', tags: [], name: 'Napoje klasyczne: Coca-Cola, Fanta, Sprite, Woda, Herbata jaśminowa', desc: 'Zimne napoje gazowane 0,33l/0,5l (8–9 zł), woda mineralna (6 zł) oraz gorąca zielona herbata jaśminowa (9 zł).', priceLabel: '6–9 zł', badge: 'Napoje' }
+            { id: 51, code: '51', short: 'Phở Chay — wegańska', category: 'wege', tags: ['vegan', 'bestseller'], name: 'Zupa wegańska PHO CHAY z tofu i grzybami (mała / duża)', desc: 'Aromatyczny bulion warzywno-korzenny z makaronem ryżowym, smażonym tofu, grzybami i kolendrą (19 / 26 zł).', priceLabel: '19 / 26 zł', badge: '100% Vegan' },
+            { id: 52, code: '52', short: 'Zupa warzywna / z Hakao warzywnymi', category: 'wege', tags: ['vegan'], name: 'Zupa z warzywami / z pierożkami warzywnymi HAKAO', desc: 'Klarowny wywar warzywny ze świeżymi warzywami (17 zł) lub pierożkami warzywnymi Hakao (19 zł).', priceLabel: '17 / 19 zł', badge: '100% Vegan' },
+            { id: 53, code: '53', short: 'Tofu w pięciu smakach / słodko-kwaśne', category: 'wege', tags: ['vegan', 'bestseller'], name: 'Tofu w pięciu smakach lub słodko-kwaśne z warzywami', desc: 'Złociste kostki tofu smażone z warzywami w aromatycznym sosie, podawane z ryżem i surówką.', priceLabel: '27 zł', badge: '100% Vegan' },
+            { id: 54, code: '54', short: 'Tofu w curry', category: 'wege', tags: ['vegan'], name: 'Tofu w żółtym lub czerwonym curry z mleczkiem kokosowym', desc: 'Smażone tofu duszone w kremowym curry kokosowym z warzywami, podawane z ryżem jaśminowym.', priceLabel: '29 zł', badge: '100% Vegan' },
+            { id: 55, code: '55', short: 'Warzywa z woka', category: 'wege', tags: ['vegan'], name: 'Warzywa z woka z grzybami mun i bambusem + ryż', desc: 'Świeże, chrupiące warzywa smażone na dużym ogniu z grzybami mun, ryżem jaśminowym i surówką.', priceLabel: '25 zł', badge: '100% Vegan' },
+            { id: 56, code: '56', short: 'Wegański Pad Thai / Udon', category: 'wege', tags: ['vegan'], name: 'Wegański PAD THAI lub UDON z tofu i warzywami', desc: 'Smażony makaron ryżowy Pad Thai (29 zł) lub pszenny Udon (29 zł) ze smażonym tofu i warzywami.', priceLabel: '29 zł', badge: '100% Vegan' },
+            { id: 57, code: '57', short: 'Zestaw dla dzieci', category: 'wege', tags: [], name: 'Zestaw dla Dzieci: Chrupiące stripsy z kurczaka + frytki / ryż', desc: 'Łagodne, złociste polędwiczki z kurczaka podawane z frytkami lub ryżem jaśminowym i surówką.', priceLabel: '23 zł', badge: 'Dla Dzieci' },
+            { id: 58, code: '58', short: 'Dodatki', category: 'wege', tags: [], name: 'Dodatki: Ryż jaśminowy / Frytki / Makaron / Surówka', desc: 'Porcja ryżu jaśminowego (7 zł), frytek (9 zł), makaronu smażonego (10 zł) lub świeżej surówki (7 zł).', priceLabel: '7–10 zł', badge: 'Dodatki' },
+            { id: 59, code: '59', short: 'Napoje azjatyckie', category: 'wege', tags: [], name: 'Napoje azjatyckie: Liczi, Mango, Kokos, Aloes (330 ml)', desc: 'Orzeźwiające egzotyczne napoje w puszce lub butelce prosto z Azji.', priceLabel: '9 zł', badge: 'Napoje' },
+            { id: 60, code: '60', short: 'Napoje klasyczne', category: 'wege', tags: [], name: 'Napoje klasyczne: Coca-Cola, Fanta, Sprite, Woda, Herbata jaśminowa', desc: 'Zimne napoje gazowane 0,33l/0,5l (8–9 zł), woda mineralna (6 zł) oraz gorąca zielona herbata jaśminowa (9 zł).', priceLabel: '6–9 zł', badge: 'Napoje' }
         ];
 
-        let activeCategory = 'all';
         let activeTag = 'all';
-        let isMenuExpanded = false;
-        const INITIAL_MENU_LIMIT = 18;
-        const CATEGORY_NAMES = { zupy: 'Zupy & Przystawki', kurczak: 'Kurczak', kaczka: 'Kaczka, Ryba & Owoce morza', wolowina: 'Wołowina & Wieprzowina', makarony: 'Makarony & Ryż', wege: 'Wege, Dla dzieci & Napoje' };
         let dropdownCloseTimer = null;
+        let catObserver = null;
+        const CATEGORIES = [['zupy', 'Zupy & Przystawki'], ['kurczak', 'Kurczak'], ['kaczka', 'Kaczka, Ryba & Owoce morza'], ['wolowina', 'Wołowina & Wieprzowina'], ['makarony', 'Makarony & Ryż'], ['wege', 'Wege, Dzieci & Napoje']];
+        const ICONS = {
+            bestseller: '<span class="text-gold" title="Polecane"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.8l2.5 5.2 5.7.8-4.1 4 1 5.6L10 14.8l-5.1 2.6 1-5.6-4.1-4 5.7-.8z"/></svg></span>',
+            spicy: '<span class="text-spice" title="Pikantne"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.6 3.2c.3-.9 1-1.6 1.9-1.9l.4 1.1c-.5.2-.9.6-1.1 1.1 1.6.6 2.6 2.1 2.6 3.9 0 5.2-5 10.8-12.7 10.8-1.3 0-1.9-1.5-.9-2.3 3.2-2.5 4.8-5.5 5.6-8.4.5-1.9 2.1-3.3 4.2-3.3z"/></svg></span>',
+            vegan: '<span class="text-herb" title="Wegańskie"><svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.5 2.5S8 1.5 4.6 7c-2 3.2-.9 6.6.3 8.2L2.6 17.5l1 1 2.3-2.3c1.6 1.2 5 2.3 8.2.3 5.5-3.4 3.4-14 3.4-14zM7 14.5c1.5-3 4-5.6 7-7.5-2.4 2.3-4.4 4.9-5.8 8z"/></svg></span>'
+        };
+        const norm = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l').replace(/đ/g, 'd').toLowerCase();
 
         // Zarządzanie dropdownami w Navbarze
         function openDropdown(id) {
@@ -1068,127 +1050,117 @@
         function selectCategoryAndGo(category) {
             switchView('home');
             closeAllDropdowns();
-            setCategory(category);
-            const menuSection = document.getElementById('menu');
-            if (menuSection) {
-                menuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
-        // Filtrowanie karty dań
-        function setCategory(cat) {
-            activeCategory = cat;
-            isMenuExpanded = false;
-            document.querySelectorAll('.cat-tab-btn').forEach(btn => {
-                const isSelected = btn.getAttribute('data-cat') === cat;
-                if (isSelected) {
-                    btn.className = 'cat-tab-btn active-cat shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-spice text-white border-spice shadow-md';
-                    const sub = btn.querySelector('span:last-child');
-                    if (sub) sub.className = 'text-xs opacity-85 block mt-1';
-                } else {
-                    btn.className = 'cat-tab-btn shrink-0 snap-start min-w-[150px] lg:min-w-0 text-left p-4 rounded-2xl border transition-all bg-sand/70 hover:bg-sand text-ink border-stone-200/80';
-                    const sub = btn.querySelector('span:last-child');
-                    if (sub) sub.className = 'text-xs text-stone-500 block mt-1';
-                }
-            });
-            renderMenu();
+            const target = category === 'all' ? document.getElementById('menu') : document.getElementById('kat-' + category);
+            if (category !== 'all' && !target) resetMenuFilters();
+            const el = category === 'all' ? document.getElementById('menu') : document.getElementById('kat-' + category);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function setTagFilter(tag) {
-            activeTag = tag;
-            isMenuExpanded = false;
+            activeTag = (activeTag === tag) ? 'all' : tag;
             document.querySelectorAll('.tag-filter-btn').forEach(btn => {
-                const isSelected = btn.getAttribute('data-tag') === tag;
-                btn.className = isSelected
-                    ? 'tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-ink text-white transition'
-                    : 'tag-filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-white text-ink hover:bg-stone-100 border border-stone-200 transition';
+                btn.setAttribute('aria-pressed', btn.dataset.tag === activeTag ? 'true' : 'false');
             });
             renderMenu();
-        }
-
-        function toggleMenuExpand() {
-            isMenuExpanded = !isMenuExpanded;
-            renderMenu();
-            if (!isMenuExpanded) {
-                const menuSection = document.getElementById('menu');
-                if (menuSection) menuSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
         }
 
         function resetMenuFilters() {
             const searchInput = document.getElementById('menu-search');
             if (searchInput) searchInput.value = '';
-            isMenuExpanded = false;
-            setTagFilter('all');
-            setCategory('all');
+            activeTag = 'all';
+            document.querySelectorAll('.tag-filter-btn').forEach(btn => btn.setAttribute('aria-pressed', 'false'));
+            renderMenu();
+        }
+
+        function toggleRow(btn) {
+            const row = btn.closest('.menu-row');
+            const willOpen = !row.classList.contains('is-open');
+            document.querySelectorAll('.menu-row.is-open').forEach(r => {
+                if (r !== row) { r.classList.remove('is-open'); r.querySelector('.menu-row-head').setAttribute('aria-expanded', 'false'); }
+            });
+            row.classList.toggle('is-open', willOpen);
+            btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        }
+
+        function rowHtml(item, open) {
+            const icons = item.tags.map(t => ICONS[t] || '').join('');
+            return `
+                <div class="menu-row -mx-3 px-3 rounded-xl transition-colors ${open ? 'is-open' : ''}">
+                    <button type="button" class="menu-row-head w-full flex items-center gap-2.5 py-3 text-left" aria-expanded="${open}" onclick="toggleRow(this)">
+                        <span class="text-[0.7rem] font-semibold text-stone-400 tabular-nums w-5 shrink-0">${item.code}</span>
+                        <span class="row-name font-semibold text-[0.95rem] sm:text-base text-ink leading-snug transition-colors">${item.short}</span>
+                        ${icons ? `<span class="flex items-center gap-1 shrink-0">${icons}</span>` : ''}
+                        <span class="flex-1 min-w-[1rem] border-b border-dotted border-stone-300 self-end mb-[0.4rem]"></span>
+                        <span class="font-serif text-lg font-bold text-spice whitespace-nowrap tabular-nums">${item.priceLabel}</span>
+                        <svg class="row-chev w-4 h-4 text-stone-400 shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div class="menu-row-body"><div>
+                        <p class="pb-3.5 pl-7 pr-2 text-sm text-stone-600 leading-relaxed">${item.desc}</p>
+                    </div></div>
+                </div>`;
         }
 
         function renderMenu() {
             const grid = document.getElementById('menu-grid');
             const emptyState = document.getElementById('menu-empty');
-            const expandBar = document.getElementById('menu-expand-bar');
-            const expandLabel = document.getElementById('menu-expand-label');
-            const expandIcon = document.getElementById('menu-expand-icon');
-            const query = (document.getElementById('menu-search')?.value || '').trim().toLowerCase();
+            const query = norm((document.getElementById('menu-search')?.value || '').trim());
 
             const filtered = MENU_ITEMS.filter(item => {
-                const matchCat = activeCategory === 'all' || item.category === activeCategory;
-                const matchTag = activeTag === 'all' || (item.tags && item.tags.includes(activeTag));
-                const matchQuery = !query || item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query) || item.code.includes(query);
-                return matchCat && matchTag && matchQuery;
+                const matchTag = activeTag === 'all' || item.tags.includes(activeTag);
+                const matchQuery = !query || norm(item.short + ' ' + item.name + ' ' + item.desc).includes(query) || item.code === query;
+                return matchTag && matchQuery;
             });
 
             if (filtered.length === 0) {
                 grid.innerHTML = '';
+                grid.classList.add('hidden');
                 emptyState.classList.remove('hidden');
-                if (expandBar) expandBar.classList.add('hidden');
                 return;
             }
-
+            grid.classList.remove('hidden');
             emptyState.classList.add('hidden');
 
-            // Jeśli użytkownik wpisuje frazę w wyszukiwarce lub lista ma <= 9 dań, pokazujemy wszystkie dopasowane
-            const shouldLimit = !query && filtered.length > INITIAL_MENU_LIMIT;
-            const visibleItems = (shouldLimit && !isMenuExpanded)
-                ? filtered.slice(0, INITIAL_MENU_LIMIT)
-                : filtered;
-
-            if (expandBar && expandLabel && expandIcon) {
-                if (shouldLimit) {
-                    expandBar.classList.remove('hidden');
-                    const hiddenCount = filtered.length - INITIAL_MENU_LIMIT;
-                    expandLabel.textContent = isMenuExpanded
-                        ? 'Zwiń listę dań'
-                        : `Pokaż więcej dań (+${hiddenCount} pozycji)`;
-                    expandIcon.style.transform = isMenuExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
-                } else {
-                    expandBar.classList.add('hidden');
-                }
-            }
-
-            let lastCat = null;
-            grid.innerHTML = visibleItems.map(item => {
-                const header = (activeCategory === 'all' && !query && item.category !== lastCat)
-                    ? `<h3 class="md:col-span-2 font-serif text-2xl sm:text-3xl font-bold text-ink pt-6 first:pt-0 pb-1 border-b-2 border-spice/70">${CATEGORY_NAMES[item.category]}</h3>`
-                    : '';
-                lastCat = item.category;
-                const chips = [
-                    item.tags.includes('bestseller') ? '<span class="px-2 py-0.5 rounded-md bg-gold/15 text-[#8a6418] text-[11px] font-semibold">Polecane</span>' : '',
-                    item.tags.includes('spicy') ? '<span class="px-2 py-0.5 rounded-md bg-spice/10 text-spice text-[11px] font-semibold">Pikantne</span>' : '',
-                    item.tags.includes('vegan') ? '<span class="px-2 py-0.5 rounded-md bg-herb/10 text-herb text-[11px] font-semibold">Wegańskie</span>' : ''
-                ].join('');
-                return header + `
-                <article class="py-4 border-b border-stone-200/80">
-                    <div class="flex items-baseline gap-3">
-                        <span class="font-serif text-base font-bold text-spice shrink-0 w-7">${item.code}</span>
-                        <h4 class="font-serif text-lg sm:text-xl font-bold text-ink leading-snug">${item.name}</h4>
-                        <span class="flex-1 border-b border-dotted border-stone-300 translate-y-[-4px] min-w-[1.5rem]"></span>
-                        <span class="font-serif text-lg sm:text-xl font-bold text-spice whitespace-nowrap">${item.priceLabel}</span>
+            const openAll = !!query;
+            grid.innerHTML = CATEGORIES.map(([cat, label]) => {
+                const items = filtered.filter(i => i.category === cat);
+                if (!items.length) return '';
+                const half = Math.ceil(items.length / 2);
+                const col = list => `<div class="divide-y divide-stone-200/70">${list.map(i => rowHtml(i, openAll)).join('')}</div>`;
+                return `
+                <section id="kat-${cat}" data-cat="${cat}" class="menu-cat">
+                    <div class="flex items-baseline gap-4 mb-2">
+                        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-ink">${label}</h3>
+                        <span class="flex-1 h-px bg-stone-200"></span>
+                        <span class="text-xs text-stone-400 whitespace-nowrap">${items.length} ${items.length === 1 ? 'pozycja' : (items.length < 5 ? 'pozycje' : 'pozycji')}</span>
                     </div>
-                    <p class="text-sm text-stone-600 mt-1 pl-10 leading-relaxed">${item.desc}</p>
-                    ${chips ? `<div class="flex flex-wrap gap-1.5 mt-2 pl-10">${chips}</div>` : ''}
-                </article>`;
+                    <div class="grid md:grid-cols-2 gap-x-12">${col(items.slice(0, half))}${col(items.slice(half))}</div>
+                </section>`;
             }).join('');
+
+            // Pigułki kategorii: wyszarz te bez wyników
+            document.querySelectorAll('.cat-pill').forEach(p => {
+                const has = filtered.some(i => i.category === p.dataset.cat);
+                p.classList.toggle('opacity-40', !has);
+                p.classList.toggle('pointer-events-none', !has);
+            });
+            initCategorySpy();
+        }
+
+        function setActivePill(cat) {
+            const nav = document.getElementById('category-tabs');
+            document.querySelectorAll('.cat-pill').forEach(p => {
+                const on = p.dataset.cat === cat;
+                p.classList.toggle('is-active', on);
+                if (on && nav) nav.scrollTo({ left: p.offsetLeft - nav.clientWidth / 2 + p.clientWidth / 2, behavior: 'smooth' });
+            });
+        }
+
+        function initCategorySpy() {
+            if (catObserver) catObserver.disconnect();
+            catObserver = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) setActivePill(e.target.dataset.cat); });
+            }, { rootMargin: '-35% 0px -60% 0px' });
+            document.querySelectorAll('.menu-cat').forEach(sec => catObserver.observe(sec));
         }
 
         // FAQ Accordion
@@ -1229,7 +1201,7 @@
                 const today = row.dataset.days.split(',').map(Number).includes(day);
                 row.classList.toggle('bg-spice/10', today);
                 if (today && !row.querySelector('.today-tag')) {
-                    row.firstElementChild.insertAdjacentHTML('beforeend', ' <span class="today-tag text-[11px] font-bold text-spice uppercase tracking-wider">• dziś</span>');
+                    row.firstElementChild.insertAdjacentHTML('beforeend', ' <span class="today-tag text-[0.6875rem] font-bold text-spice uppercase tracking-wider">• dziś</span>');
                 }
             });
             const y = document.getElementById('year');
